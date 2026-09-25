@@ -1,0 +1,22 @@
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body { margin: 0; background: #eef2f3; color: #172328; font-family: Arial, Helvetica, sans-serif; }
+button, a { font: inherit; }
+button { cursor: pointer; }
+.lab-home { min-height: 100dvh; display: grid; place-items: center; padding: 36px 24px; }
+.lab-home__content { width: min(680px, 100%); }
+.lab-home__eyebrow { margin: 0 0 18px; color: #67808a; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.lab-home h1 { margin: 0; font-size: clamp(40px, 8vw, 78px); font-weight: 600; letter-spacing: -.055em; line-height: 1.02; }
+.lab-home__intro { max-width: 540px; margin: 24px 0 56px; color: #61747b; font-size: 17px; line-height: 1.5; }
+.study-list { display: grid; gap: 12px; }
+.study-card { display: flex; align-items: center; gap: 22px; min-height: 124px; padding: 24px 28px; color: inherit; background: #fff; border: 1px solid #dce6e9; border-radius: 20px; text-decoration: none; box-shadow: 0 12px 28px rgba(30, 62, 75, .06); transition: transform 180ms cubic-bezier(.19,1,.22,1), box-shadow 180ms ease; }
+.study-card:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(30, 62, 75, .1); }
+.study-card:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 4px; }
+.study-card__number { align-self: flex-start; color: #91a7af; font-size: 13px; font-weight: 700; }
+.study-card__copy { display: grid; gap: 8px; flex: 1; }
+.study-card__copy strong { font-size: 21px; font-weight: 600; letter-spacing: -.025em; }
+.study-card__copy span { color: #698088; font-size: 14px; line-height: 1.4; }
+.study-card__arrow { color: #62818d; font-size: 24px; }
+.lab-home__footer { margin: 24px 2px 0; color: #8a9ea5; font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .study-card { transition: none; } .study-card:hover { transform: none; } }
