@@ -53,7 +53,7 @@ export default function LoyaltyStudy() {
     function alignTextWithMarkers() {
       for (const key of ['earn', 'spend']) {
         textRows[key].forEach((row, index) => {
-          row.style.transform = `translateY(${markers[index].y - rowTops[key][index]}px)`;
+          row.style.transform = reducedMotion.matches ? '' : `translateY(${markers[index].y - rowTops[key][index]}px)`;
         });
       }
     }
@@ -62,14 +62,16 @@ export default function LoyaltyStudy() {
       const reserved = timelineVisible ? 260 : 24;
       stageRef.current.style.paddingBottom = timelineVisible ? '260px' : '12px';
       const scale = Math.min(1, (window.innerWidth - 24) / 390, (window.innerHeight - reserved) / 888);
-      document.documentElement.style.setProperty('--screen-scale', Math.max(.35, scale).toFixed(4));
+      const displayScale = Math.max(.35, scale).toFixed(4);
+      document.documentElement.style.setProperty('--screen-scale', displayScale);
+      phone.style.setProperty('--tab-hit-height', `${44 / Number(displayScale)}px`);
     }
 
     function setTimelineVisible(visible) {
       timelineVisible = visible;
       dock?.setVisible(visible);
       if (visible && timeline && !previewActive) timeline.seek(mode === 'spend' ? timeline.values.duration : 0);
-      if (!visible) timeline?.pause();
+      if (!visible) selectLiveMode(mode);
       timelineToggleRef.current.textContent = visible ? 'Hide timeline' : 'Show timeline';
       fitPhone();
     }
@@ -118,7 +120,7 @@ export default function LoyaltyStudy() {
       }
     }
 
-    function crossfadeText(next) {
+    function crossfadeText(next, instant = false) {
       const progress = Math.max(0, Math.min(1, Number(getComputedStyle(spend).opacity)));
       const target = next === 'spend' ? 1 : 0;
       const revision = ++textRevision;
@@ -127,6 +129,12 @@ export default function LoyaltyStudy() {
       textAnimations.forEach(animation => animation.cancel());
       earn.setAttribute('aria-hidden', String(next !== 'earn'));
       spend.setAttribute('aria-hidden', String(next !== 'spend'));
+      if (instant) {
+        earn.style.opacity = 1 - target;
+        spend.style.opacity = target;
+        textAnimations = [];
+        return;
+      }
       const options = {
         duration: 160 * Math.abs(target - progress),
         easing: 'cubic-bezier(.25,.46,.45,.94)', fill: 'forwards'
@@ -147,23 +155,33 @@ export default function LoyaltyStudy() {
       }, () => {});
     }
 
-    function setMode(next) {
-      if (next === mode) return;
+    function setMode(next, { instant = false, force = false } = {}) {
+      if (next === mode && !force && !instant) return;
       mode = next;
       phone.dataset.mode = mode;
       tabs.forEach(tab => tab.setAttribute('aria-selected', String(tab.dataset.tab === mode)));
-      positionMarkers(next);
-      crossfadeText(next);
+      positionMarkers(next, instant);
+      crossfadeText(next, instant);
     }
 
-    function selectLiveMode(next) {
+    function selectLiveMode(next, instant = false) {
       if (timeline) timeline.pause();
-      if (previewActive) {
+      const leavingPreview = previewActive;
+      if (leavingPreview) {
+        // Commit the scrubbed position before handing the pill back to CSS.
+        thumb.style.transform = getComputedStyle(thumb).transform;
         previewActive = false;
         phone.classList.remove('timeline-preview');
-        thumb.style.transform = '';
+        void thumb.offsetWidth;
       }
-      setMode(next);
+      if (instant) thumb.style.transition = 'none';
+      setMode(next, { instant, force: leavingPreview });
+      thumb.style.transform = '';
+      if (instant) {
+        // Commit the keyboard state without starting a CSS transition.
+        void thumb.offsetWidth;
+        thumb.style.transition = '';
+      }
     }
 
     function paintTimeline(values) {
@@ -186,7 +204,8 @@ export default function LoyaltyStudy() {
       spend.setAttribute('aria-hidden', String(mode !== 'spend'));
       const positions = values.checkmarks.current;
       markers.forEach((marker, index) => {
-        marker.y = Number(positions[`y${index + 1}`]);
+        marker.y = reducedMotion.matches ? rowTops[mode][index] : Number(positions[`y${index + 1}`]);
+        marker.target = marker.y;
         marker.velocity = 0;
         marker.el.style.transform = `translateY(${marker.y}px)`;
       });
@@ -228,12 +247,12 @@ export default function LoyaltyStudy() {
     }
 
     const tabListeners = tabs.map(tab => {
-      const onClick = () => selectLiveMode(tab.dataset.tab);
+      const onClick = event => selectLiveMode(tab.dataset.tab, event.detail === 0);
       const onKeyDown = event => {
         if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
         event.preventDefault();
         const next = event.key === 'ArrowRight' ? 'spend' : 'earn';
-        selectLiveMode(next);
+        selectLiveMode(next, true);
         phone.querySelector(`[data-tab="${next}"]`).focus();
       };
       tab.addEventListener('click', onClick);

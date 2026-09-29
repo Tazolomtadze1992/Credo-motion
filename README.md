@@ -13,6 +13,10 @@ Open `http://localhost:3000`. The studies index is at `/`; the loyalty prototype
 
 ## Add a study
 
+Read the [Credo motion guide](docs/motion-guide.md) for interaction principles and
+lessons from existing studies. Project instructions in `AGENTS.md` route future
+animation work to that guide.
+
 1. Add a route under `app/studies/your-study/page.jsx`.
 2. Build its interactive component under `components/` and place assets in `public/assets/`.
 3. Add its title, description, and route to `content/studies.js`.

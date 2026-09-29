@@ -1,0 +1,67 @@
+:root { --myspace-scale: 1; }
+.myspace-stage { min-height: 100dvh; display: grid; place-items: center; padding: 12px; background: #eef2f3; }
+.myspace-back, .myspace-timeline-toggle { position: fixed; z-index: 30; top: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border: 1px solid #d8e4e8; border-radius: 999px; background: rgba(255,255,255,.9); color: #42616d; font-size: 13px; font-weight: 600; text-decoration: none; }
+.myspace-back { left: 24px; }
+.myspace-timeline-toggle { right: 24px; padding: 0 16px; }
+.myspace-back:focus-visible, .myspace-timeline-toggle:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
+.myspace-holder { width: calc(390px * var(--myspace-scale)); height: calc(849px * var(--myspace-scale)); margin: 0 auto; }
+.myspace-phone { position: relative; width: 390px; height: 849px; overflow: hidden; border-radius: 32px; background: #f6f9fb; color: rgba(0,0,0,.9); box-shadow: 0 1px 2px rgba(16,47,61,.05), 0 16px 40px rgba(16,47,61,.10); transform: scale(var(--myspace-scale)); transform-origin: top left; font-family: 'Helvetica Neue', Arial, sans-serif; }
+.myspace-status { position: absolute; top: 0; left: 0; width: 390px; height: 53px; }
+.myspace-status span { position: absolute; top: 19px; left: 43px; width: 54px; height: 22px; font-size: 17px; font-weight: 600; line-height: 22px; text-align: center; }
+.myspace-status img { position: absolute; object-fit: contain; }
+.myspace-cellular { left: 280px; top: 23px; width: 19px; height: 12px; }
+.myspace-wifi { left: 306px; top: 23px; width: 17px; height: 12px; }
+.myspace-battery { left: 330px; top: 23px; width: 27px; height: 13px; }
+.myspace-header { position: absolute; top: 61px; left: 0; width: 390px; height: 80px; display: flex; align-items: center; padding: 0 24px; }
+.myspace-header h1 { margin: 0; font-size: 20px; font-weight: 700; line-height: 24px; }
+.myspace-categories { position: absolute; z-index: 4; top: var(--myspace-category-top, 143px); left: 0; width: 390px; height: var(--myspace-category-height, 44px); display: flex; align-items: center; gap: 10px; padding: 0 24px; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+.myspace-categories::-webkit-scrollbar { display: none; }
+.myspace-selection { position: absolute; z-index: 2; top: calc(50% - 16px); left: 24px; width: 155px; height: 32px; display: flex; gap: 10px; background: #1e6e91; color: #fff; clip-path: inset(0 86px 0 0 round 16px); pointer-events: none; font-size: 14px; font-weight: 500; line-height: 20px; }
+.myspace-category-button, .myspace-category-static { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; height: 32px; padding: 0 12px; border: 0; border-radius: 32px; background: rgba(0,0,0,.04); color: rgba(0,0,0,.9); font-size: 14px; font-weight: 500; line-height: 20px; }
+.myspace-category-button { pointer-events: auto; }
+.myspace-category-button:first-of-type { width: 69px; }
+.myspace-category-button:nth-of-type(2) { width: 76px; }
+.myspace-selection span { display: inline-flex; flex: 0 0 auto; width: 69px; align-items: center; justify-content: center; }
+
+.myspace-category-button:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 2px; }
+.myspace-category-button::before { content: ''; position: absolute; top: 50%; left: 50%; width: max(100%, var(--myspace-category-height, 44px)); height: var(--myspace-category-height, 44px); transform: translate(-50%, -50%); }
+.myspace-category-static { cursor: default; }
+.myspace-content { position: absolute; top: 197px; left: 0; width: 390px; height: 556px; overflow: hidden; }
+.myspace-savings-card { position: absolute; z-index: 2; top: 0; left: 0; width: 390px; height: 556px; transform-origin: center 248px; }
+.myspace-savings-surface { position: absolute; inset: 0; border-radius: 16px; background: #fff; clip-path: inset(0 0 308px 0 round 16px); }
+.myspace-card-heading { position: absolute; top: 16px; left: 24px; right: 24px; display: flex; align-items: center; gap: 8px; height: 24px; color: rgba(0,0,0,.5); font-size: 14px; font-weight: 500; line-height: 16px; }
+.myspace-info { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,.04); }
+.myspace-info img { width: 16px; height: 16px; }
+.myspace-savings-content { position: absolute; top: 56px; left: 0; width: 390px; height: 168px; transform: translateY(0); }
+.myspace-art { position: absolute; top: 0; left: 50%; width: 128.84px; height: 96px; transform: translateX(-50%); }
+.myspace-art-scene { position: absolute; inset: 0; transform-origin: top center; }
+.myspace-art img { position: absolute; display: block; max-width: none; object-fit: contain; }
+.myspace-description { position: absolute; top: 112px; left: 0; width: 390px; height: 20px; color: #666; font-size: 14px; font-weight: 400; letter-spacing: .28px; line-height: 20px; text-align: center; }
+.myspace-description span { position: absolute; inset: 0; display: block; }
+.myspace-description-save { opacity: 0; }
+.myspace-action { position: absolute; top: 148px; left: 0; width: 390px; height: 20px; color: #1e6e91; font-size: 14px; font-weight: 700; line-height: 20px; text-align: center; }
+.myspace-journal-card { position: absolute; z-index: 1; top: 264px; left: 0; width: 390px; height: 556px; opacity: 1; transform: translateY(0) scaleY(1); transform-origin: top center; }
+.myspace-journal-card[aria-hidden="true"] { pointer-events: none; }
+.myspace-journal-content { position: absolute; top: 56px; left: 0; width: 390px; height: 168px; transform: translateY(16px); }
+.myspace-journal-content p { position: absolute; top: 112px; left: 0; width: 390px; height: 20px; margin: 0; color: #666; font-size: 14px; letter-spacing: .28px; line-height: 20px; text-align: center; }
+.myspace-nav { position: absolute; z-index: 5; left: 0; bottom: 0; width: 390px; height: 96px; border-top: 1px solid rgba(0,0,0,.04); background: rgba(255,255,255,.96); box-shadow: 0 6px 12px rgba(0,0,0,.1); }
+.myspace-nav-row { display: flex; height: 62px; }
+.myspace-nav-item { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #666; font-size: 10px; font-weight: 500; line-height: 14px; }
+.myspace-nav-item img { width: 20px; height: 20px; }
+.myspace-nav-item.is-current { color: #fc6250; }
+.myspace-home-indicator { position: absolute; bottom: 8px; left: 128px; width: 134px; height: 5px; border-radius: 100px; background: #000; }
+@media (prefers-reduced-motion: reduce) { .myspace-selection { display: none; } .myspace-category-button[aria-selected="true"] { background: #1e6e91; color: #fff; } }
+
+
+.myspace-journal-surface { position: absolute; inset: 0; border-radius: 16px; background: #fff; clip-path: inset(0 0 308px 0 round 16px); }
+.myspace-savings-card[aria-hidden="true"] { pointer-events: none; }
+
+.myspace-savings-content-mask { position: absolute; inset: 0; pointer-events: none; }
+/* A stable header surface keeps the shared icon readable as cards pass below. */
+.myspace-shared-heading { position: absolute; z-index: 3; top: 0; left: 0; width: 390px; height: 56px; border-radius: 16px 16px 0 0; background: linear-gradient(#fff 0 44px, rgba(255,255,255,0) 56px); pointer-events: none; }
+.myspace-shared-labels { position: relative; flex: 1; height: 24px; overflow: hidden; }
+.myspace-shared-labels > span { position: absolute; top: 4px; left: 0; right: 0; height: 16px; white-space: nowrap; }
+.myspace-shared-label-journal { opacity: 0; }
+
+/* Only Journal expansion joins the card backgrounds; content keeps its own motion. */
+.myspace-merged-surface { position: absolute; z-index: 0; inset: 0; background: #fff; border-radius: 16px; clip-path: inset(0 0 44px 0 round 16px); opacity: 0; pointer-events: none; }
