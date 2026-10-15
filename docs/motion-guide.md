@@ -95,6 +95,10 @@ defaults.
 - [My Space: all to savings](motion-studies/my-space.md) — prototype awaiting user
   review; a card surface expands while its illustration and action persist.
 
+- [China transfer: one continuous tray](motion-studies/transfers.md) —
+  approved initial switch; amount presets/custom entry, review, simulated
+  processing and result extend the same motion family. Extension awaiting review.
+
 ## How this guide grows
 
 After a meaningful iteration, update the relevant study with:

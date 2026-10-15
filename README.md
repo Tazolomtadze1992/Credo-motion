@@ -11,6 +11,19 @@ npm run dev
 
 Open `http://localhost:3000`. The studies index is at `/`; the loyalty prototype is at `/studies/loyalty`.
 
+The full China transfer prototype is at `/studies/transfers`. Choose China,
+then Alipay or WechatPay, enter a preset/custom amount, review and confirm.
+The small **Demo result** selector outside the phone lets you inspect Success,
+Pending and Unsuccessful outcomes. Amounts are sample USD values and no money
+is moved. Pending can be checked again after choosing a different demo outcome.
+Closing the tray keeps the current demo visible under Recent transfer.
+
+**Show timeline** inspects the most recent transition. Comma/period step frames
+when focus is outside amount entry; inside the custom keypad, period enters a
+decimal. Small authoring viewports can scroll so phone tap targets stay usable.
+
+Run `npm test` for amount handling, response cancellation and motion checks.
+
 ## Add a study
 
 Read the [Credo motion guide](docs/motion-guide.md) for interaction principles and

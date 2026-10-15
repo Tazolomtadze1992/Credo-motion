@@ -10,5 +10,11 @@ export const studies = [
     title: 'My Space',
     description: 'Savings card expands into its own view',
     href: '/studies/my-space'
+  },
+  {
+    number: '03',
+    title: 'China transfer',
+    description: 'One continuous tray, from payment method to result',
+    href: '/studies/transfers'
   }
 ];

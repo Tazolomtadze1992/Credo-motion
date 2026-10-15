@@ -1,4 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { agentRules: false };
+const nextConfig = { agentRules: false, devIndicators: false };
 
 export default nextConfig;
