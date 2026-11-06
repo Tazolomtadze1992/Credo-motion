@@ -16,5 +16,11 @@ export const studies = [
     title: 'China transfer',
     description: 'One continuous tray, from payment method to result',
     href: '/studies/transfers'
+  },
+  {
+    number: '04',
+    title: 'Automatic payments',
+    description: 'A monthly payment day, one calendar page at a time',
+    href: '/studies/automatic-payments'
   }
 ];

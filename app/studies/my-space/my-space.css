@@ -1,11 +1,11 @@
 :root { --myspace-scale: 1; }
-.myspace-stage { min-height: 100dvh; display: grid; place-items: center; padding: 12px; background: #eef2f3; }
+.myspace-stage { min-height: 100dvh; display: grid; place-items: center; padding: 88px 12px 12px; background: #eef2f3; }
 .myspace-back, .myspace-timeline-toggle { position: fixed; z-index: 30; top: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border: 1px solid #d8e4e8; border-radius: 999px; background: rgba(255,255,255,.9); color: #42616d; font-size: 13px; font-weight: 600; text-decoration: none; }
 .myspace-back { left: 24px; }
 .myspace-timeline-toggle { right: 24px; padding: 0 16px; }
 .myspace-back:focus-visible, .myspace-timeline-toggle:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
-.myspace-holder { width: calc(390px * var(--myspace-scale)); height: calc(849px * var(--myspace-scale)); margin: 0 auto; }
-.myspace-phone { position: relative; width: 390px; height: 849px; overflow: hidden; border-radius: 32px; background: #f6f9fb; color: rgba(0,0,0,.9); box-shadow: 0 1px 2px rgba(16,47,61,.05), 0 16px 40px rgba(16,47,61,.10); transform: scale(var(--myspace-scale)); transform-origin: top left; font-family: 'Helvetica Neue', Arial, sans-serif; }
+.myspace-holder { --phone-scale: var(--myspace-scale); width: calc(var(--device-width) * var(--myspace-scale)); height: calc(var(--device-height) * var(--myspace-scale)); margin: 0 auto; }
+.myspace-phone { position: relative; width: 390px; height: 849px; overflow: hidden; border-radius: inherit; background: #f6f9fb; color: rgba(0,0,0,.9);    font-family: 'Helvetica Neue', Arial, sans-serif; }
 .myspace-status { position: absolute; top: 0; left: 0; width: 390px; height: 53px; }
 .myspace-status span { position: absolute; top: 19px; left: 43px; width: 54px; height: 22px; font-size: 17px; font-weight: 600; line-height: 22px; text-align: center; }
 .myspace-status img { position: absolute; object-fit: contain; }
@@ -65,3 +65,5 @@
 
 /* Only Journal expansion joins the card backgrounds; content keeps its own motion. */
 .myspace-merged-surface { position: absolute; z-index: 0; inset: 0; background: #fff; border-radius: 16px; clip-path: inset(0 0 44px 0 round 16px); opacity: 0; pointer-events: none; }
+
+@media (max-width: 699px) { .myspace-stage { padding-top: 128px; } }

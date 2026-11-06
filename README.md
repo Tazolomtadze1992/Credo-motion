@@ -24,6 +24,14 @@ decimal. Small authoring viewports can scroll so phone tap targets stay usable.
 
 Run `npm test` for amount handling, response cancellation and motion checks.
 
+## Automatic payments
+
+Study04 is at `/studies/automatic-payments`. Enter a GEL amount, continue to
+the monthly calendar and drag the slider to select a date or Last Day.
+Use this day returns to the amount screen with the selection retained.
+Show timeline scrubs the tray transition; the calendar slider stays interactive.
+This study focuses on amount/date selection and does not activate a payment.
+
 ## Add a study
 
 Read the [Credo motion guide](docs/motion-guide.md) for interaction principles and

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import IPhoneFrame, { PhoneFrameToggle } from './IPhoneFrame';
 
 const intro = 'გახდი კრედო რჩეული! მოითხოვე და დაიმტკიცე Mastercard World Elite საკრედიტო ბარათი Mycredo-დან, დააგროვე კრედო Cool-ები და გამოიყენე ისინი სხვადასხვა გადახდის შესასრულებლად.';
 
@@ -18,6 +19,8 @@ const lists = {
 };
 
 export default function LoyaltyStudy() {
+  const [framed, setFramed] = useState(true);
+  const holderRef = useRef(null), fitRef = useRef(null);
   const phoneRef = useRef(null);
   const stageRef = useRef(null);
   const timelineToggleRef = useRef(null);
@@ -59,13 +62,16 @@ export default function LoyaltyStudy() {
     }
 
     function fitPhone() {
-      const reserved = timelineVisible ? 260 : 24;
+      const framed = holderRef.current.dataset.framed === 'true';
+      const top = window.innerWidth < 700 ? 128 : 88;
+      const reserved = top + (timelineVisible ? 260 : 12);
       stageRef.current.style.paddingBottom = timelineVisible ? '260px' : '12px';
-      const scale = Math.min(1, (window.innerWidth - 24) / 390, (window.innerHeight - reserved) / 888);
+      const scale = Math.min(1, (window.innerWidth - 40) / (framed ? 414 : 390), (window.innerHeight - reserved) / (888 + (framed ? 24 : 0)));
       const displayScale = Math.max(.35, scale).toFixed(4);
       document.documentElement.style.setProperty('--screen-scale', displayScale);
       phone.style.setProperty('--tab-hit-height', `${44 / Number(displayScale)}px`);
     }
+    fitRef.current = fitPhone;
 
     function setTimelineVisible(visible) {
       timelineVisible = visible;
@@ -282,6 +288,7 @@ export default function LoyaltyStudy() {
 
     return () => {
       disposed = true;
+      fitRef.current = null;
       cancelAnimationFrame(springFrame);
       textAnimations.forEach(animation => animation.cancel());
       tabListeners.forEach(remove => remove());
@@ -293,11 +300,13 @@ export default function LoyaltyStudy() {
       dock?.destroy();
     };
   }, []);
+  useEffect(() => { fitRef.current?.(); }, [framed]);
 
   return (
-    <><button className="study-timeline-toggle" type="button" ref={timelineToggleRef}>Show timeline</button>
+    <><div className="phone-study-tools"><PhoneFrameToggle enabled={framed} onToggle={() => setFramed(value => !value)} /><button className="study-timeline-toggle" type="button" ref={timelineToggleRef}>Show timeline</button></div>
     <main className="stage" aria-label="Credo loyalty prototype" ref={stageRef}>
-      <div className="phone-holder">
+      <div className="phone-holder" ref={holderRef} data-framed={framed} style={{ '--device-width': `${framed ? 414 : 390}px`, '--device-height': `${888 + (framed ? 24 : 0)}px` }}>
+        <IPhoneFrame enabled={framed} screenHeight={888}>
         <div className="phone" data-mode="earn" id="prototype-phone" ref={phoneRef}>
           <div className="status" aria-hidden="true"><span className="time">9:41</span><img className="cellular" src="/assets/cellular.png" alt="" /><img className="wifi" src="/assets/wifi.png" alt="" /><img className="battery" src="/assets/battery.png" alt="" /></div>
           <div className="nav"><img className="back" src="/assets/back.png" alt="" /><div className="nav-title">ლოიალობის პროგრამა</div></div>
@@ -318,6 +327,7 @@ export default function LoyaltyStudy() {
           </div>
           <div className="footer"><div className="footer-button">დახურვა</div><div className="home-indicator" aria-hidden="true" /></div>
         </div>
+        </IPhoneFrame>
       </div>
     </main></>
   );

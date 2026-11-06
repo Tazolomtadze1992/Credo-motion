@@ -99,6 +99,11 @@ defaults.
   approved initial switch; amount presets/custom entry, review, simulated
   processing and result extend the same motion family. Extension awaiting review.
 
+- [Automatic payments: payment day](motion-studies/automatic-payments.md) —
+  a spring-resized tray and a reversible monthly calendar. The initial multi-page
+  flip was rejected after rapid-drag failures; its single-fold replacement is
+  awaiting user feel review. See the study for the half-page consistency checks.
+
 ## How this guide grows
 
 After a meaningful iteration, update the relevant study with:
@@ -114,3 +119,21 @@ into the shared principles only when its broader scope is justified; retain its
 source and limitations. Update existing guidance when superseded rather than
 accumulating contradictory rules. Learning is maintained through these files
 during future work, not through a background process.
+
+## Optional device frame — 2026-11-06
+
+All four studies now share the IPhoneFrame and PhoneFrameToggle components. The
+user approved the automatic-payments frame and requested the same option for
+Loyalty, My Space and China transfer. Frames default on. The wrapper preserves
+each original screen height (888,849,852,852px) and keeps its children mounted
+when hidden, so changing presentation does not restart live motion or selection.
+Responsive fitting includes the hardware and reserves space for the toolbars.
+The controllers retain their existing timing and spring parameters.
+
+Browser checks confirmed Loyalty's Spend tab, My Space's Journal tab and a$50
+WechatPay transfer survive frame off/on. Loyalty and My Space timeline controls
+remain usable. China transfer also completed its simulated processing while
+the frame was toggled twice. At390×844 the transfer frame and all three toolbar
+buttons fit without horizontal overflow. Normal viewport restored afterward.
+All11 tests and the production build pass. Browser console showed no warnings
+or errors. Device-frame screenshots are saved under `/tmp/credo-*-phone-frame.png`.

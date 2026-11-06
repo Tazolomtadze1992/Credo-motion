@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import IPhoneFrame, { PhoneFrameToggle } from './IPhoneFrame';
 
 const asset = name => `/assets/my-space/${name}.svg`;
 
@@ -59,6 +60,8 @@ function contentEase(progress) {
 }
 
 export default function MySpaceStudy() {
+  const [framed, setFramed] = useState(true);
+  const holderRef = useRef(null), fitRef = useRef(null);
   const phoneRef = useRef(null);
   const stageRef = useRef(null);
   const toggleRef = useRef(null);
@@ -245,9 +248,11 @@ export default function MySpaceStudy() {
     }
 
     function fitPhone() {
-      const reserved = timelineVisible ? 260 : 24;
+      const framed = holderRef.current.dataset.framed === 'true';
+      const top = window.innerWidth < 700 ? 128 : 88;
+      const reserved = top + (timelineVisible ? 260 : 12);
       stageRef.current.style.paddingBottom = timelineVisible ? '260px' : '12px';
-      const scale = Math.min(1, (window.innerWidth - 24) / 390, (window.innerHeight - reserved) / 849);
+      const scale = Math.min(1, (window.innerWidth - 40) / (framed ? 414 : 390), (window.innerHeight - reserved) / (849 + (framed ? 24 : 0)));
       const displayScale = Number(Math.max(.35, scale).toFixed(4));
       const hitHeight = 44 / displayScale;
       document.documentElement.style.setProperty('--myspace-scale', String(displayScale));
@@ -260,6 +265,7 @@ export default function MySpaceStudy() {
       pillBounds = tabs.map(tab => ({ left: tab.offsetLeft - 24, width: tab.offsetWidth }));
       paintGeometry(cardSpring.value, pillSpring.value, false);
     }
+    fitRef.current = fitPhone;
 
     function stopAnimations() {
       cancelAnimationFrame(springFrame);
@@ -511,6 +517,7 @@ export default function MySpaceStudy() {
 
     return () => {
       disposed = true;
+      fitRef.current = null;
       stopAnimations();
       tabListeners.forEach(remove => remove());
       window.removeEventListener('resize', fitPhone);
@@ -521,11 +528,13 @@ export default function MySpaceStudy() {
       dock?.destroy();
     };
   }, []);
+  useEffect(() => { fitRef.current?.(); }, [framed]);
 
   return <>
-    <button className="myspace-timeline-toggle" type="button" ref={toggleRef}>Show timeline</button>
+    <div className="phone-study-tools"><PhoneFrameToggle enabled={framed} onToggle={() => setFramed(value => !value)} /><button className="myspace-timeline-toggle" type="button" ref={toggleRef}>Show timeline</button></div>
     <main className="myspace-stage" aria-label="My Space prototype" ref={stageRef}>
-      <div className="myspace-holder">
+      <div className="myspace-holder" ref={holderRef} data-framed={framed} style={{ '--device-width': `${framed ? 414 : 390}px`, '--device-height': `${849 + (framed ? 24 : 0)}px` }}>
+        <IPhoneFrame enabled={framed} screenHeight={849}>
         <div className="myspace-phone" data-mode="all" ref={phoneRef}>
           <div className="myspace-status" aria-hidden="true">
             <span>9:41</span>
@@ -581,6 +590,7 @@ export default function MySpaceStudy() {
             <div className="myspace-home-indicator" aria-hidden="true" />
           </nav>
         </div>
+        </IPhoneFrame>
       </div>
     </main>
   </>;

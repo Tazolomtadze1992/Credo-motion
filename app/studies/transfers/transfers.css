@@ -1,10 +1,10 @@
-.transfer-stage { min-height: 100dvh; display: grid; place-items: center; padding: 12px; background: #eef2f3; }
+.transfer-stage { min-height: 100dvh; display: grid; place-items: center; padding: 88px 12px 12px; background: #eef2f3; }
 .transfer-back, .transfer-reset, .transfer-timeline-toggle { position: fixed; z-index: 10; top: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid #d8e4e8; border-radius: 999px; background: rgba(255,255,255,.95); color: #42616d; font-size: 13px; font-weight: 600; text-decoration: none; }
 .transfer-back { left: 24px; }
 .transfer-tools { position: fixed; z-index: 10; top: 24px; right: 24px; display: flex; gap: 8px; }
 .transfer-tools > button { position: static; }
-.transfer-holder { --transfer-scale: .85; width: calc(390px * var(--transfer-scale)); height: calc(852px * var(--transfer-scale)); }
-.transfer-phone { position: relative; width: 390px; height: 852px; overflow: clip; border-radius: 32px; background: #fff; color: rgba(0,0,0,.9); transform: scale(var(--transfer-scale)); transform-origin: top left; box-shadow: 0 1px 2px rgba(16,47,61,.05), 0 16px 40px rgba(16,47,61,.10); font-family: 'Helvetica Neue', Arial, sans-serif; }
+.transfer-holder { --transfer-scale: .85; --phone-scale: var(--transfer-scale); width: calc(var(--device-width) * var(--transfer-scale)); height: calc(var(--device-height) * var(--transfer-scale)); margin: 0 auto; }
+.transfer-phone { position: relative; width: 390px; height: 852px; overflow: clip; border-radius: inherit; background: #fff; color: rgba(0,0,0,.9);    font-family: 'Helvetica Neue', Arial, sans-serif; }
 .transfer-phone img { display: block; max-width: none; }
 .transfer-background { position: absolute; inset: 0; }
 .transfer-page-header { position: absolute; top: 53px; left: 0; width: 390px; height: 64px; display: flex; align-items: center; padding: 8px 24px; border-bottom: 1px solid rgba(0,0,0,.04); }
@@ -174,12 +174,12 @@ body:has(.transfer-stage[data-timeline]) .transfer-demo-controls { bottom: 272px
 }
 .transfer-back:focus-visible, .transfer-reset:focus-visible, .transfer-timeline-toggle:focus-visible, .transfer-close:focus-visible, button.transfer-row:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
 @media (max-width: 699px) {
-  .transfer-stage { padding-top: 104px; }
+  .transfer-stage { padding-top: 168px; }
   .transfer-back, .transfer-tools { top: 16px; }
   .transfer-back { left: 12px; }
-  .transfer-tools { right: 12px; gap: 6px; }
+  .transfer-tools.phone-study-tools { top: 72px; left: 12px; right: 12px; justify-content: center; gap: 6px; }
   .transfer-back, .transfer-tools > button { padding: 0 10px; font-size: 11px; }
-  .transfer-demo-controls, body:has(.transfer-stage[data-timeline]) .transfer-demo-controls { top: 64px; bottom: auto; left: 12px; right: 12px; flex-direction: row; justify-content: space-between; align-items: center; gap: 4px; font-size: 9px; }
+  .transfer-demo-controls, body:has(.transfer-stage[data-timeline]) .transfer-demo-controls { top: 126px; bottom: auto; left: 12px; right: 12px; flex-direction: row; justify-content: space-between; align-items: center; gap: 4px; font-size: 9px; }
   .transfer-demo-controls label { gap: 4px; }
   .transfer-demo-controls select { min-height: 28px; padding-right: 16px; max-width: 100px; }
 }

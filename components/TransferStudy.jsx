@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormatOn, ThousandStyle, formatValueForDisplay } from 'numora';
 import { TextMorph } from 'torph';
 import TransferAmountInput from './TransferAmountInput';
+import IPhoneFrame, { PhoneFrameToggle } from './IPhoneFrame';
 import { CURRENCY, CURRENCY_SYMBOL, MAX_AMOUNT, RECIPIENT_NAME, PRESETS, VIEWS, VIEW_KEYS, METHODS, backTarget, amountToMinor, editAmount, formatAmount, simulateTransfer } from '../lib/transfer-flow.mjs';
 import { createTransferMotion } from '../lib/transfer-motion.mjs';
 
@@ -78,6 +79,7 @@ const STATUS_COPY = {
 const ACTION_COPY = { continue: 'Continue', confirm: 'Confirm transfer', sending: 'Processing…', done: 'Done', retry: 'Review transfer', check: 'Check status' };
 
 export default function TransferStudy() {
+  const [framed, setFramed] = useState(true);
   const [screen, setScreen] = useState('options');
   const [method, setMethod] = useState('alipay');
   const [preset, setPreset] = useState(null);
@@ -251,15 +253,19 @@ export default function TransferStudy() {
     }
   }
 
+  useEffect(() => { controllerRef.current?.fitPhone(); }, [framed]);
+
   const dataReady = VIEWS[screen];
 
   return <>
-    <div className="transfer-tools">
+    <div className="transfer-tools phone-study-tools">
+      <PhoneFrameToggle enabled={framed} onToggle={() => setFramed(value => !value)} />
       <button className="transfer-reset" ref={resetRef} type="button" onClick={reset}>Reset study</button>
       <button className="transfer-timeline-toggle" ref={timelineButtonRef} type="button" onClick={() => controllerRef.current?.toggleTimeline()}>Show timeline</button>
     </div>
     <main className="transfer-stage" aria-label="Transfer flow prototype" ref={stageRef}>
-      <div className="transfer-holder" ref={holderRef}>
+      <div className="transfer-holder" ref={holderRef} data-framed={framed} style={{ '--device-width': `${framed ? 414 : 390}px`, '--device-height': `${framed ? 876 : 852}px` }}>
+        <IPhoneFrame enabled={framed}>
         <div className="transfer-phone">
           <div className="transfer-background" inert={isOpen}>
             <header className="transfer-page-header"><span className="transfer-page-back" aria-hidden="true"><Icon name="back" /></span><h1>International transfers</h1><span className="transfer-header-spacer" /></header>
@@ -309,6 +315,7 @@ export default function TransferStudy() {
           </section>
           <div className="transfer-amount-fade" aria-hidden="true"><span className="transfer-fade-value"><span className="transfer-fade-currency" /><span className="transfer-fade-number" /></span></div>
         </div>
+        </IPhoneFrame>
       </div>
     </main>
     <div className="transfer-demo-controls"><span>Prototype · sample {CURRENCY} amounts</span><label>Demo result<select aria-label="Demo transfer result" value={demoOutcome} onChange={event => setDemoOutcome(event.target.value)}><option value="success">Success</option><option value="pending">Pending</option><option value="failure">Unsuccessful</option></select></label></div>

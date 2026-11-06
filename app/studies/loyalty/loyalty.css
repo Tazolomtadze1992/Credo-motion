@@ -7,13 +7,13 @@
     body { margin: 0; min-height: 100dvh; background: #eef2f3; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
     button { font: inherit; cursor: pointer; }
     .tab-button:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
-    .stage { display: grid; min-height: 100dvh; place-items: center; padding: 12px; }
+    .stage { display: grid; min-height: 100dvh; place-items: center; padding: 88px 12px 12px; }
     .study-back { position: fixed; z-index: 10; top: 24px; left: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: #42616d; background: rgba(255,255,255,.86); border: 1px solid #d8e4e8; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 600; }
     .study-back:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
     .study-timeline-toggle { position: fixed; z-index: 10; top: 24px; right: 24px; min-height: 44px; padding: 0 16px; color: #42616d; background: rgba(255,255,255,.86); border: 1px solid #d8e4e8; border-radius: 999px; font-size: 13px; font-weight: 600; }
     .study-timeline-toggle:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
-    .phone-holder { width: calc(390px * var(--screen-scale)); height: calc(888px * var(--screen-scale)); margin: 0 auto; }
-    .phone { position: relative; width: 390px; height: 888px; overflow: hidden; border-radius: 32px; background: #fff; box-shadow: 0 1px 2px rgba(16,47,61,.05), 0 16px 40px rgba(16,47,61,.10); transform: scale(var(--screen-scale)); transform-origin: top left; font-family: "Helvetica Neue", Arial, sans-serif; color: #0e1113; }
+    .phone-holder { --phone-scale: var(--screen-scale); width: calc(var(--device-width) * var(--screen-scale)); height: calc(var(--device-height) * var(--screen-scale)); margin: 0 auto; }
+    .phone { position: relative; width: 390px; height: 888px; overflow: hidden; border-radius: inherit; background: #fff;    font-family: "Helvetica Neue", Arial, sans-serif; color: #0e1113; }
     .status { position: absolute; top: 0; left: 0; width: 390px; height: 53px; }
     .time { position: absolute; top: 18px; left: 15px; width: 54px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17px; font-weight: 600; line-height: 22px; }
     .status img { position: absolute; object-fit: contain; }
@@ -46,3 +46,5 @@
       .tab-thumb { display: none; }
       .tab-button[aria-selected="true"] { background: #fff; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.08); }
     }
+
+@media (max-width: 699px) { .stage { padding-top: 128px; } }
