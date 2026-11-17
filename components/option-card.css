@@ -1,0 +1,11 @@
+/* Credo option card (moved from the auto lombard study, 2026-11-16). */
+.credo-options { display: flex; flex-direction: column; gap: var(--credo-space-3); }
+.credo-option { display: block; width: 100%; padding: 0; border: 0; background: none; font: inherit; text-align: left; }
+.credo-option__visual { display: flex; align-items: center; gap: var(--credo-space-4); min-height: 76px; padding: var(--credo-space-3) var(--credo-space-4); border-radius: 20px; background: var(--credo-color-bg-subtle); transition: transform var(--credo-duration-press) var(--credo-ease-out-quad); }
+.credo-option[data-pointer-pressed] .credo-option__visual { transform: scale(.97); }
+.credo-option__icon { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 50%; background: var(--option-color); color: var(--credo-color-text-on-accent); }
+.credo-option__text { display: flex; flex-direction: column; gap: var(--credo-space-1); min-width: 0; }
+.credo-option__text strong { color: var(--credo-color-text-primary); font: var(--credo-type-option); }
+.credo-option__text span { color: var(--credo-color-text-secondary); font: var(--credo-type-receipt-label); }
+.credo-option:focus-visible { outline: 2px solid var(--credo-color-border-focus); outline-offset: 2px; border-radius: 20px; }
+@media (prefers-reduced-motion: reduce) { .credo-option__visual { transition: none; transform: none !important; } }

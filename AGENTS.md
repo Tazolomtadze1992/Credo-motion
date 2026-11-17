@@ -14,3 +14,9 @@ and unresolved questions. Do not turn one screen's timing into a universal rule,
 claim approval on the user's behalf, or record an untested assumption as a fact.
 Review-only requests remain read-only unless the user asks to save findings.
 
+
+Before building or changing UI, read the design-system guidance: patterns in
+`content/patterns.js` and per-component guides in
+`app/design-system/components/guides.jsx` (browsable under /design-system).
+Follow rules tagged `decided` without asking; raise `proposed` ones with the
+user first, and only tag a rule `decided` when the user actually decided it.

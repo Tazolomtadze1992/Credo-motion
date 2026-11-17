@@ -1,0 +1,61 @@
+/* Credo List row. Rules moved unchanged from the China transfer study. */
+.credo-row { display: flex; align-items: center; gap: var(--credo-space-3, 12px); flex-shrink: 0; width: 100%; height: 48px; margin: 0; padding: var(--credo-list-row-inset, 4px) var(--credo-tray-gutter, 24px); border: 0; background: transparent; color: var(--credo-color-text-primary); font-family: inherit; font-size: 14px; font-weight: 500; line-height: 14px; text-align: left; }
+/* Option label type when Credo typography tokens are present. */
+.credo-row { font: var(--credo-type-option, 500 14px/14px var(--credo-typeface, sans-serif)); letter-spacing: var(--credo-type-option-tracking, normal); text-transform: var(--credo-type-option-case, none); }
+.credo-row__leading, .credo-row__trailing { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; }
+/* Trailing icons (the default chevron) use the secondary icon colour, as in the China transfer. */
+.credo-row__trailing { color: var(--credo-color-icon-secondary); }
+.credo-row__leading { overflow: hidden; }
+/* One brand style for every row: a light blue circle and a Credo blue icon,
+   as on the secondary button. Logos and avatars keep their own colour. */
+.credo-row__leading { background: var(--credo-color-accent-subtle-strong); color: var(--credo-color-accent-text); }
+.credo-row__leading > :not(img) { color: inherit; }
+.credo-row__leading:has(> img:only-child) { background: transparent; }
+.credo-row--interactive { position: relative; }
+/* A flow may widen the hit area to its own row gaps (--hit-*). */
+.credo-row--interactive::before { content: ''; position: absolute; top: var(--hit-top, 0px); left: 0; width: var(--hit-width, 100%); height: var(--hit-height, 48px); }
+.credo-row__visual { display: flex; align-items: center; gap: var(--credo-space-3, 12px); width: 100%; height: 100%; transform-origin: center; transition: transform var(--credo-duration-press) var(--credo-ease-out-quad); }
+.credo-row--interactive[data-pointer-pressed] .credo-row__visual { transform: scale(.97); }
+.credo-row__title { flex: 1; min-width: 0; }
+.credo-row__title--stacked { display: flex; flex-direction: column; gap: var(--credo-space-1, 4px); }
+.credo-row__subtitle { color: var(--credo-color-text-secondary); font: var(--credo-type-supporting, 400 12px/16px var(--credo-typeface, sans-serif)); }
+button.credo-row:focus-visible { outline: 3px solid var(--credo-color-border-focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .credo-row__visual { transition: none; transform: none !important; }
+}
+
+/* Auto lombard options (Proposed, 2026-11-16). */
+/* Plain: information, not a choice. No circle, quiet icon. */
+.credo-row--plain .credo-row__leading { background: transparent; color: var(--credo-color-icon-secondary); }
+/* A figure on the right (balance, rate), in the receipt value type. */
+.credo-row__value { flex: none; color: var(--credo-color-text-primary); font: var(--credo-type-receipt-value); letter-spacing: var(--credo-type-receipt-value-tracking); white-space: nowrap; }
+/* Large option: a big choice with a subtitle (Video or Photos). */
+.credo-row--large { height: 64px; }
+.credo-row--large.credo-row--interactive::before { height: var(--hit-height, 64px); }
+
+/* Stacked rows: the standard gap between rows lives here, not in each flow. */
+.credo-row-list { display: flex; flex-direction: column; gap: var(--credo-row-gap, var(--credo-list-row-gap, 12px)); }
+
+/* Round selection mark (SelectMark). Round means "pick one"; consent
+   checkboxes stay square. Same motion as the agreement checkbox. */
+.credo-select { position: relative; display: block; width: 26px; height: 26px; border: 2px solid var(--credo-color-border-default); border-radius: 50%; box-sizing: border-box; }
+.credo-select__fill { position: absolute; inset: -2px; display: grid; place-items: center; border-radius: 50%; background: var(--credo-color-accent-solid); color: var(--credo-color-text-on-accent); opacity: 0; transform: scale(0); transition: transform 140ms var(--credo-ease-out), opacity 110ms var(--credo-ease-out); }
+/* Family's proportions (measured): check ~14 x 9.5 at ~2.6 px, rounded. */
+.credo-select[data-shape="square"], .credo-select[data-shape="square"] .credo-select__fill { border-radius: 8px; }
+.credo-select[data-shape="round"] .credo-select__fill svg { width: 40px; height: 40px; }
+.credo-select__fill svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.credo-select[data-selected] .credo-select__fill { opacity: 1; transform: scale(1); transition: transform 200ms var(--credo-ease-text-swap), opacity 140ms var(--credo-ease-text-swap); }
+@media (prefers-reduced-motion: reduce) {
+  .credo-select__fill, .credo-select[data-selected] .credo-select__fill { transform: none; transition: opacity var(--credo-duration-reduced) linear; }
+}
+
+/* Round mark: a 40 px box (the X button's box) with the 26 px circle painted
+   as a centred gradient, so it can never round to different pixels than the X.
+   Ring: 2 px between radius 11 and 13; fill: radius 13. */
+/* Optical nudge (user-approved 2026-11-14): geometrically centred under the X it
+   still read as slightly right (dark mass, check pointing right), so it sits
+   1 px left (0.5 px was not enough). */
+.credo-select[data-shape="round"] { position: relative; left: var(--credo-select-nudge, -1px); width: 40px; height: 40px; border: 0; border-radius: 0;
+  background: radial-gradient(circle at center, transparent 10.6px, var(--credo-color-border-default) 11.2px, var(--credo-color-border-default) 12.6px, transparent 13.2px); }
+.credo-select[data-shape="round"] .credo-select__fill { inset: 0; border-radius: 0;
+  background: radial-gradient(circle at center, var(--credo-color-accent-solid) 12.6px, transparent 13.2px); }

@@ -1,0 +1,11 @@
+/* Credo segmented control (from the Automatic orders list; values unchanged). */
+.credo-segments { position: relative; display: grid; grid-template-columns: repeat(var(--credo-segments-count, 2), 1fr); height: 44px; padding: var(--credo-space-1, 4px); border-radius: 999px; background: var(--credo-color-bg-subtle); }
+.credo-segments__pill { position: absolute; top: var(--credo-space-1, 4px); bottom: var(--credo-space-1, 4px); left: var(--credo-space-1, 4px); width: calc((100% - 2 * var(--credo-space-1, 4px)) / var(--credo-segments-count, 2)); border-radius: 999px; background: var(--credo-color-bg-surface); box-shadow: 0 1px 2px #0000000f, 0 2px 8px #0000000a; transform: translateX(calc(var(--credo-segments-index, 0) * 100%)); transition: transform 240ms var(--credo-ease-out); }
+.credo-segments button { position: relative; z-index: 1; border: 0; border-radius: 999px; background: none; color: var(--credo-color-text-secondary); font: var(--credo-type-option); letter-spacing: var(--credo-type-option-tracking); transition: color 240ms var(--credo-ease-out); }
+.credo-segments button[aria-selected="true"] { color: var(--credo-color-text-strong); }
+.credo-segments button:focus-visible { outline: 2px solid var(--credo-color-border-focus); outline-offset: 2px; }
+/* Reduced motion: the pill moves at once; the label colour still fades (plan 011 W9). */
+@media (prefers-reduced-motion: reduce) {
+  .credo-segments__pill { transition-duration: 0ms; }
+  .credo-segments button { transition: color var(--credo-duration-reduced) ease; }
+}

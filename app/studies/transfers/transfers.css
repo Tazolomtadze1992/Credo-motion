@@ -1,185 +1,169 @@
 .transfer-stage { min-height: 100dvh; display: grid; place-items: center; padding: 88px 12px 12px; background: #eef2f3; }
-.transfer-back, .transfer-reset, .transfer-timeline-toggle { position: fixed; z-index: 10; top: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid #d8e4e8; border-radius: 999px; background: rgba(255,255,255,.95); color: #42616d; font-size: 13px; font-weight: 600; text-decoration: none; }
-.transfer-back { left: 24px; }
+.transfer-reset, .transfer-timeline-toggle { position: fixed; z-index: 10; top: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid #d8e4e8; border-radius: 999px; background: rgba(255,255,255,.95); color: #42616d; font-size: 13px; font-weight: 600; text-decoration: none; }
 .transfer-tools { position: fixed; z-index: 10; top: 24px; right: 24px; display: flex; gap: 8px; }
 .transfer-tools > button { position: static; }
+.transfer-stage[data-timeline] ~ .transfer-typography .dialkit-panel[data-position="bottom-right"] { bottom: 268px; max-height: max(52px, calc(100dvh - 284px)); }
 .transfer-holder { --transfer-scale: .85; --phone-scale: var(--transfer-scale); width: calc(var(--device-width) * var(--transfer-scale)); height: calc(var(--device-height) * var(--transfer-scale)); margin: 0 auto; }
-.transfer-phone { position: relative; width: 390px; height: 852px; overflow: clip; border-radius: inherit; background: #fff; color: rgba(0,0,0,.9);    font-family: 'Helvetica Neue', Arial, sans-serif; }
+.transfer-phone { position: relative; width: 390px; height: 852px; overflow: clip; border-radius: inherit; background: var(--credo-color-bg-page); color: var(--credo-color-text-strong);    font-family: var(--credo-typeface); }
 .transfer-phone img { display: block; max-width: none; }
 .transfer-background { position: absolute; inset: 0; }
-.transfer-page-header { position: absolute; top: 53px; left: 0; width: 390px; height: 64px; display: flex; align-items: center; padding: 8px 24px; border-bottom: 1px solid rgba(0,0,0,.04); }
-.transfer-page-header h1 { flex: 1; margin: 0; font-size: 16px; font-weight: 500; line-height: 20px; text-align: center; }
-.transfer-page-back, .transfer-header-spacer { display: flex; align-items: center; width: 48px; height: 48px; flex-shrink: 0; }
 .transfer-status { position: absolute; top: 0; left: 0; width: 390px; height: 53px; }
 .transfer-status > span { position: absolute; }
+/* Over the dark top of the home screen. */
+.transfer-status--on-dark { color: #fff; }
 .transfer-status > span:first-child { left: 15px; top: 18.5px; width: 54px; height: 22px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 17px; font-weight: 600; line-height: 22px; }
 .transfer-cellular { left: 292.85px; top: 23.1px; }
 .transfer-wifi { left: 319.33px; top: 23.2px; }
 .transfer-battery { right: 19.57px; top: 22.6px; }
-.transfer-templates { position: absolute; top: 141px; left: 0; width: 390px; height: 186px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; border-radius: 16px; }
-.transfer-templates h2 { margin: 1px 0; color: rgba(0,0,0,.5); font-size: 14px; font-weight: 500; line-height: 16px; text-transform: uppercase; }
-.transfer-favourites { display: flex; gap: 20px; height: 104px; }
-.transfer-favourite { display: flex; flex: 0 0 64px; width: 64px; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; line-height: 16px; text-align: center; }
-.transfer-avatar, .transfer-add { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
-.transfer-add { display: grid; place-items: center; border-radius: 32px; background: #f4f8f9; }
-.transfer-portrait { width: 64px; height: 64px; }
-.transfer-portrait--anastasia { width: 30px; height: 64px; }
-.transfer-template-badge { position: absolute; top: 48px; left: 48px; width: 16px; height: 16px; }
-.transfer-template-copy { display: flex; flex-direction: column; gap: 2px; width: 64px; }
-.transfer-template-copy > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.transfer-template-copy small { color: #808080; font-size: 10px; font-weight: 500; line-height: 14px; }
 .transfer-home-indicator { position: absolute; bottom: 8px; left: 128px; width: 134px; height: 5px; border-radius: 100px; background: #000; }
-.transfer-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.6); }
-.transfer-sheet { position: absolute; left: 0; bottom: 0; width: 390px; height: 676px; border-radius: 24px 24px 0 0; background: #fff; outline: none; clip-path: inset(298px 0 0 round 24px); transform-origin: bottom center; }
-.transfer-sheet-header { position: absolute; top: 0; left: 0; width: 390px; height: 60px; transform: translateY(298px); }
-.transfer-sheet-titles { position: absolute; top: 28px; left: 24px; width: 242px; height: 24px; overflow: hidden; margin: 0; font-size: 16px; font-weight: 500; line-height: 20px; }
-.transfer-sheet-titles > span { position: absolute; top: 2px; left: 0; right: 0; }
+.transfer-backdrop { position: absolute; inset: 0; background: var(--credo-color-bg-overlay); }
+.transfer-sheet { position: absolute; left: 0; bottom: 0; width: 390px; height: 676px; border-radius: 24px 24px 0 0; background: var(--credo-color-bg-surface); outline: none; clip-path: inset(306px 0 0 round 24px); transform-origin: bottom center; }
+.transfer-sheet-header { position: absolute; top: 0; left: 0; width: 390px; height: 60px; transform: translateY(306px); }
+.transfer-sheet-titles { position: absolute; top: 28px; left: var(--credo-tray-gutter); width: 242px; height: 24px; overflow: hidden; margin: 0; font-size: 16px; font-weight: 500; line-height: 20px; }
+/* Title line box centred on the close button's centre (close-inset + 40/2; the titles box starts at 28px). */
+.transfer-sheet-titles > span { position: absolute; top: calc(var(--credo-tray-close-inset) + 20px - 28px - var(--credo-type-title-leading, 20px) / 2); left: 0; right: 0; }
 .transfer-title-china { opacity: 0; }
-.transfer-close { position: absolute; top: 20px; right: 24px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 32px; background: #f7f7f7; }
-.transfer-close::before { content: ''; position: absolute; top: var(--hit-top, -2px); left: var(--hit-left, -4px); width: var(--hit-size, 44px); height: var(--hit-size, 44px); }
-.transfer-divider { position: absolute; left: 0; top: 79px; height: 1px; width: 390px; transform: translateY(298px); }
-.transfer-content-mask { position: absolute; inset: 0; overflow: clip; clip-path: inset(398px 0px 34px 0px); mask-image: linear-gradient(to bottom, #000 626px, transparent 642px); -webkit-mask-image: linear-gradient(to bottom, #000 626px, transparent 642px); }
-.transfer-rows { position: absolute; top: 100px; left: 0; display: flex; flex-direction: column; gap: 12px; }
+.transfer-divider { position: absolute; left: 0; top: calc(var(--credo-tray-header) - 1px); height: 1px; width: 390px; transform: translateY(306px); }
+.transfer-divider::after { content: ''; position: absolute; inset: 0 var(--credo-tray-gutter); background: var(--credo-color-border-separator); }
+/* Transfer icons (Credo Icon) keep the colours of the original asset files. */
+.transfer-icon { display: block; flex-shrink: 0; color: var(--credo-color-icon-secondary); }
+.transfer-icon--add, .transfer-icon--back { color: var(--credo-color-accent-text); }
+.transfer-icon--mask { width: 24px; height: 24px; background: currentColor; -webkit-mask: var(--transfer-icon-src) center / contain no-repeat; mask: var(--transfer-icon-src) center / contain no-repeat; }
+.transfer-icon--zap { color: var(--credo-color-success-text); }
+.transfer-content-mask { position: absolute; inset: 0; overflow: clip; clip-path: inset(402px 0px 34px 0px); }
+/* Fade above the footer: a tray-coloured overlay moved and faded on the compositor. */
+.transfer-feather { position: absolute; top: 0; left: 0; right: 0; z-index: 2; height: 16px; background: linear-gradient(to bottom, rgb(255 255 255 / 0), var(--credo-color-bg-surface)); pointer-events: none; transform: translateY(626px); will-change: transform, opacity; }
+.transfer-rows { position: absolute; top: calc(var(--credo-tray-header) + var(--credo-tray-content-top)); left: 0; display: flex; flex-direction: column; gap: var(--credo-row-gap, 12px); }
 .transfer-rows--china { opacity: 0; transform: translateY(8px); }
-.transfer-row { display: flex; align-items: center; gap: 12px; flex-shrink: 0; width: 390px; height: 48px; margin: 0; padding: 4px 24px; border: 0; background: transparent; color: rgba(0,0,0,.8); font-family: inherit; font-size: 14px; font-weight: 500; line-height: 14px; text-align: left; }
-.transfer-row-icon, .transfer-chevron { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; }
-.transfer-row-icon { overflow: hidden; }
-.transfer-row--interactive { position: relative; }
-.transfer-row--interactive::before { content: ''; position: absolute; top: var(--hit-top, 0px); left: 0; width: var(--hit-width, 390px); height: var(--hit-height, 48px); }
-.transfer-row-visual { display: flex; align-items: center; gap: 12px; width: 100%; height: 100%; }
-.transfer-row-visual, .transfer-tile-visual, .transfer-key-visual, .transfer-primary-press { transform-origin: center; transition: transform 150ms cubic-bezier(.25,.46,.45,.94); }
-.transfer-row--interactive[data-pointer-pressed] .transfer-row-visual,
-.transfer-presets button[data-pointer-pressed] .transfer-tile-visual,
-.transfer-keypad button[data-pointer-pressed] .transfer-key-visual,
-.transfer-primary[data-pointer-pressed] .transfer-primary-press { transform: scale(.97); }
+.transfer-rows .credo-row { width: 390px; }
+.transfer-tile-visual { transform-origin: center; transition: transform var(--credo-duration-press) var(--credo-ease-out-quad); }
+.transfer-presets button[data-pointer-pressed] .transfer-tile-visual { transform: scale(.97); }
 @media (prefers-reduced-motion: reduce) {
-  .transfer-row-visual, .transfer-tile-visual, .transfer-key-visual, .transfer-primary-press { transition: none; transform: none !important; }
+  .transfer-tile-visual { transition: none; transform: none !important; }
 }
-.transfer-row-icon--purple { background: #f4efff; }
-.transfer-row-icon--blue { background: #d1f9ff; }
-.transfer-row-icon--mint { background: #d1faf1; }
-.transfer-row-icon--gold { background: #fff3d0; }
-.transfer-row-label { flex: 1; min-width: 0; }
-.transfer-fast { display: flex; align-items: center; justify-content: center; gap: 4px; width: 64px; height: 20px; flex-shrink: 0; padding: 4px 8px; border-radius: 32px; background: #dff9e0; color: #046d1a; font-size: 13px; font-style: italic; font-weight: 500; line-height: 16px; text-transform: uppercase; }
+.transfer-fast { display: flex; align-items: center; justify-content: center; gap: var(--credo-space-1); width: 64px; height: 20px; flex-shrink: 0; padding: var(--credo-space-1) var(--credo-space-2); border-radius: 32px; background: var(--credo-color-success-subtle); color: var(--credo-color-success-text); font-size: 13px; font-style: italic; font-weight: 500; line-height: 16px; text-transform: uppercase; }
 .transfer-fast span { text-box-trim: trim-both; text-box-edge: cap alphabetic; }
-.transfer-rows--china .transfer-row { color: #000; }
+.transfer-rows--china .credo-row { color: var(--credo-color-text-primary); }
 .transfer-sheet-footer { position: absolute; bottom: 0; left: 0; width: 390px; height: 34px; }
-.transfer-panel { position: absolute; top: 100px; left: 0; width: 390px; opacity: 0; visibility: hidden; transform: translateY(298px); }
+.transfer-panel { position: absolute; top: calc(var(--credo-tray-header) + var(--credo-tray-content-top)); left: 0; width: 390px; opacity: 0; visibility: hidden; transform: translateY(306px); }
 .transfer-panel-body { width: 100%; transform-origin: center; }
-.transfer-rows > .transfer-panel-body { display: flex; flex-direction: column; gap: 12px; }
+.transfer-rows > .transfer-panel-body { display: flex; flex-direction: column; gap: var(--credo-row-gap, 12px); }
 .transfer-panel[data-panel="options"] { opacity: 1; visibility: visible; }
+/* Tray spacing standard: the first thing you see starts content-top (16px)
+   below the divider (PANEL_TOP = header + content-top). Each panel offsets its own inner space: a row's icon sits 4px
+   inside the 48px row; the review's first label sits 9px inside its 32px row. */
+.transfer-panel.transfer-rows { top: calc(var(--credo-tray-header) + var(--credo-tray-content-top) - var(--credo-list-row-inset)); }
 [data-title] { opacity: 0; visibility: hidden; }
 [data-title="options"] { opacity: 1; visibility: visible; }
-.transfer-method-context { position: absolute; top: 100px; left: 24px; width: 342px; height: 40px; display: flex; align-items: center; gap: 12px; opacity: 0; pointer-events: none; }
-.transfer-method-context > span:nth-child(2) { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.transfer-method-context { position: absolute; top: calc(var(--credo-tray-header) + var(--credo-tray-content-top)); left: var(--credo-tray-gutter); width: 342px; height: 40px; display: flex; align-items: center; gap: var(--credo-space-3); opacity: 0; pointer-events: none; }
+.transfer-method-context > span:nth-child(2) { display: flex; flex-direction: column; gap: var(--credo-space-1); flex: 1; }
 .transfer-method-context strong { font-size: 14px; font-weight: 500; line-height: 18px; }
-.transfer-method-context small { font-size: 12px; line-height: 16px; color: #818181; }
-.transfer-currency { padding: 5px 8px; border: 1px solid #ededed; border-radius: 8px; color: #707070; font-size: 11px; font-weight: 500; }
-.transfer-money { position: absolute; top: 164px; left: 24px; width: 342px; text-align: center; opacity: 0; }
-.transfer-money-value { display: flex; align-items: baseline; justify-content: center; gap: 6px; height: 52px; color: #171717; font-size: 40px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
-.transfer-money-number > span { font-size: .7em; font-weight: 500; }
-.transfer-money-number { display: inline-flex; align-items: baseline; gap: 6px; height: 52px; }
-.transfer-money-value input { display: block; min-width: 0; height: 52px; padding: 0; border: 0; border-radius: 0; outline: none; background: transparent; color: inherit; font: inherit; font-variant-numeric: tabular-nums; letter-spacing: inherit; text-align: left; cursor: default; }
-.transfer-amount-input { position: relative; min-width: 1ch; height: 52px; line-height: 52px; text-align: left; }
-.transfer-amount-display { pointer-events: none; }
-.transfer-amount-morph { display: inline-block; white-space: pre; font: inherit; letter-spacing: inherit; }
-.transfer-amount-input input { position: absolute; inset: 0; width: 100%; margin: 0; color: transparent; caret-color: transparent; }
-.transfer-money-caption { display: inline-block; margin-top: 2px; color: #818181; font-size: 12px; line-height: 18px; }
-.transfer-edit-amount { position: absolute; top: 52px; right: 0; width: 48px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: #ec554a; font-size: 12px; font-weight: 500; }
-.transfer-edit-amount::before { content: ''; position: absolute; top: 50%; left: 50%; width: max(48px, var(--control-hit, 44px)); height: max(44px, var(--control-hit, 44px)); transform: translate(-50%, -50%); }
+.transfer-method-context small { font-size: 12px; line-height: 16px; color: var(--credo-color-text-secondary); }
+.transfer-currency { padding: var(--credo-space-1) var(--credo-space-2); border: 1px solid var(--credo-color-border-subtle); border-radius: 8px; color: var(--credo-color-text-secondary); font-size: 11px; font-weight: 500; }
+/* Amount line geometry. It rests MONEY_REST_GAP (64px, under the method row on
+   failure/pending) below the content slot; on Custom Amount the controller
+   lifts it back by that gap (--transfer-money-lift goes 0 → 1) and it drops by
+   the emphasis shift, so its digits start emphasis-top below the divider. The
+   shift reads the amount type's own size and line height, so it follows the
+   typography panel. The keypad sits KEYPAD_GAP (100px) under the slot and
+   moves with the same shift. 64px must match MONEY_REST_GAP in transfer-motion. */
+.transfer-phone {
+  --transfer-money-rest-gap: 64px;
+  --transfer-keypad-gap: 100px;
+  --transfer-amount-emphasis-shift: calc(var(--credo-tray-emphasis-top) - var(--credo-tray-content-top) - (var(--credo-type-amount-leading) - var(--credo-type-amount-size)) / 2);
+}
+.transfer-money { position: absolute; top: calc(var(--credo-tray-header) + var(--credo-tray-content-top) + var(--transfer-money-rest-gap)); translate: 0 calc(var(--transfer-money-lift, 0) * var(--transfer-amount-emphasis-shift)); left: var(--credo-tray-gutter); width: 342px; text-align: center; opacity: 0; }
+.transfer-edit-amount { position: relative; flex: none; height: 32px; padding: 0; border: 0; border-radius: 6px; background: transparent; font: inherit; font-weight: var(--credo-type-receipt-edit-weight); letter-spacing: inherit; text-transform: inherit; }
+.transfer-edit-amount::before { content: ''; position: absolute; top: 50%; right: -2px; width: max(100%, var(--control-hit, 44px)); height: max(44px, var(--control-hit, 44px)); transform: translateY(-50%); }
 .transfer-edit-amount:disabled { pointer-events: none; }
-.transfer-money-caption[hidden] { display: none; }
-.transfer-amount-panel { padding: 0 24px; }
-.transfer-amount-intro { margin: 0 0 20px; color: #818181; font-size: 14px; line-height: 20px; text-align: center; }
-.transfer-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.transfer-presets button { height: 64px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: #292929; font-family: inherit; font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; }
-.transfer-tile-visual { position: relative; display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; height: 100%; padding: 0 8px; border: 0; border-radius: 12px; background: #f7f7f7; }
-.transfer-presets button[aria-pressed] .transfer-tile-visual::after { content: ''; position: absolute; inset: -4px; border: 2px solid #fa6255; border-radius: 16px; pointer-events: none; opacity: 0; transform: scale(.94); transform-origin: center; transition: transform 120ms cubic-bezier(.23,1,.32,1), opacity 90ms cubic-bezier(.25,.46,.45,.94); }
+.transfer-amount-panel { padding: 0 var(--credo-tray-gutter); }
+.transfer-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--credo-space-3); }
+.transfer-presets button { height: 60px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: var(--credo-color-text-primary); font-family: inherit; font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.transfer-tile-visual { position: relative; display: flex; align-items: center; justify-content: center; gap: var(--credo-space-1); width: 100%; height: 100%; padding: 0 var(--credo-space-2); border: 0; border-radius: 12px; background: var(--credo-color-bg-subtle); }
+.transfer-presets button[aria-pressed] .transfer-tile-visual::after { content: ''; position: absolute; inset: -4px; border: 2px solid var(--credo-color-highlight-border); border-radius: 16px; pointer-events: none; opacity: 0; transform: scale(.94); transform-origin: center; transition: transform 120ms var(--credo-ease-out), opacity 90ms var(--credo-ease-out-quad); }
 .transfer-presets button[aria-pressed="true"] .transfer-tile-visual::after { opacity: 1; transform: scale(1); transition-duration: 180ms, 120ms; }
 @media (prefers-reduced-motion: reduce) {
-  .transfer-presets button[aria-pressed] .transfer-tile-visual::after { transform: none; transition: opacity 100ms cubic-bezier(.25,.46,.45,.94); }
+  .transfer-presets button[aria-pressed] .transfer-tile-visual::after { transform: none; transition: opacity 100ms var(--credo-ease-out-quad); }
 }
 .transfer-presets[data-selection-instant] button[aria-pressed] .transfer-tile-visual::after { transition: none; }
-.transfer-custom-panel { padding: 100px 24px 0; }
-.transfer-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.transfer-keypad button { display: grid; place-items: center; height: 64px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: #292929; font-size: 24px; font-weight: 400; font-variant-numeric: tabular-nums; }
-.transfer-key-visual { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 12px; }
-.transfer-keypad button[data-pointer-pressed] .transfer-key-visual { background: #f7f7f7; }
-.transfer-delete-chevron { display: grid; place-items: center; transform: rotate(180deg); }
-.transfer-review-panel { --review-label-color: oklch(0.68 0 0); padding: 0 24px; }
-.transfer-review-heading { display: flex; align-items: center; justify-content: space-between; min-height: 24px; margin-bottom: 12px; color: var(--review-label-color); font-size: 14px; font-weight: 400; line-height: 20px; }
-.transfer-review-heading h3 { margin: 0; font: inherit; }
-.transfer-review-heading .transfer-edit-amount { position: relative; top: auto; right: auto; flex-shrink: 0; color: inherit; font: inherit; text-align: right; }
-.transfer-review-summary { margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
-.transfer-review-summary > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 32px; }
-.transfer-review-summary dt { color: var(--review-label-color); font-weight: 500; }
-.transfer-review-summary dd { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: 0; color: #292929; font-weight: 500; text-align: right; }
-.transfer-review-total { font-variant-numeric: tabular-nums; }
+/* The keypad sits KEYPAD_GAP under the slot and moves with the amount line's emphasis shift. */
+.transfer-custom-panel { padding: calc(var(--transfer-keypad-gap) + var(--transfer-amount-emphasis-shift)) var(--credo-tray-gutter) 0; }
+.transfer-review-panel { padding: 0 var(--credo-tray-gutter); }
+/* Equal 32px rows; the 6px top padding keeps the first row's text where the
+   former 44px Amount row centred it. Edit keeps a 44px hit area via ::before. */
+.transfer-review-summary { margin: -9px 0 0; padding-top: 0; }
+.transfer-review-summary .transfer-review-amount dd { gap: var(--credo-space-2); }
+.transfer-review-total { font: inherit; white-space: nowrap; }
 .transfer-status-slot { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; pointer-events: none; }
-.transfer-status-capsule { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 100%; padding: 16px 32px; border-radius: inherit; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; white-space: nowrap; }
+.transfer-status-capsule { display: flex; align-items: center; justify-content: center; gap: var(--credo-space-2); width: 100%; height: 100%; padding: var(--credo-space-4) var(--credo-space-8); border-radius: inherit; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; white-space: nowrap; }
 .transfer-status-text { display: inline-block; }
 .transfer-capsule-icon { position: relative; display: block; flex: 0 0 20px; width: 20px; height: 20px; }
 .transfer-capsule-icon svg { position: absolute; inset: 0; width: 20px; height: 20px; }
-.transfer-capsule-spinner { stroke: currentColor; stroke-width: 2; }
-.transfer-capsule-spinner circle { opacity: .2; }
 .transfer-capsule-check { opacity: 0; }
-.transfer-capsule-check .transfer-success-path { stroke: var(--transfer-success-fill); }
-/* Stationary custom amount fade; outside the sheet clip to avoid cut digits. */
-.transfer-amount-fade { position: absolute; bottom: 0; left: 0; width: 390px; height: 676px; z-index: 1; pointer-events: none; visibility: hidden; opacity: 0; font-variant-numeric: tabular-nums; }
-.transfer-fade-value { position: absolute; top: 0; right: 390px; display: inline-flex; align-items: baseline; gap: 6px; height: 52px; white-space: pre; color: #171717; font-size: 40px; font-weight: 600; line-height: 52px; letter-spacing: .02em; }
-.transfer-fade-currency { font-size: .7em; font-weight: 500; line-height: normal; }
-.transfer-result-panel { padding: 148px 24px 0; text-align: center; }
+/* Emphasis (pending): the status icon's top space on result screens. */
+.transfer-result-panel { padding: 148px var(--credo-tray-gutter) 0; text-align: center; }
 .transfer-status-icon { display: grid; place-items: center; width: 48px; height: 48px; margin: 0 auto; border-radius: 50%; }
-.transfer-status-icon--success { background: #eaf6ed; color: #40995b; }
-.transfer-status-icon--failure { background: #fff1ef; color: #ed594e; }
-.transfer-status-icon--pending { background: #f4f4f4; color: #818181; }
+.transfer-status-icon--success { background: var(--credo-color-success-subtle); color: var(--credo-color-success-solid); }
+.transfer-status-icon--failure { background: var(--credo-color-danger-subtle); color: var(--credo-color-danger-icon); }
+.transfer-status-icon--pending { background: var(--credo-color-bg-subtle); color: var(--credo-color-icon-secondary); }
 .transfer-status-icon svg { width: 48px; height: 48px; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
 .transfer-success-path { stroke-dasharray: 100 110; stroke-dashoffset: 100; }
-.transfer-result-panel h3 { margin: 16px 0 0; color: #292929; font-size: 16px; font-weight: 500; line-height: 22px; }
-.transfer-result-panel p { max-width: 290px; margin: 8px auto 0; color: #818181; font-size: 12px; line-height: 18px; }
+.transfer-result-panel h3 { margin: var(--credo-space-4) 0 0; color: var(--credo-color-text-primary); font-size: 16px; font-weight: 500; line-height: 22px; }
+.transfer-result-panel p { max-width: 290px; margin: var(--credo-space-2) auto 0; color: var(--credo-color-text-secondary); font-size: 12px; line-height: 18px; }
 .transfer-status-icon--processing svg { fill: none; }
 .transfer-spinner circle { stroke: #f1eeed; }
 .transfer-spinner path { stroke: #fa6255; }
-/* Figma 103:12203: preserve the off-canvas gradient handles, including the negative first stop. */
-.transfer-primary { --transfer-gradient-start: #1e6e91; --transfer-gradient-end: #fc6250; --transfer-success-fill: oklch(0.5 0.095 155); --transfer-action-gradient: linear-gradient(209.002716deg, var(--transfer-gradient-start) -141.51%, var(--transfer-gradient-end) 108.14%); position: absolute; left: 24px; bottom: 34px; width: 342px; height: 56px; padding: 0; border: 0; border-radius: 32px; appearance: none; background: transparent; color: #fff; font-size: 14px; font-weight: 500; line-height: 20px; letter-spacing: 0; text-transform: uppercase; opacity: 0; visibility: hidden; }
+.transfer-sheet .transfer-primary { --transfer-gradient-start: var(--credo-color-accent-solid); --transfer-gradient-end: var(--credo-color-highlight-solid); --transfer-success-fill: var(--credo-color-success-solid); position: absolute; left: var(--credo-tray-gutter); bottom: var(--credo-tray-home-inset); width: calc(390px - 2 * var(--credo-tray-gutter)); opacity: 0; visibility: hidden; }
 .transfer-primary::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: max(56px, var(--control-hit, 44px)); transform: translateY(-50%); }
-.transfer-primary-visual, .transfer-primary-press { position: absolute; inset: 0; display: block; border-radius: 32px; pointer-events: none; }
-.transfer-primary-press { overflow: hidden; background: var(--transfer-action-gradient); }
-.transfer-primary [data-action-label] { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 32px; opacity: 0; }
-.transfer-entry-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px 32px; opacity: 0; }
+.transfer-primary [data-action-label] { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: var(--credo-space-2); padding: var(--credo-space-4) var(--credo-space-8); opacity: 0; }
+.transfer-step-labels { position: absolute; left: 0; right: 0; top: 50%; height: max(24px, 1lh); transform: translateY(-50%); overflow: hidden; pointer-events: none; }
+.transfer-primary .transfer-step-labels [data-action-label] { padding: 0 var(--credo-space-6); }
+.transfer-entry-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: var(--credo-space-4) var(--credo-space-8); opacity: 0; }
 .transfer-entry-text { display: inline-block; white-space: nowrap; }
-.transfer-primary:disabled { cursor: default; }
-.transfer-primary:disabled .transfer-primary-press { background: linear-gradient(#ffffff80, #ffffff80), var(--transfer-action-gradient); }
-.transfer-sheet[data-view="processing"] .transfer-primary:disabled .transfer-primary-press { background: var(--transfer-action-gradient); }
-.transfer-primary .transfer-capsule-spinner { width: 20px; height: 20px; stroke-width: 2; }
-.transfer-primary .transfer-capsule-spinner circle, .transfer-primary .transfer-capsule-spinner path { stroke: currentColor; }
 @keyframes transfer-spin { to { transform: rotate(360deg); } }
-.transfer-status-slot .transfer-spinner { animation: transfer-spin .7s linear infinite; animation-play-state: paused; }
-.transfer-sheet[data-view="processing"] .transfer-spinner { animation: transfer-spin .7s linear infinite; }
+.transfer-status-slot .transfer-spinner { animation: transfer-spin var(--credo-duration-spinner) linear infinite; animation-play-state: paused; }
+.transfer-sheet[data-view="processing"] .transfer-spinner { animation: transfer-spin var(--credo-duration-spinner) linear infinite; }
 .transfer-sheet[data-preview] .transfer-spinner { animation: none; }
 .transfer-announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.transfer-activity { position: absolute; top: 350px; left: 24px; width: 342px; }
-.transfer-activity h2 { margin: 0 0 16px; color: #818181; font-size: 14px; font-weight: 500; text-transform: uppercase; }
-.transfer-activity button { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 72px; padding: 12px 0; border: 0; border-top: 1px solid #ededed; background: #fff; text-align: left; }
-.transfer-activity button > span { display: flex; flex: 1; flex-direction: column; gap: 4px; }
-.transfer-activity strong, .transfer-activity b { font-size: 14px; font-weight: 500; }
-.transfer-activity small { color: #818181; font-size: 12px; }
-.transfer-demo-controls { position: fixed; z-index: 10; bottom: 24px; left: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; color: #7a8b92; font-size: 11px; }
-.transfer-demo-controls label { display: flex; align-items: center; gap: 8px; }
-.transfer-demo-controls select { min-height: 32px; padding: 4px 24px 4px 8px; border: 1px solid #d8e4e8; border-radius: 8px; background: #fff; color: #42616d; font: inherit; }
-body:has(.transfer-stage[data-timeline]) .transfer-demo-controls { bottom: 272px; }
-.transfer-primary:focus-visible, .transfer-presets button:focus-visible, .transfer-keypad button:focus-visible, .transfer-edit-amount:focus-visible, .transfer-money input:focus-visible, .transfer-activity button:focus-visible { outline: 2px solid #fa6255; outline-offset: 3px; }
+.transfer-presets button:focus-visible, .transfer-edit-amount:focus-visible { outline: 2px solid var(--credo-color-border-focus); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
-  .transfer-sheet .transfer-spinner { animation: none !important; transform: none !important; }
+  /* Half speed instead of frozen (plan 011 W8); the preview's own rotation is unaffected. */
+  .transfer-sheet[data-view="processing"] .transfer-spinner { animation-duration: calc(var(--credo-duration-spinner) * 2); }
 }
-.transfer-back:focus-visible, .transfer-reset:focus-visible, .transfer-timeline-toggle:focus-visible, .transfer-close:focus-visible, button.transfer-row:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
+.transfer-reset:focus-visible, .transfer-timeline-toggle:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
 @media (max-width: 699px) {
-  .transfer-stage { padding-top: 168px; }
-  .transfer-back, .transfer-tools { top: 16px; }
-  .transfer-back { left: 12px; }
+  .transfer-stage { padding-top: 128px; }
+  .transfer-tools { top: 16px; }
   .transfer-tools.phone-study-tools { top: 72px; left: 12px; right: 12px; justify-content: center; gap: 6px; }
-  .transfer-back, .transfer-tools > button { padding: 0 10px; font-size: 11px; }
-  .transfer-demo-controls, body:has(.transfer-stage[data-timeline]) .transfer-demo-controls { top: 126px; bottom: auto; left: 12px; right: 12px; flex-direction: row; justify-content: space-between; align-items: center; gap: 4px; font-size: 9px; }
-  .transfer-demo-controls label { gap: 4px; }
-  .transfer-demo-controls select { min-height: 28px; padding-right: 16px; max-width: 100px; }
+  .transfer-tools > button { padding: 0 10px; font-size: 11px; }
 }
+@media (max-width: 359px) {
+  .transfer-tools.phone-study-tools { gap: 4px; }
+  .transfer-tools.phone-study-tools > button { padding-inline: 6px; font-size: 10px; }
+}
+
+/* Credo typography for transfer-only elements. Shared components (Keypad,
+   Amount display, List row, Receipt rows) carry their own type now. */
+.transfer-phone .transfer-sheet-titles,
+.transfer-phone .transfer-result-panel h3 { font: var(--credo-type-title); letter-spacing: var(--credo-type-title-tracking); text-transform: var(--credo-type-title-case); }
+.transfer-phone .transfer-sheet-titles { width: 286px; height: max(28px, calc(var(--credo-type-title-leading) + 4px)); }
+.transfer-sheet-titles > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.transfer-phone .transfer-method-context strong,
+.transfer-phone .transfer-presets button { font: var(--credo-type-option); letter-spacing: var(--credo-type-option-tracking); text-transform: var(--credo-type-option-case); }
+.transfer-phone .transfer-fast { font: var(--credo-type-badge); letter-spacing: var(--credo-type-badge-tracking); text-transform: var(--credo-type-badge-case); width: max-content; min-width: 64px; height: max(20px, calc(var(--credo-type-badge-leading) + 4px)); }
+.transfer-phone .transfer-result-panel p { font: var(--credo-type-supporting); letter-spacing: var(--credo-type-supporting-tracking); text-transform: var(--credo-type-supporting-case); }
+.transfer-phone .transfer-result-panel p { color: var(--credo-color-text-secondary); }
+.transfer-phone .transfer-presets button, .transfer-phone .transfer-review-total { font-variant-numeric: tabular-nums; }
+
+
+/* The sending/success button uses the secondary palette.
+   Spinner track and arc follow the (blending) label colour; the success
+   check is a solid circle in the label colour with a white tick. */
+.transfer-primary .transfer-capsule-spinner circle { stroke: currentColor; opacity: .2; }
+.transfer-primary .transfer-capsule-spinner path { stroke: currentColor; }
+.transfer-primary .transfer-capsule-check path { stroke: var(--credo-color-text-on-accent); }
+/* Outgoing Torph words blur 2px: now on every Primary button (primary-button.css, plan 011 W1). */
+/* The status label and its Family-only ellipsis; the ellipsis sits outside
+   the label's width so the label stays centred. */
+.transfer-status-label { position: relative; display: inline-flex; }
+.transfer-status-ellipsis { position: absolute; left: 100%; top: 0; opacity: 0; pointer-events: none; }

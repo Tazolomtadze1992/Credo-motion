@@ -1,0 +1,4 @@
+/* Credo page header (shared by the China transfer and Automatic orders). */
+.credo-page-header { display: flex; align-items: center; }
+.credo-page-header__back, .credo-page-header__end { display: flex; align-items: center; width: 48px; height: 48px; flex-shrink: 0; padding: 0; border: 0; background: none; color: var(--credo-color-accent-text); }
+.credo-page-header__title { flex: 1; min-width: 0; margin: 0; font: var(--credo-type-title); letter-spacing: var(--credo-type-title-tracking); text-transform: var(--credo-type-title-case); text-align: center; }

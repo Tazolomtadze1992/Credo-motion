@@ -1,0 +1,69 @@
+.credo-type-page {
+  width: min(100% - 48px, 1040px);
+  margin-inline: auto;
+  padding-bottom: 84px;
+  color: #20282b;
+  font-family: var(--credo-typeface);
+}
+.type-header { padding: 58px 0 40px; }
+.type-header h1 { margin: 0; font-size: clamp(45px, 8vw, 76px); line-height: 1.02; letter-spacing: -.052em; font-weight: 600; }
+.type-header p { margin: 13px 0 0; color: #53666d; font: var(--credo-type-option); letter-spacing: var(--credo-type-option-tracking); }
+.credo-type-page h2 { margin: 0 0 16px; font: var(--credo-type-title); letter-spacing: var(--credo-type-title-tracking); }
+.type-specimens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.type-specimen {
+  min-width: 0;
+  padding: 19px 22px 22px;
+  border: 1px solid #dae3e5;
+  border-radius: 20px;
+  background: #e4ebed;
+}
+.type-specimen__label { margin: 0 0 19px; color: #4f626a; font: var(--credo-type-supporting); letter-spacing: var(--credo-type-supporting-tracking); }
+.type-tray { width: min(100%, 390px); margin-inline: auto; padding: 20px 24px 24px; border-radius: 24px; background: var(--credo-color-bg-surface); }
+.type-tray__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--credo-color-border-separator);
+}
+.type-tray__header p { margin: 0; }
+.type-title { font: var(--credo-type-title); letter-spacing: var(--credo-type-title-tracking); }
+.type-option { font: var(--credo-type-option); letter-spacing: var(--credo-type-option-tracking); }
+.type-supporting { font: var(--credo-type-supporting); letter-spacing: var(--credo-type-supporting-tracking); color: var(--credo-color-text-secondary); }
+.type-receipt-value { font: var(--credo-type-receipt-value); letter-spacing: var(--credo-type-receipt-value-tracking); color: var(--credo-color-text-primary); }
+.type-action { font: var(--credo-type-action); letter-spacing: var(--credo-type-action-tracking); text-transform: var(--credo-type-action-case); }
+.type-amount { font: var(--credo-type-amount); letter-spacing: var(--credo-type-amount-tracking); font-variant-numeric: var(--credo-type-amount-numbers); }
+.type-keypad { font: var(--credo-type-keypad); letter-spacing: var(--credo-type-keypad-tracking); font-variant-numeric: var(--credo-type-keypad-numbers); white-space: pre; }
+.type-badge { font: var(--credo-type-badge); letter-spacing: var(--credo-type-badge-tracking); text-transform: var(--credo-type-badge-case); color: var(--credo-color-success-text); }
+.type-close { display: grid; place-items: center; flex: 0 0 40px; height: 40px; border-radius: 50%; background: var(--credo-color-bg-subtle); }
+.type-close img { width: 18px; height: 18px; }
+.type-methods { display: grid; gap: 12px; margin: 14px 0 0; padding: 0; list-style: none; }
+.type-methods li { display: flex; align-items: center; gap: 12px; min-height: 48px; }
+.type-methods .type-chevron { margin-left: auto; }
+.type-receipt { margin: 12px 0 20px; }
+.type-receipt > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 32px; }
+.type-receipt > div:first-child { min-height: 44px; }
+.type-receipt dd { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: 0; text-align: end; }
+.type-receipt > div:first-child dd { gap: 6px; }
+.type-receipt .credo-inline-action { font-weight: var(--credo-type-receipt-edit-weight); }
+.type-receipt strong { font: inherit; font-variant-numeric: tabular-nums; }
+.type-scale { margin-top: 42px; }
+.type-scale > p { margin: -8px 0 18px; color: #53666d; font: var(--credo-type-supporting); letter-spacing: var(--credo-type-supporting-tracking); }
+.type-roles { margin: 0; padding: 0 24px; border: 1px solid #dae3e5; border-radius: 20px; background: #fff; }
+.type-roles > div { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(0, 2fr); gap: 22px; align-items: center; min-height: 83px; padding: 13px 0; }
+.type-roles > div + div { border-top: 1px solid #e9edef; }
+.type-roles dt, .type-roles dd { display: grid; gap: 3px; margin: 0; }
+.type-roles dt strong { font-size: 14px; }
+.type-roles small { color: #53666d; font-size: 12px; line-height: 17px; }
+@media (max-width: 740px) {
+  .credo-type-page { width: calc(100% - 32px); }
+  .type-specimens { grid-template-columns: 1fr; }
+  .type-header { padding-block: 42px 32px; }
+}
+@media (max-width: 460px) {
+  .type-specimen { padding: 12px; }
+  .type-tray { padding-inline: 16px; }
+  .type-roles { padding-inline: 16px; }
+  .type-roles > div { grid-template-columns: 1fr; gap: 8px; }
+}

@@ -1,0 +1,41 @@
+/* Credo upload slot (Proposed, auto lombard 2026-11-16). */
+.credo-upload { display: flex; flex-direction: column; gap: var(--credo-space-2); min-width: 0; }
+.credo-upload__tile { position: relative; display: block; width: 100%; height: 104px; padding: 0; border: 0; border-radius: 16px; background: none; color: var(--credo-color-accent-text); font: inherit; text-align: center; }
+.credo-upload[data-wide] .credo-upload__tile { height: 192px; }
+.credo-upload__visual { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--credo-space-2); overflow: hidden; border-radius: inherit; background: var(--credo-color-accent-subtle); box-shadow: inset 0 0 0 2px transparent;
+  /* Error colours fade in and back with ease (plan 010 G2); press stays 150 ms easeOutQuad. */
+  transition: transform var(--credo-duration-press) var(--credo-ease-out-quad), background-color 150ms ease, box-shadow 150ms ease, color 150ms ease; }
+.credo-upload__tile[data-pointer-pressed] .credo-upload__visual { transform: scale(.97); }
+.credo-upload__icon { display: grid; place-items: center; height: 24px; transition: opacity 100ms var(--credo-ease-out); }
+.credo-upload__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.credo-upload__mark { position: absolute; right: var(--credo-space-2); bottom: var(--credo-space-2); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--credo-color-success-solid); color: var(--credo-color-text-on-accent); }
+.credo-upload[data-kind="video"] .credo-upload__mark { right: auto; bottom: auto; width: 48px; height: 48px; background: rgb(0 0 0 / .55); }
+.credo-upload__caption { color: var(--credo-color-text-primary); font: var(--credo-type-receipt-value); letter-spacing: var(--credo-type-receipt-value-tracking); text-align: center; }
+/* Error: the message sits on the slot it describes, not in a banner. */
+.credo-upload[data-state="error"] .credo-upload__visual { background: var(--credo-color-danger-subtle); box-shadow: inset 0 0 0 2px var(--credo-color-danger-icon); color: var(--credo-color-danger-icon); }
+.credo-upload__error { display: flex; align-items: flex-start; gap: var(--credo-space-1); color: var(--credo-color-danger-text); font: var(--credo-type-receipt-label); line-height: 18px; text-wrap: pretty; }
+.credo-upload__error svg { flex: none; margin-top: 3px; }
+.credo-upload__spinner { width: 20px; height: 20px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: credo-upload-spin var(--credo-duration-spinner) linear infinite; }
+@keyframes credo-upload-spin { to { transform: rotate(1turn); } }
+
+/* State motion (plan 010 G2, user 2026-11-17). Transitions, not keyframes, so a
+   quick retake turns around; entries use @starting-style and run only on a
+   slot whose state changed while on screen ([data-live]). Timings match a step
+   change: the old thing clears in 100 ms, the new one arrives in 170 ms. */
+.credo-upload[data-filled] .credo-upload__icon { opacity: 0; visibility: hidden; transition: opacity var(--credo-duration-handoff-exit) var(--credo-ease-out), visibility 0s var(--credo-duration-handoff-exit); }
+.credo-upload[data-live] .credo-upload__spinner { transition: opacity var(--credo-duration-handoff-exit) var(--credo-ease-out); }
+.credo-upload[data-live] .credo-upload__image { transition: opacity var(--credo-duration-handoff-enter) var(--credo-ease-out); }
+/* The done check is SelectMark's motion: grows from the centre, 60 ms after the photo starts. */
+.credo-upload[data-live] .credo-upload__mark { transition: transform 200ms var(--credo-ease-text-swap) 60ms, opacity 140ms var(--credo-ease-text-swap) 60ms; }
+.credo-upload[data-live] .credo-upload__error { transition: opacity var(--credo-duration-handoff-enter) var(--credo-ease-out); }
+@starting-style {
+  .credo-upload[data-live] .credo-upload__spinner, .credo-upload[data-live] .credo-upload__image, .credo-upload[data-live] .credo-upload__error { opacity: 0; }
+  .credo-upload[data-live] .credo-upload__mark { opacity: 0; transform: scale(0); }
+}
+.credo-upload__tile:focus-visible { outline: 2px solid var(--credo-color-border-focus); outline-offset: 3px; }
+/* Reduced motion: opacity and colour only; the check fades in instead of growing. */
+@media (prefers-reduced-motion: reduce) {
+  .credo-upload__visual { transition: background-color 150ms ease, box-shadow 150ms ease, color 150ms ease; transform: none !important; }
+  .credo-upload__spinner { animation-duration: calc(var(--credo-duration-spinner) * 2); }
+  .credo-upload[data-live] .credo-upload__mark { transform: none; transition: opacity var(--credo-duration-reduced) linear 60ms; }
+}

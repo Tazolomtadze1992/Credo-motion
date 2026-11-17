@@ -312,3 +312,31 @@ entry and retained day8. Console had no warnings/errors. Screenshot:
 The demonstrated lesson is to model hidden layout in presence tests and derive
 this fixed-canvas study's travel independently of its current display state.
 User approval of the corrected entrance remains pending.
+
+
+## No back chevron in the tray (2026-11-13)
+
+**User decision:** remove back chevrons from trays entirely.
+
+**Change:** the tray's only control is Family's X. It closes the tray on the
+first step and steps back one tray on every later step. It is labelled
+"Close" or "Back" to match, and Escape follows it.
+- Automatic orders: the chevron and its header shift were removed. The
+  side-trip-only split from earlier the same day is superseded.
+- Automatic payments (payment day): the chevron is hidden (the element stays
+  for the motion controller). The X reads "Back to amount" on Payment day.
+  "Payment day" now shares the "Payment amount" spot.
+- Because the two payment-day titles now swap in place, their fade became one
+  complementary clock (160 ms, no 12 px opposing slides). The old 60 ms exit
+  followed by a 60 ms-delayed entry left a blank header. Two tests that pinned
+  "one title at a time" now assert the titles always sum to 1.
+- China transfer already had no tray chevron (X closes, Escape and Edit go
+  back), so it is unchanged.
+
+**Verification:** browser checks.
+- Automatic orders: no chevron on any step; X = Back on Electricity (it
+  returned to the picker) and X = Close on the first step (it closed).
+- Payment day: no visible chevron, both titles at the same position, and the
+  X returned to Payment amount.
+- 37 tests pass, and the build passes.
+

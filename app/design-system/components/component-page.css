@@ -1,0 +1,50 @@
+/* Component page template (title, one line, spec, live states, usage). */
+.ds-component { width: min(100% - 80px, 760px); padding-top: 56px; font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+.ds-component__crumb { margin: 0 0 10px; font-size: 13px; }
+.ds-component__crumb a { color: #7a8b92; text-decoration: none; }
+.ds-component__crumb a:hover { color: #172328; }
+.ds-component__header h1 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -.02em; line-height: 1.2; }
+.ds-component__header > p:last-child { margin: 8px 0 0; color: #6c7d84; font-size: 15px; line-height: 1.5; }
+.ds-component .component-spec { margin: 20px 0 24px; }
+.ds-component__usage { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e3e8ea; }
+.ds-component__usage h2 { margin: 0 0 10px; color: #7a8b92; font-size: 12px; font-weight: 500; }
+.ds-component__usage ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ds-component__usage a { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid #e3e8ea; border-radius: 999px; background: #fff; color: #172328; font-size: 13px; text-decoration: none; }
+.ds-component__usage a:hover { border-color: #cfd8db; }
+.ds-component__usage p { margin: 0; color: #6c7d84; font-size: 14px; }
+@media (max-width: 899px) { .ds-component { width: calc(100% - 40px); padding-top: 88px; } }
+
+/* Guidance: examples (title, when to use, canvas, code) and best practices. */
+.ds-guide__example { margin-top: 48px; }
+.ds-guide__example h2, .ds-guide__practices h2 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+.ds-guide__example > p { margin: 6px 0 16px; color: #53666d; font-size: 15px; line-height: 1.5; }
+.ds-guide__canvas { display: grid; place-items: center; min-height: 140px; padding: 24px; border: 1px solid #e3e8ea; border-radius: 16px 16px 0 0; background: #fff; }
+.ds-guide__canvas .ds-rows { width: 100%; margin: 0; }
+.ds-guide__buttons { width: min(100%, 342px); }
+.ds-guide__amount { color: var(--credo-color-text-primary); font: var(--credo-type-receipt-value); }
+.ds-guide__code { border: 1px solid #e3e8ea; border-top: 0; border-radius: 0 0 16px 16px; background: #fafbfb; }
+.ds-guide__example > p + .ds-guide__code { border-top: 1px solid #e3e8ea; border-radius: 16px; }
+.ds-guide__code summary { padding: 10px 16px; color: #53666d; font-size: 13px; cursor: pointer; list-style: none; }
+.ds-guide__code summary::-webkit-details-marker { display: none; }
+.ds-guide__code summary::before { content: '›'; display: inline-block; margin-right: 8px; transition: transform 150ms ease; }
+.ds-guide__code[open] summary::before { transform: rotate(90deg); }
+.ds-guide__code pre { margin: 0; padding: 0 16px 16px; overflow-x: auto; color: #172328; font: 13px/1.6 ui-monospace, "SF Mono", Menlo, monospace; }
+.ds-guide__practices { margin-top: 56px; }
+.ds-guide__practices ul { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
+.ds-guide__practice { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: baseline; color: #20282b; font-size: 15px; line-height: 1.5; }
+.ds-guide__practice small { color: #8a9ba1; font-size: 13px; }
+.ds-guide__tag { justify-self: start; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 500; line-height: 18px; }
+.ds-guide__practice[data-status="decided"] .ds-guide__tag { background: #e2f3e6; color: #2e734b; }
+.ds-guide__practice[data-status="proposed"] .ds-guide__tag { background: #fff3d0; color: #8a5a00; }
+@media (prefers-reduced-motion: reduce) { .ds-guide__code summary::before { transition: none; } }
+
+.ds-guide__stack { display: grid; gap: 16px; justify-items: center; width: min(100%, 342px); }
+.ds-guide__stack .credo-keypad { width: 100%; }
+.ds-guide__narrow { width: min(100%, 342px); }
+.ds-guide__narrow .ds-rows { width: 100%; }
+.ds-guide__wide { width: min(100%, 390px); }
+.ds-guide__empty { margin: 8px 0; color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); text-align: center; }
+.ds-guide__pay { display: inline-flex; align-items: center; gap: 8px; }
+.ds-guide__pay .credo-icon { color: var(--credo-color-accent-text); }
+.ds-guide__cards { display: flex; align-items: center; gap: 24px; }
+.ds-component__usage--tight { margin-top: 20px; padding-top: 0; border-top: 0; }

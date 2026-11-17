@@ -1,0 +1,9 @@
+/* Credo Tray. The shell's geometry (header, divider and body positions) is
+   owned by each flow's motion controller; the shared part is the round icon
+   button used for close and back (rules moved unchanged from the China
+   transfer study, where both flows already used them). A flow overrides the
+   position (for example a back button on the left) with its own class. */
+.credo-tray__icon-button { position: absolute; top: var(--credo-tray-close-inset, 20px); right: var(--credo-tray-gutter, 24px); display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 32px; background: var(--credo-color-bg-subtle); }
+.credo-tray__icon-button::before { content: ''; position: absolute; top: var(--hit-top, -2px); left: var(--hit-left, -4px); width: var(--hit-size, 44px); height: var(--hit-size, 44px); }
+.credo-tray__icon-button:focus-visible { outline: 3px solid var(--credo-color-border-focus); outline-offset: 3px; }
+.credo-tray__close-icon { color: var(--credo-color-icon-secondary); }

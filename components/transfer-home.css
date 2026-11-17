@@ -1,0 +1,83 @@
+/* Credo home screen behind the China transfer tray. Geometry and colours from
+   Figma "Home" (63:3281, 390 × 844); type uses the Credo typeface. The screen
+   is fixed, so sections sit at the design's y positions. */
+.home { position: absolute; inset: 0; overflow: hidden; background: #f6f9fb; font-family: var(--credo-typeface); color: #000; }
+.home-backdrop { position: absolute; top: 0; left: 0; width: 390px; height: 600px; }
+.home p, .home h2 { margin: 0; }
+
+/* Navigation bar: y 53, 58 tall */
+.home-nav { position: absolute; top: 53px; left: 0; width: 390px; display: flex; align-items: flex-start; padding: var(--credo-space-2) var(--credo-space-6); }
+.home-user { flex: 1; display: flex; align-items: center; gap: var(--credo-space-3); }
+.home-avatar { width: 40px; height: 40px; border: 1.25px solid rgba(0, 0, 0, .08); border-radius: 50%; }
+.home-user p { display: flex; flex-direction: column; gap: 2px; line-height: 20px; }
+.home-user span { color: #ccc; font-size: 14px; letter-spacing: .28px; }
+.home-user strong { color: #fff; font-size: 16px; font-weight: 500; }
+.home-nav__buttons { display: flex; gap: var(--credo-space-2); }
+.home-circle { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 32px; background: rgba(255, 255, 255, .64); }
+.home-circle--whatsapp { background: #f2faf2; }
+
+/* Content: y 127, sections 24 apart */
+.home-content { position: absolute; top: 127px; left: 0; width: 390px; display: flex; flex-direction: column; gap: var(--credo-space-6); }
+.home-top { display: flex; flex-direction: column; gap: var(--credo-space-4); }
+.home-balance { display: flex; flex-direction: column; gap: var(--credo-space-1); padding: 0 var(--credo-space-6); }
+.home-balance > span { color: #ccc; font-size: 14px; line-height: 20px; letter-spacing: .28px; }
+.home-balance p { display: flex; align-items: center; gap: var(--credo-space-2); }
+.home-balance strong { color: #fff; font-size: 20px; font-weight: 700; line-height: 24px; }
+
+.home-cards { display: flex; flex-direction: column; align-items: center; gap: var(--credo-space-2); padding: 0 var(--credo-space-6); }
+.home-cards__row { display: flex; align-items: center; gap: var(--credo-space-4); width: 100%; }
+.home-card { flex: 0 0 342px; display: flex; flex-direction: column; padding: var(--credo-space-4); border-radius: 16px; color: #fff;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .1)), linear-gradient(134.7deg, #293d4d 7.98%, #171c1e 55.17%, #41231d 133.73%); }
+.home-card__top { display: flex; align-items: flex-start; gap: var(--credo-space-3); height: 24px; }
+.home-card__name { flex: 1; display: flex; align-items: center; gap: var(--credo-space-1); font-size: 14px; line-height: 20px; letter-spacing: .28px; }
+.home-card__digital { display: flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 999px; background: linear-gradient(59.7deg, #ccc 24.85%, #808080 82.36%); font-size: 10px; font-weight: 500; line-height: 14px; text-transform: uppercase; }
+.home-card__money { display: flex; flex-direction: column; gap: var(--credo-space-2); }
+.home-card__money > strong { font-size: 20px; font-weight: 700; line-height: 24px; }
+.home-card__chips { display: flex; gap: var(--credo-space-1); }
+.home-card__chips span { display: flex; align-items: center; height: 24px; padding: 0 var(--credo-space-3); border: 1px solid rgba(255, 255, 255, .08); border-radius: 32px; background: rgba(255, 255, 255, .08); font-size: 12px; font-weight: 500; line-height: 16px; }
+.home-card__number { display: flex; align-items: center; gap: var(--credo-space-2); color: rgba(255, 255, 255, .64); font-size: 12px; font-weight: 500; line-height: 16px; }
+.home-card-request { flex: 0 0 342px; height: 104px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--credo-space-4); border: 1px solid rgba(255, 255, 255, .64); border-radius: 16px; background: rgba(255, 255, 255, .04); box-shadow: 0 0 0 4px rgba(255, 255, 255, .16); backdrop-filter: blur(20.65px); color: #fff; font-size: 14px; font-weight: 700; line-height: 18px; }
+.home-dots { width: 32px; height: 8px; }
+
+/* Quick actions: 96 wide, 56 circles */
+/* 96 tall as in Figma (two-line labels there), so the sheet stays at y 479. */
+.home-actions { display: flex; gap: var(--credo-space-2); height: 96px; padding: 0 var(--credo-space-3); }
+.home-action { flex: 0 0 96px; display: flex; flex-direction: column; align-items: center; gap: var(--credo-space-2); padding: 0; border: 0; background: none; color: #fff; font: inherit; font-size: 12px; font-weight: 500; line-height: 16px; text-align: center; }
+.home-action:disabled { cursor: default; }
+.home-action:not(:disabled) { cursor: pointer; }
+.home-action__circle { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 32px; background: rgba(255, 255, 255, .64); transition: transform var(--credo-duration-press) var(--credo-ease-out-quad); }
+.home-action:not(:disabled):active .home-action__circle { transform: scale(.97); }
+.home-action:focus-visible { outline: none; }
+.home-action:focus-visible .home-action__circle { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* White sheet: y 479 */
+.home-sheet { display: flex; flex-direction: column; gap: var(--credo-space-2); border-radius: 16px; background: #f6f9fb; }
+.home-panel { display: flex; flex-direction: column; gap: var(--credo-space-4); border-radius: 16px; background: #fff; }
+.home-panel h2 { color: rgba(0, 0, 0, .5); font-size: 14px; font-weight: 500; line-height: 16px; text-transform: uppercase; }
+.home-upcoming { padding: var(--credo-space-4) 0; }
+.home-upcoming h2 { padding: 0 var(--credo-space-6); }
+.home-transaction { display: flex; align-items: center; gap: var(--credo-space-3); padding: 0 var(--credo-space-6); }
+.home-transaction__icon { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border: 1px solid rgba(0, 0, 0, .04); border-radius: 50%; background: #f4f8f9; }
+.home-transaction__text { flex: 1; display: flex; flex-direction: column; gap: var(--credo-space-1); }
+.home-transaction__text > span { display: flex; gap: var(--credo-space-4); font-size: 14px; line-height: 20px; }
+.home-transaction__text > span > span { flex: 1; letter-spacing: .28px; }
+.home-transaction__text b { font-weight: 500; }
+.home-transaction__text small { color: rgba(0, 0, 0, .4); font-size: 12px; line-height: 16px; letter-spacing: .24px; }
+.home-link { color: #1e6e91; font-size: 14px; font-weight: 700; line-height: 18px; text-align: center; }
+
+.home-offers { padding: var(--credo-space-6); overflow: hidden; }
+.home-offers__row { display: flex; gap: var(--credo-space-2); }
+.home-offer { flex: 0 0 104px; height: 136px; padding: 2px; border: 2px solid rgba(0, 0, 0, .08); border-radius: 16px; }
+.home-offer[data-selected] { border-color: #fc6250; }
+.home-offer__inner { position: relative; height: 100%; overflow: hidden; border-radius: 16px; }
+.home-offer__inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.home-offer__shade { position: absolute; left: 0; right: 0; bottom: 0; height: 98px; background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, .56)); }
+.home-offer__badge { position: absolute; top: var(--credo-space-2); left: var(--credo-space-2); display: flex; align-items: center; height: 24px; padding: 0 6px; border-radius: 32px; color: #fff; font-size: 12px; font-weight: 500; line-height: 16px; }
+.home-offer__badge[data-tone="positive"] { background: #80cb7b; }
+.home-offer__badge[data-tone="primary"] { background: #fc6250; }
+.home-offer__badge[data-tone="informative"] { background: #32ade6; }
+.home-offer__label { position: absolute; left: var(--credo-space-2); right: var(--credo-space-4); bottom: var(--credo-space-2); color: #fff; font-size: 12px; font-weight: 500; line-height: 16px; }
+
+/* Tab bar: frosted, above the home indicator (34px) */
+.home-tabs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; padding-bottom: var(--credo-tray-home-inset); border-top: 1px solid rgba(0, 0, 0, .04); background: rgba(255, 255, 255, .64); box-shadow: 0 6px 12px rgba(0, 0, 0, .08); backdrop-filter: blur(16px); }
+.home-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--credo-space-1); padding: var(--credo-space-3) var(--credo-space-1); color: #666; font-size: 10px; font-weight: 500; line-height: 14px; }

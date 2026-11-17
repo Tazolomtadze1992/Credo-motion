@@ -1,0 +1,29 @@
+/* Credo Amount display. Rules moved unchanged from the China transfer study
+   (same order, so the shared height rule still wins over the input rule). */
+/* Number ↔ currency: typographic spacing that scales with the amount (6px at 40px). */
+.credo-amount { display: flex; align-items: baseline; justify-content: center; gap: .15em; height: 52px; color: var(--credo-color-text-strong); font-size: 40px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.credo-amount__number > span { font-size: .7em; font-weight: 500; }
+.credo-amount__number { display: inline-flex; align-items: baseline; gap: .15em; height: 52px; }
+.credo-amount input { display: block; min-width: 0; height: 52px; padding: 0; border: 0; border-radius: 0; outline: none; background: transparent; color: inherit; font: inherit; font-variant-numeric: tabular-nums; letter-spacing: inherit; text-align: left; cursor: default; }
+.credo-amount__input { position: relative; min-width: 1ch; height: 52px; line-height: 52px; text-align: left; }
+.credo-amount__display { pointer-events: none; }
+.credo-amount__morph { display: inline-block; white-space: pre; font: inherit; letter-spacing: inherit; }
+.credo-amount__input input { position: absolute; inset: 0; width: 100%; margin: 0; color: transparent; caret-color: transparent; }
+/* Optical: 2px tucks the caption under the large digits (not a spacing token). */
+.credo-amount__caption { display: inline-block; margin-top: 2px; color: var(--credo-color-text-secondary); font-size: 12px; line-height: 18px; }
+.credo-amount__caption[hidden] { display: none; }
+.credo-amount input:focus-visible { outline: 2px solid var(--credo-color-border-focus); outline-offset: 3px; }
+.credo-amount, .credo-amount__number, .credo-amount input,
+.credo-amount__input { height: max(52px, var(--credo-type-amount-leading)); }
+.credo-amount__input { line-height: inherit; }
+.credo-amount[data-compact] { font-size: calc(var(--credo-type-amount-size, 40px) * .85); }
+/* Credo type (amount and supporting roles) when the tokens are set; otherwise
+   today's defaults. Moved here from the China study so every flow matches. */
+.credo-amount { font-size: var(--credo-type-amount-size, 40px); font-weight: var(--credo-type-amount-weight, 600); line-height: var(--credo-type-amount-leading, normal); letter-spacing: var(--credo-type-amount-tracking, .02em); text-transform: var(--credo-type-amount-case, none); font-variant-numeric: var(--credo-type-amount-numbers, tabular-nums); }
+.credo-amount[data-compact] { font-size: calc(var(--credo-type-amount-size, 40px) * .85); }
+.credo-amount__caption { font-size: var(--credo-type-supporting-size, 12px); font-weight: var(--credo-type-supporting-weight, 400); line-height: var(--credo-type-supporting-leading, 18px); letter-spacing: var(--credo-type-supporting-tracking, normal); text-transform: var(--credo-type-supporting-case, none); }
+/* Large (full screens only, Proposed 2026-11-16): 1.4× the amount type, 72px line. */
+.credo-amount[data-size="large"] { font-size: calc(var(--credo-type-amount-size, 40px) * 1.4); }
+.credo-amount[data-size="large"][data-compact] { font-size: calc(var(--credo-type-amount-size, 40px) * 1.4 * .85); }
+.credo-amount[data-size="large"], .credo-amount[data-size="large"] .credo-amount__number,
+.credo-amount[data-size="large"] input, .credo-amount[data-size="large"] .credo-amount__input { height: 72px; }

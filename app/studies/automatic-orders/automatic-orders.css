@@ -1,0 +1,207 @@
+/* Automatic orders study. Stage, tools and calendar styles come from the
+   payment-stage.css; everything flow-specific is prefixed ao-. */
+.ao-phone { position: relative; width: 390px; height: 852px; overflow: clip; border-radius: inherit; background: var(--credo-color-bg-page); color: var(--credo-color-text-strong); font-family: var(--credo-typeface); }
+.ao-phone button, .ao-phone input { font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.ao-phone img { display: block; max-width: none; pointer-events: none; }
+/* The search field draws its own pill ring; its input gets no square outline. */
+.ao-phone button:focus-visible, .ao-phone input:focus-visible:not(.credo-search input) { outline: 2px solid var(--credo-color-border-focus); outline-offset: 3px; }
+
+/* ---------- Background screen: the orders list ---------- */
+.ao-screen { position: absolute; inset: 0; }
+/* Page header and segmented control are shared components; only placement here. */
+.ao-page-header { height: 56px; margin-top: 54px; padding: 0 var(--credo-space-4); }
+
+.ao-segments { margin: var(--credo-space-4) var(--credo-space-6) var(--credo-space-6); }
+
+/* The two lists share one slot and crossfade on one clock. */
+.ao-lists { display: grid; }
+.ao-lists > .ao-orders { grid-area: 1 / 1; opacity: 0; transition: opacity 170ms var(--credo-ease-out); }
+.ao-lists > .ao-orders[data-active] { opacity: 1; }
+.ao-row-amount { flex: none; color: var(--credo-color-text-primary); font: var(--credo-type-receipt-value); letter-spacing: var(--credo-type-receipt-value-tracking); white-space: nowrap; }
+.ao-row-amount[data-paused] { color: var(--credo-color-text-secondary); }
+.ao-order { display: grid; grid-template-rows: 1fr; }
+.ao-order > div { min-height: 0; overflow: hidden; }
+/* A new order lands where it now lives: the row opens, then a brief highlight. */
+.ao-order[data-landed] { animation: ao-land 360ms var(--credo-ease-out) both; }
+.ao-order[data-landed] .credo-row { animation: ao-land-flash 900ms var(--credo-ease-out-quad) 240ms backwards; }
+@keyframes ao-land { from { grid-template-rows: 0fr; opacity: 0; margin-bottom: calc(-1 * var(--credo-row-gap, 12px)); } }
+@keyframes ao-land-flash { from { background-color: var(--credo-color-success-subtle); } to { background-color: transparent; } }
+.ao-new { position: absolute; left: 24px; right: 24px; bottom: 34px; }
+.ao-status { z-index: 0; }
+.ao-home-indicator { position: absolute; bottom: 8px; left: 128px; width: 134px; height: 5px; border-radius: 100px; background: #000; pointer-events: none; z-index: 3; }
+
+/* ---------- Leading icons (tinted circles from List row) ---------- */
+/* Provider logos fill the circle, no outline (Family). */
+.ao-logo { width: 40px; height: 40px; border-radius: 50%; }
+
+
+/* ---------- Tray presence and shell ---------- */
+.ao-backdrop { position: absolute; inset: 0; z-index: 1; background: var(--credo-color-bg-overlay); }
+.ao-presence { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.ao-backdrop[hidden], .ao-presence[hidden] { display: none; }
+.ao-titles { position: relative; display: block; height: var(--credo-type-title-leading); }
+/* Titles hold one position: opacity and the 2px blur only, no scale (China's
+   rule, transfer-motion.mjs; plan 011 W3). */
+.ao-title { --ao-scale: 1; position: absolute; top: 0; left: 0; white-space: nowrap; }
+/* Text swaps (Family / Loyalty): same clock, same curve, same place, so the
+   two opacities always add up to 1. No delay, no blank frame. */
+
+/* ---------- Main surface: a tray that grows into a full-screen setup ---------- */
+/* overflow: clip, not hidden: a hidden box can still be scrolled, and focusing
+   the search field scrolled the whole tray 86px, hiding its header. */
+.ao-surface { isolation: isolate; position: absolute; left: 0; bottom: 0; width: 390px; height: 788px; overflow: clip; border-radius: 0; background: var(--credo-color-bg-surface); outline: none; pointer-events: auto; }
+.ao-head { position: relative; height: calc(var(--credo-tray-header) - 1px); }
+/* Title line box centred on the close button's centre (close-inset + 40/2). */
+.ao-head__title { position: absolute; top: calc(var(--credo-tray-close-inset) + 20px - var(--credo-type-title-leading) / 2); left: var(--credo-tray-gutter); right: calc(var(--credo-tray-gutter) + 40px + var(--credo-space-4)); margin: 0; font: var(--credo-type-title); letter-spacing: var(--credo-type-title-tracking); }
+/* Same divider as the China tray: border/separator token, gutter insets, last pixel of the header. */
+.ao-head__divider { height: 1px; margin: 0 var(--credo-tray-gutter); background: var(--credo-color-border-separator); }
+/* Plan 005: the body is TRAY_MAX − HEAD tall and clipped at the footer line;
+   the feather is a composited 16px fade above that line (as .transfer-feather). */
+.ao-body { height: 708px; }
+.ao-feather { position: absolute; top: 0; left: 0; right: 0; z-index: 2; height: 16px; pointer-events: none; background: linear-gradient(to bottom, rgb(255 255 255 / 0), var(--credo-color-bg-surface)); }
+
+
+
+/* ---------- Step handoff: outgoing clears, incoming arrives ---------- */
+.ao-layers { position: relative; }
+/* Tray spacing standard (user decision 2026-11-14): the first visible edge of a
+   step sits 16px below the divider (--ao-content-top). The layer's 8px top
+   padding is part of that; each first element adds the rest, measured to what
+   you see (a row's icon, a field's fill, a text's letters), not its line box.
+   Amount, Number and Payment day are the named emphasis exception. */
+.ao-layer { --ao-scale: .96; --ao-content-top: var(--credo-tray-content-top); --ao-rest: calc(var(--ao-content-top) - var(--credo-space-2)); padding: var(--credo-space-2) 0 var(--credo-space-3); transform-origin: 50% 0; }
+/* List rows: the 40px leading sits 4px inside the 48px row. */
+.ao-layer > .ao-rows:first-child { margin-top: calc(var(--ao-rest) - var(--credo-list-row-inset)); }
+.ao-layer[data-keypad] { --ao-scale: .98; }
+/* One registered number per layer (0 hidden, 1 shown) moved by a transition, so
+   a reversal retargets from the current pose instead of restarting (plan 004).
+   Opacity, scale and blur derive from it: one clock, enter and exit
+   complementary (same 170 ms easeOut), blur peaking mid-swap like China
+   (8 * w * (1 - w), 2px at w = .5). */
+@property --ao-w { syntax: '<number>'; inherits: false; initial-value: 1; }
+.ao-layer, .ao-title {
+  --ao-w: 1;
+  opacity: var(--ao-w);
+  transform: scale(calc(var(--ao-scale, .96) + (1 - var(--ao-scale, .96)) * var(--ao-w)));
+  filter: blur(calc(8px * var(--ao-w) * (1 - var(--ao-w))));
+  transition: --ao-w var(--credo-duration-handoff-enter) var(--credo-ease-out);
+}
+.ao-layer[data-phase="out"], .ao-title[data-phase="out"] { --ao-w: 0; }
+/* Steps are different layouts in one space (keypad, list, receipt), so the
+   leaving step clears on its own 100ms exit instead of a complementary
+   crossfade that shows both at once (China plan 006 lesson, user decision
+   2026-11-16). Titles keep the shared 170ms crossfade: a title is always shown.
+   The arriving step keeps its 170ms entry, so a reversal turns back on it. */
+.ao-layer[data-phase="out"] { position: absolute; top: 0; left: 0; right: 0; pointer-events: none; transition-duration: var(--credo-duration-handoff-exit); }
+@starting-style { .ao-layer[data-phase="in"], .ao-title[data-phase="in"] { --ao-w: 0; } }
+/* Settled (first render or after arriving): no transform or filter at all, so the
+   step is not composited and its content lines up with the header to the pixel. */
+.ao-layer:is([data-phase="idle"], [data-phase="rest"]), .ao-title:is([data-phase="idle"], [data-phase="rest"]) { transform: none; filter: none; }
+@keyframes ao-in { from { opacity: 0; transform: scale(var(--ao-scale, .96)); filter: blur(2px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* ---------- Footer action ---------- */
+/* The button arrives like China's: up 4px from .98 on one 150 ms easeOutQuad
+   clock (transfer-motion.mjs actionPose; plan 011 W5). */
+.ao-footer { position: absolute; left: var(--credo-tray-gutter); right: var(--credo-tray-gutter); bottom: var(--credo-tray-home-inset); opacity: 0; transform: translateY(4px) scale(.98); pointer-events: none; transition: opacity 150ms var(--credo-ease-out-quad), transform 150ms var(--credo-ease-out-quad); }
+.ao-footer[data-shown] { opacity: 1; transform: none; pointer-events: auto; }
+/* Block, not inline: an inline button left 4px of line space under it, so it sat
+   at 38px instead of home-inset (34px) and the gap above it was 12, not 16. */
+.ao-footer > .ao-action { display: block; width: 100%; }
+.ao-action__status { display: inline-grid; width: 0; height: 20px; margin-right: 0; opacity: 0; transition: width 200ms var(--credo-ease-out), margin 200ms var(--credo-ease-out), opacity 150ms var(--credo-ease-out); }
+.ao-action__status[data-state="busy"], .ao-action__status[data-state="done"] { width: 20px; margin-right: var(--credo-space-2); opacity: 1; }
+.ao-action__status > svg { grid-area: 1 / 1; width: 20px; height: 20px; transition: opacity 150ms var(--credo-ease-out), transform 150ms var(--credo-ease-out), scale 150ms var(--credo-ease-out); }
+.ao-action__status .ao-action__check { opacity: 0; transform: scale(.6); color: var(--credo-color-success-solid); }
+/* Sending → success as in China (plan 011 W1): the spinner grows into its slot
+   from .6 and shrinks as the check grows into the same slot; the tick then
+   draws on with the circle (China's 100 110 dash, 180 ms, no delay). Timings matched to a
+   recording of China's button (user 2026-11-17: "Yes, match China").
+   The spinner uses `scale`, which composes with its spin (as in China). */
+.ao-action__status .ao-action__spinner { scale: .6; }
+.ao-action__status[data-state="busy"] .ao-action__spinner { scale: 1; }
+.ao-action__status[data-state="done"] .ao-action__spinner { opacity: 0; scale: .6; }
+.ao-action__status[data-state="done"] .ao-action__check { opacity: 1; transform: none; }
+.ao-action__tick { stroke-dasharray: 100 110; stroke-dashoffset: 100; transition: stroke-dashoffset 180ms var(--credo-ease-out); }
+.ao-action__status[data-state="done"] .ao-action__tick { stroke-dashoffset: 0; }
+.ao-action__status:not([data-state="busy"]) .ao-action__spinner { animation-play-state: paused; }
+
+/* ---------- Step content ---------- */
+/* Search field, code input and card art are shared components; placement only. */
+.ao-search { margin: var(--ao-rest) var(--credo-tray-gutter) var(--credo-space-3); }
+.ao-empty { margin: var(--credo-space-6); color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); text-align: center; }
+/* Same type as Amount Display's compact size, so the three keypad steps match. */
+/* Big-number step: the digits' letters start emphasis-top below the divider
+   (the layer's 8px padding and the line's half-leading are part of it). */
+.ao-number { margin: calc(var(--credo-tray-emphasis-top) - var(--credo-space-2) - (var(--credo-type-amount-leading) - var(--credo-type-amount-size)) * .85 / 2) var(--credo-tray-gutter) var(--credo-space-2); font-size: calc(var(--credo-type-amount-size) * .85); font-weight: var(--credo-type-amount-weight); line-height: calc(var(--credo-type-amount-leading) * .85); font-variant-numeric: var(--credo-type-amount-numbers); letter-spacing: var(--credo-type-amount-tracking); text-align: center; }
+.ao-number[data-empty] { color: var(--credo-color-text-disabled); }
+.ao-hint { display: flex; align-items: center; justify-content: center; gap: var(--credo-space-2); margin: 0 var(--credo-tray-gutter) var(--credo-space-4); color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); }
+.ao-hint--center { margin-top: var(--credo-space-1); }
+.ao-chip { flex-shrink: 0; white-space: nowrap; height: 28px; padding: 0 var(--credo-space-3); border: 0; border-radius: 999px; background: var(--credo-color-accent-subtle); color: var(--credo-color-accent-text); font: var(--credo-type-supporting); font-weight: var(--credo-type-receipt-edit-weight); }
+.ao-chip:disabled { opacity: .45; }
+.ao-keypad { margin: var(--credo-space-2) var(--credo-tray-gutter) 0; }
+.ao-key-hidden { visibility: hidden; }
+/* Big-number step: as .ao-number, for the full-size amount. */
+.ao-amount { margin: calc(var(--credo-tray-emphasis-top) - var(--credo-space-2) - (var(--credo-type-amount-leading) - var(--credo-type-amount-size)) / 2) 0 var(--credo-space-2); }
+/* Amount Display's own caption (as in China), centred under the amount. */
+.ao-amount + .credo-amount__caption { display: block; /* Optical: −4px tucks the caption under the digits. */ margin: -4px var(--credo-space-8) var(--credo-space-4); text-align: center; }
+/* Big-number step: the calendar starts emphasis-top below the divider. */
+.ao-day { padding: calc(var(--credo-tray-emphasis-top) - var(--credo-space-2)) var(--credo-tray-gutter) 0; }
+/* Emphasis (pending): calendar to slider. */
+.ao-day .ap-day-control { margin-top: 28px; }
+/* First checkbox: 12px row padding and a −3px mark offset sit above it.
+   The rows are the shared Consent list (components/consent-list.css). */
+.ao-checks { margin: calc(var(--ao-rest) - 9px) var(--credo-tray-gutter) 0; }
+/* Bottom: running text gets the reading gap (40). The layer's 12px bottom
+   padding and the footer's action-gap already give 28 of it. */
+.ao-terms { max-height: 566px; margin: 0 var(--credo-tray-gutter); padding: calc(var(--ao-rest) - (var(--credo-type-body-leading) - var(--credo-type-body-size)) / 2) 0 calc(var(--credo-tray-content-to-action-reading) - var(--credo-space-3) - var(--credo-tray-action-gap)); overflow: auto; color: var(--credo-color-text-secondary); font: var(--credo-type-body); }
+.ao-terms h3 { margin: var(--credo-space-1) 0 var(--credo-space-3); color: var(--credo-color-text-strong); font: var(--credo-type-option); }
+.ao-terms p { margin: 0 0 var(--credo-space-3); }
+.ao-terms p:last-child { margin-bottom: 0; }
+.ao-otp-copy { margin: calc(var(--ao-rest) - (var(--credo-type-supporting-leading) - var(--credo-type-supporting-size)) / 2) var(--credo-tray-gutter) var(--credo-space-4); color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); text-align: center; }
+.ao-otp { margin-bottom: var(--credo-space-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes ao-in { from { opacity: 0; } to { opacity: 1; } }
+  .ao-layer, .ao-title { transform: none; filter: none; }
+  /* Reduced motion keeps the plain complementary crossfade (as China does). */
+  .ao-layer[data-phase="out"] { transition-duration: var(--credo-duration-handoff-enter); }
+  .ao-footer { transition-property: opacity; }
+  .ao-order[data-landed] { animation: none; }
+  /* Spinner and check swap by opacity; the tick is simply there. */
+  .ao-action__status .ao-action__check { transform: none !important; }
+  .ao-action__status .ao-action__spinner { scale: none !important; }
+  .ao-action__tick { stroke-dashoffset: 0; transition: none; }
+}
+
+
+/* ---------- Simplified setup (iteration 3) ---------- */
+.ao-below { display: grid; place-items: center; min-height: 44px; margin: 0 var(--credo-tray-gutter); }
+.ao-found { display: grid; gap: var(--credo-space-1); margin: 0; text-align: center; animation: ao-in 170ms var(--credo-ease-out) both; }
+.ao-found strong { font: var(--credo-type-option); }
+.ao-found span { color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); }
+.ao-receipt { margin: 0 var(--credo-tray-gutter) var(--credo-space-2); }
+/* Review: the first row's tallest item (the 24px provider logo) starts 4px inside it. */
+.ao-layer > .ao-receipt:first-child { margin-top: calc(var(--ao-rest) - 4px); }
+.ao-receipt-logo { width: 24px; height: 24px; border-radius: 50%; }
+.ao-receipt-divider { height: 1px; margin: var(--credo-space-2) var(--credo-tray-gutter); border: 0; background: var(--credo-color-border-separator); }
+/* Pay from: a receipt row whose value is the control; the button's hit area covers the row. */
+.ao-pay-from { position: relative; }
+.ao-pay-from button { display: inline-flex; align-items: center; gap: var(--credo-space-2); padding: 0; border: 0; background: none; color: inherit; font: inherit; }
+.ao-pay-from button::after { content: ''; position: absolute; inset: 0; }
+/* Optical: −2px lines the chevrons' ink up with the right gutter. */
+.ao-pay-from__chevrons { margin-right: -2px; color: var(--credo-color-accent-text); }
+/* In the picker the card sits in the 40 px leading slot without a circle. */
+.ao-account-rows .credo-row__leading { overflow: visible; border-radius: 0; background: transparent; }
+.ao-link { position: relative; display: block; width: fit-content; margin: 0 var(--credo-tray-gutter) var(--credo-space-1); padding: var(--credo-space-2) 0; border: 0; background: none; color: var(--credo-color-accent-text); font: var(--credo-type-receipt-value); font-weight: var(--credo-type-receipt-edit-weight); }  /* China's inline action (Edit): receipt value type, edit weight 600 */
+/* Text links tap at 44px (user 2026-11-17: "make all text links 44px tall"). An invisible hit area, as on
+   China's Edit, so the visible 30px link and its spacing do not move; the link is only as wide as its text. */
+.ao-link::before { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 44px; transform: translateY(-50%); }
+
+
+/* Tune panel (debug): live controls for optical tweaks. Lab chrome, not app UI. */
+.ao-tune { position: fixed; right: 24px; bottom: 24px; z-index: 20; display: grid; gap: 10px; width: 260px; padding: 16px; border: 1px solid #e3e8ea; border-radius: 14px; background: #fff; box-shadow: 0 12px 32px rgb(23 35 40 / .12); color: #172328; font: 13px/1.4 "Inter", "Helvetica Neue", Arial, sans-serif; }
+.ao-tune label { font-weight: 600; }
+.ao-tune__row { display: flex; align-items: center; gap: 10px; }
+.ao-tune input[type="range"] { flex: 1; accent-color: #1e6e91; }
+.ao-tune output { min-width: 64px; font-variant-numeric: tabular-nums; text-align: right; }
+.ao-tune p { margin: 0; color: #6c7d84; font-size: 12px; }
+.ao-tune button { justify-self: start; padding: 6px 10px; border: 1px solid #d8e4e8; border-radius: 999px; background: #fff; color: #365362; font: inherit; font-weight: 600; }

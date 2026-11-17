@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import MySpaceStudy from '../../../components/MySpaceStudy';
 import './my-space.css';
 
@@ -8,5 +7,5 @@ export const metadata = {
 };
 
 export default function MySpacePage() {
-  return <><Link className="myspace-back" href="/">← All studies</Link><MySpaceStudy /></>;
+  return <MySpaceStudy />;
 }

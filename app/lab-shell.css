@@ -1,0 +1,36 @@
+/* Lab shell: one sidebar on every page; the page scrolls in .lab-main, which
+   is also the containing block for the studies' fixed toolbars. */
+.lab-shell { --lab-sidebar: 240px; min-height: 100dvh; }
+.lab-main { position: relative; height: 100dvh; margin-left: var(--lab-sidebar); overflow: auto; contain: layout; }
+
+.lab-sidebar { position: fixed; z-index: 50; inset: 0 auto 0 0; width: var(--lab-sidebar); overflow-y: auto; padding: 16px 12px 24px; border-right: 1px solid #e6e9ea; background: #fbfcfc; color: #172328; font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+.lab-sidebar__home { display: flex; align-items: center; gap: 10px; height: 40px; margin-bottom: 12px; padding: 0 10px; border-radius: 8px; color: #172328; font-size: 14px; font-weight: 600; letter-spacing: -.01em; text-decoration: none; }
+.lab-sidebar__mark { width: 18px; height: 18px; border-radius: 6px; background: linear-gradient(209deg, #1e6e91 -40%, #fc6250 110%); }
+.lab-sidebar__group + .lab-sidebar__group { margin-top: 20px; }
+.lab-sidebar__label { margin: 0 0 4px; padding: 0 10px; color: #7a8b92; font-size: 12px; font-weight: 500; }
+.lab-sidebar ul { margin: 0; padding: 0; list-style: none; }
+.lab-sidebar ul a { display: flex; align-items: center; min-height: 32px; padding: 0 10px; border-radius: 8px; color: #45575e; font-size: 14px; text-decoration: none; transition: background-color 120ms ease, color 120ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .lab-sidebar ul a:hover, .lab-sidebar__home:hover { background: #f0f3f4; color: #172328; }
+}
+.lab-sidebar a[aria-current="page"] { background: #e9eef0; color: #172328; font-weight: 500; }
+.lab-sidebar a:focus-visible { outline: 2px solid #1e6e91; outline-offset: 2px; }
+
+.lab-menu, .lab-scrim { display: none; }
+
+/* Narrow screens: the sidebar is a drawer behind a menu button. */
+@media (max-width: 899px) {
+  .lab-main { margin-left: 0; }
+  .lab-menu { position: fixed; z-index: 40; top: 24px; left: 16px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #e6e9ea; border-radius: 999px; background: #fff; color: #172328; }
+  .lab-menu path { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
+  .lab-sidebar { width: min(280px, 85vw); box-shadow: 0 16px 48px rgb(23 35 40 / .16); transform: translateX(-100%); visibility: hidden; transition: transform 240ms cubic-bezier(.32, .72, 0, 1), visibility 0s 240ms; }
+  .lab-sidebar[data-open] { transform: none; visibility: visible; transition: transform 240ms cubic-bezier(.32, .72, 0, 1); }
+  .lab-scrim { position: fixed; z-index: 45; inset: 0; display: block; background: rgb(0 0 0 / .3); opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+  .lab-scrim[data-open] { opacity: 1; pointer-events: auto; }
+}
+@media (max-width: 699px) { .lab-menu { top: 16px; left: 12px; } }
+@media (prefers-reduced-motion: reduce) {
+  .lab-sidebar, .lab-sidebar[data-open] { transition-duration: 0ms; }
+}
+/* Design-system pages lost their top nav bar; keep their heading clear of the menu button. */
+@media (max-width: 899px) { .lab-main .credo-type-page { padding-top: 72px; } }

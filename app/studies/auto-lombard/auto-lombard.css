@@ -1,0 +1,70 @@
+/* Auto lombard study (plan 007): the whole flow is one resizing tray. Stage,
+   tray shell, step handoff and the shared step styles (ao-rows, ao-amount,
+   ao-keypad, ao-receipt, ao-link, ao-otp…) come from payment-stage.css and
+   automatic-orders.css (TrayFlow); only what is new here is prefixed al-.
+   Each step's first visible content starts 16px below the divider
+   (--ao-rest: the layer's 8px padding plus 8). */
+.al-phone { background: var(--credo-color-bg-page); }
+
+/* ---------- Products tab ---------- */
+.al-products { position: absolute; inset: 0; }
+.al-products[hidden] { display: none; }
+/* Products: the shared Product Card grid (components/ProductCard.jsx); the study only places it. */
+.al-product-grid { margin: var(--credo-tray-content-top) var(--credo-tray-gutter) 0; }
+/* Above the tab bar (62px bar + 34px home inset). */
+.al-new { position: absolute; left: var(--credo-tray-gutter); right: var(--credo-tray-gutter); bottom: calc(96px + var(--credo-space-4)); }
+.al-new > button { display: block; width: 100%; }
+.al-tabs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; padding-bottom: var(--credo-tray-home-inset); border-top: 1px solid var(--credo-color-border-subtle); background: var(--credo-color-bg-page); }
+.al-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--credo-space-1); padding: var(--credo-space-2) var(--credo-space-1); color: var(--credo-color-text-secondary); font: 500 12px/16px var(--credo-typeface); }
+.al-tab[data-active] { color: var(--credo-color-accent-text); }
+.al-tab__icon { width: 24px; height: 24px; background: currentColor; mask: var(--tab-icon) center / 22px no-repeat; -webkit-mask: var(--tab-icon) center / 22px no-repeat; }
+
+/* ---------- Tray steps ---------- */
+/* Amount: one control between the amount and the keypad (Aave's Add Money). */
+.al-select-row { display: flex; justify-content: center; margin: var(--credo-space-1) 0 var(--credo-space-4); }
+.al-select { padding: 0; border: 0; background: none; font: inherit; }
+.al-select__visual { display: inline-flex; align-items: center; gap: var(--credo-space-1); height: 40px; padding: 0 var(--credo-space-3) 0 var(--credo-space-4); border-radius: 999px; background: var(--credo-color-accent-subtle); color: var(--credo-color-accent-text); font: var(--credo-type-receipt-value); font-weight: var(--credo-type-receipt-edit-weight); transition: transform var(--credo-duration-press) var(--credo-ease-out-quad); }
+.al-select[data-pointer-pressed] .al-select__visual { transform: scale(.97); }
+
+/* Lists */
+/* Companies: the logo fills the circle, no outline (decided List row rule). */
+.al-logo { width: 40px; height: 40px; border-radius: 50%; }
+.al-badge { flex: none; display: inline-flex; align-items: center; height: 24px; padding: 0 var(--credo-space-2); border-radius: 999px; background: var(--credo-color-success-subtle); color: var(--credo-color-success-solid); font: var(--credo-type-receipt-label); font-weight: 500; }
+/* The link under a list sits after the rows' 12px gap (ao-link). */
+.ao-rows + .ao-link, .al-consents + .ao-link { margin-top: var(--credo-space-2); }
+
+/* Uploads */
+.al-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--credo-space-3); margin: var(--ao-rest) var(--credo-tray-gutter) 0; }
+.al-video { margin: var(--ao-rest) var(--credo-tray-gutter) var(--credo-space-2); }
+/* Photos: three columns of compact slots so all ten fit the tray. */
+.al-photos { padding-top: calc(var(--ao-rest) - (var(--credo-type-receipt-label-leading) - var(--credo-type-receipt-label-size)) / 2); }
+.al-photo-group { margin: 0 var(--credo-tray-gutter); }
+.al-photo-group + .al-photo-group { margin-top: var(--credo-space-4); }
+.al-group-label { margin: 0 0 var(--credo-space-3); color: var(--credo-color-text-secondary); font: var(--credo-type-receipt-label); }
+.al-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--credo-space-3); }
+.al-grid .credo-upload__tile { height: 72px; }
+.al-slot { position: relative; }
+.al-slot__info { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--credo-color-accent-text); }
+.al-photos .ao-hint { margin: var(--credo-space-4) var(--credo-tray-gutter) 0; }
+
+/* Review (ao-receipt rows); Edit is China's inline action. */
+.al-edit { position: relative; padding: 0; border: 0; background: none; color: var(--credo-color-highlight-text); font: inherit; font-weight: var(--credo-type-receipt-edit-weight); }
+/* Edit taps at 44 x 44 without moving the row (same hit area as China's Edit; user 2026-11-17). */
+.al-edit::before { content: ''; position: absolute; top: 50%; left: 50%; width: max(100%, 44px); height: 44px; transform: translate(-50%, -50%); }
+
+/* Terms */
+.al-terms { margin: calc(var(--ao-rest) - (var(--credo-type-supporting-leading) - var(--credo-type-supporting-size)) / 2) var(--credo-tray-gutter) var(--credo-space-2); color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); }
+.al-terms p { margin: 0 0 var(--credo-space-3); text-wrap: pretty; }
+.al-consents { margin: 0 var(--credo-tray-gutter); }
+
+.al-guide { padding-top: var(--ao-rest); }
+.al-guide__image { display: block; width: calc(100% - 2 * var(--credo-tray-gutter)); height: auto; margin: 0 var(--credo-tray-gutter); border-radius: 16px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08); }
+.al-steps { margin: var(--credo-space-4) var(--credo-tray-gutter) var(--credo-space-2); padding-left: var(--credo-space-6); color: var(--credo-color-text-primary); font: var(--credo-type-supporting); }
+.al-steps li + li { margin-top: var(--credo-space-2); }
+.al-guide__text { margin: var(--credo-space-4) var(--credo-tray-gutter) var(--credo-space-2); color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); text-wrap: pretty; }
+.al-guide > .al-guide__text:first-child { margin-top: 0; }
+/* A text-only step (About insurance): the letters start 16px below the divider. */
+.ao-layer > .al-guide__text:first-child { margin-top: calc(var(--ao-rest) - (var(--credo-type-supporting-leading) - var(--credo-type-supporting-size)) / 2); }
+
+/* ---------- New product lists: the shared Option card; placement only ---------- */
+.al-options { padding: var(--ao-rest) var(--credo-tray-gutter) var(--credo-space-2); }

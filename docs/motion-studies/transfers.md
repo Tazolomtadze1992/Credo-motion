@@ -932,3 +932,595 @@ entry opacity0, status opacity1, spinner≈.410 and the original spring's329.711
 surface inset. The in-app browser became unavailable during frame capture;
 subsequent Chrome capture was interrupted by page state changing to Reset.
 No final transition screenshot or physical-device performance claim is made.
+
+### Typography pilot — 2026-11-11
+
+Family's use of a small number of text treatments per screen informed this
+Credo experiment. The shared role definitions are in `content/typography.js`
+and are shown at `/design-system`. Tray titles use 18/18
+at weight 550, option labels use 15/15 at weight 550, and primary actions
+use 18/18 at weight 550. All three roles use title case, including the CTA
+label morph. Supporting text uses 14/14 at weight 400. Receipt values use
+14/14 at weight 450. Edit shares that size and line height and defaults to
+weight 600, with its own dial under Receipt value. The amount display and keypad
+retain their dedicated numeric sizes.
+
+Choose amount relies on the tray title. Review uses an inline Edit action in
+the amount row, and the shared receipt sits in the same 314 px tray through
+confirmation, processing and success. This removes the earlier status resize
+that existed to collapse the extra details heading. The CTA morph and the
+other tray transition profiles remain in use.
+
+The typography pilot is implemented for review in Credo Motion Lab.
+
+### Preset spacing and receipt type
+
+Family’s [refuel tray sequence](https://60fps.design/shots/family-sequence-of-sheets-vary-in-height-interaction)
+shows a compact preset step before the taller custom keypad. Credo's preset
+tray uses a 358px surface, 60px tiles and 28px of space above and below the
+grid. Continue uses the disabled style until a preset is selected. The preset
+panel has room above its resting position during the existing motion, and
+the footer remains bottom-anchored. The content mask's footer feather recedes
+as presets or the receipt settle, keeping the lowest row fully visible.
+
+Receipt values use a shared role, including the amount, recipient, payment
+method and Edit. The visible gap between Edit and the amount is 6px and the
+Edit tap area extends left. The Credo palette uses the same blue and coral
+stops as the primary action for the Edit text gradient.
+
+The canvas uses DialKit's floating launcher, with the phone centered as the
+panel opens. The simulated submission uses the success outcome by default.
+
+### Edit returns to Custom Amount in the same tray
+
+Implemented the approved return plan in `plans/003-review-custom-return.md`.
+The receipt fades at its Review position over 65 ms as the same spring
+expands the tray. The live amount and caption follow the divider with a
+60–135 ms fade. The keypad stays in its bottom-anchored Custom position and
+fades as one group over 80 ms after the measured clearance opens. The
+Primary Button stays anchored as its label morphs.
+
+The return profile has its own DialKit timeline. In the local 60 fps scrub,
+the receipt stayed at y462, the amount appeared by 67 ms, and the first
+visible keypad sample at 150 ms fit fully above the footer. At 217 ms the
+keypad was at 99% opacity. The button held y586 and full opacity. The
+normal-speed flow preserved $12,345.67 through Edit and Success, and preset
+Edit preserved $500. The browser also verified keyboard Edit and exiting an
+early paused timeline. Controller assertions cover rapid reversal and
+reduced motion. Physical iPhone feel is pending.
+
+### Custom Amount and Review share a single editor fade
+
+The next pass addresses the amount and keypad reading as separate pieces.
+On Edit, the native amount, caption and keypad stay at their Custom anchors
+and use the same 80 ms fade after the divider clears the editor. On Continue,
+the editor fades in place over 55 ms before the existing spring contracts.
+The live value carries through the fade, including typed trailing zeros.
+Both titles share a baseline and use a 110 ms opacity handoff. The primary
+button keeps its anchor and label morph.
+
+The local DialKit scrub confirmed matching editor opacities, no visible
+clipping, and one title at a time. The editor was at 29% opacity at 167 ms
+and 99.9% at 233 ms on Edit. On Continue it was gone before the first
+contracting frame. Browser checks covered pausing and resuming the return,
+preserving `58.0` across repeated Edit, keyboard entry and simulated
+completion. Controller tests cover mid-transition reversal and reduced motion.
+
+### Coordinating the editor fade with the tray
+
+On Edit, the editor starts as soon as its aperture has room. The amount,
+caption and keypad travel together by up to 12 px, with the old receipt
+fading over 100 ms to shorten the empty beat. On Continue, the spring moves
+within the available editor clearance during the 40 ms exit. It carries
+that velocity into the rest of the contraction. The receipt enters when
+the divider is about 130 px from its resting content. The same-baseline
+title handoff now overlaps within an 85 ms window.
+
+In Chrome, the editor was already at 26% opacity at 133 ms on Edit and
+fully visible by 200 ms. On Continue, the tray had moved by the first
+17 ms sample and the editor cleared together above the footer. The receipt
+was visible at 117 ms, 101 px below the divider. Verified a paused-timeline
+handoff, repeated Edit and the preserved `58.0` draft. Controller tests
+exercise early reversals, keyboard entry and reduced motion. Touch feel
+on a physical iPhone remains unverified.
+
+### Overlapping the editor and review as the tray resizes
+
+The earlier clearance gates left both bodies invisible at 100 ms on Continue.
+The review title and button had already started to change. Frame review of
+Family's Send ↔ Confirm example showed the amount carrying attention while
+the keypad and confirmation details overlapped.
+
+The tray now springs directly to its next height. Both bodies follow the
+divider and overlap during the resize. The editor amount, caption, and keypad
+travel together. The two amount styles fade in their respective layouts.
+A short keypad mask softens the last visible digits at the fixed footer,
+and the receipt stays crisp. Reversals retain the rendered position, velocity,
+and opacities. Keyboard and reduced-motion entry switch the two layouts
+immediately.
+
+At the sampled 60 fps frames in both directions, one body stayed at or above
+57% opacity. The button stayed fixed throughout. Browser checks covered
+Alipay, WechatPay, a $49,999.99 entry, resuming a paused Edit transition,
+and simulated completion. Controller tests cover mid-flight reversal,
+early confirmation, and reduced motion. The motion is awaiting user review
+and has yet to be tried on a physical iPhone.
+
+### One visible amount through Custom Amount and Review
+
+The body overlap removed the empty tray and left two readable copies of the
+amount in the same frame. The title briefly faded away, and the primary
+button showed fragments of its two labels.
+
+Both directions now use a 145 ms content track with the existing body easing.
+The outgoing value stays fully visible as its supporting content fades. At
+the track midpoint, the incoming value, title, and complete button label
+take over on the same frame. The button action follows that switch. The
+amount keeps its existing position in each layout, and the tray still
+springs from its current position and velocity. Recipient and payment method
+fade in together on Continue. The amount and keypad begin their entrance on
+the same frame on Edit.
+
+In the browser's 60 fps scrub, each frame showed one fully visible value,
+title, and button label in both directions. The switch fell between the
+33 ms and 50 ms samples. The $2,508.0 draft survived closing a paused
+timeline and a subsequent live Edit. The simulated transfer completed.
+Controller checks sample at 120 fps and cover early reversal, reduced
+motion, and keyboard entry. Physical-device feel is pending user review.
+
+### Keep the amount movement close to each layout
+
+The first shared-amount experiment interpolated the two anchors inside the
+moving tray. The tray's height change added almost 300 px of vertical travel.
+The user rejected the resulting sweep. Family's full-screen reference has
+less vertical distance to cover.
+
+The editor now moves within 24 px of its resting position. Its amount scales
+from 96% as the caption and keypad fade in with it. The receipt stays within
+12 px of its resting position and fades as one unit, including Amount and
+Edit. The tray still resizes through its full distance. Opacity follows the
+available space in the tray. A keypad mask protects the space occupied by the
+fading receipt during the overlap.
+
+Browser scrubbing showed the amount and keypad at 66% opacity at 100 ms on
+Edit, with the receipt and Edit both at 15%. The button stayed fixed. Closing
+a paused timeline preserved the $2,508.0 draft. The forward flow completed
+the simulated transfer. Controller tests cover the movement bounds, reversal,
+early confirmation, keyboard entry, and reduced motion. This version is
+awaiting the user's feel review on their device.
+
+### Coordinate the receipt, keypad, and labels
+
+User feedback accepted the large amount entrance and flagged the rest of the
+transition. Browser scrubbing showed the receipt separating from its title
+and the keypad mask holding back the lower rows.
+
+The large amount uses the existing position, scale, and opacity. The receipt
+follows the tray with temporary clearance for the editor during the overlap.
+Amount and Edit fade with the receipt. All keypad rows share one transform
+and fade. The title and button change together using whole labels with a
+small shift. Early confirmation starts from the current receipt position
+and opacity.
+
+Checked Continue and Edit in the browser using $49,999.99, including the
+crossover frames and live simulated completion. The controller tests also
+cover early confirmation, reversal, keyboard entry, and reduced motion.
+The result is awaiting user review.
+
+### Align the Continue and Edit handoffs
+
+The earlier geometry threshold switched the labels at about 16 ms on
+Continue and 95 ms on Edit. The receipt also moved against the tray as its
+clearance offset receded. Both directions now share one reversible 176 ms
+timeline. The tray begins contracting while the editor is visible on
+Continue, and opens far enough for the editor before the same handoff on
+Edit. The amount keeps its 24 px movement limit and small scale change.
+The receipt clearance recedes over a wider part of the resize, keeping the
+receipt's motion in the same direction as the tray. Its contrast settles
+with the tray on Continue.
+
+A trial wipe showed fragments of both labels during the scrub. The title
+and button now soften briefly and switch as whole labels on a shared
+baseline when the new content takes focus. The primary action follows that
+switch. Interruptions retain the current pose and decelerate before turning.
+
+In the browser timeline, Continue switched at about 89 ms and Edit at about
+87 ms. Reviewed the crossover with $49,999.99 and ran both live directions
+with $2,508 through simulated confirmation. Tests cover monotone receipt
+motion, the shared timing, reversal, early confirmation and reduced motion.
+Physical-device feel is awaiting review.
+
+### Spread the tray travel across the full transition
+
+The user reported a heavy, glitchy feel. Browser scrubbing found that the
+176 ms version moved the tray 7 px in the first 50 ms of Continue, then
+95 px in one 60 Hz interval. The title and button label also dimmed as they
+changed. Scrubbing across the handoff moved keyboard focus to the dialog.
+
+This iteration uses one 208 ms surface curve. The editor and review hand off
+when the tray has clearance for the full amount line. The large amount keeps
+its local travel and scale. The keypad and receipt each fade as a group.
+The title and button switch as whole labels at full contrast, and the
+timeline retains keyboard focus during preview.
+
+The browser timeline showed a peak of about 36 px per 60 Hz interval in
+both directions. Inspected the crossover with $49,999.99, scrubbed across
+the view change with the arrow keys, and completed a simulated transfer
+after leaving a paused preview. Controller checks cover the editor's
+aperture, reversal, early confirmation, and reduced motion. The new pacing
+is awaiting user review on a physical device.
+
+### Rejected: Review as a separate layer — 2026-11-12
+
+A prototype tried Review as a second surface rising out of the primary
+button over the amount editor, first as a floating Family-style card and
+then as a separate full-width tray. The user rejected both. The card
+changed Credo's design. The second tray broke this study's core concept:
+one continuous tray that resizes while its content changes. The route was
+deleted. Lesson: apply Family's principles inside the existing single tray
+rather than copying the structure of a Family screen.
+
+### Experiment: Family handoff inside the single tray — 2026-11-12
+
+**Status:** experiment, off by default. The "Family: Off/On" switch at the
+bottom left of `/studies/transfers` (or `?handoff=family`) enables it.
+Awaiting the user's feel review. The design, the tray, its omega 32.5
+surface spring, and every other transition are unchanged.
+
+**Problem and evidence.** Stepping the current version 25 ms at a time
+showed the preset path superimposing the grid and receipt at about 50 ms
+in both directions. On the custom path, Continue cut the editor at about
+40 ms and then showed an oversized empty tray. Edit grew the tray with the
+old receipt for about 150 ms before the keypad appeared over it.
+
+**Decision and scope.** Applied the Family Drawer recipe from the `animate`
+skill: one surface whose height changes while its content crossfades with
+scale 0.96 and a 2 px blur peak. The surface spring is unchanged.
+- Choose Amount ↔ Review: the outgoing body fades in 90 ms; the incoming
+  body starts at 40 ms and fades over 150 ms. Both use 0.96 scale, no
+  directional shift, and `[.23,1,.32,1]`. This replaces the 1.025
+  scale-up and the crisp overlap.
+- Custom Amount ↔ Review: no sweep (the user rejected about 300 px of
+  amount travel). Each body follows the tray edge only within the approved
+  24 px of its resting slot, so the edge covers or uncovers it. Exit 100 ms;
+  entry 180 ms after 30 ms. The amount and its caption appear together
+  once the amount line clears the header.
+- Continue ↔ Confirm Transfer uses the Torph label morph on both paths.
+
+**Verification.** Chrome, paused clock stepped 25 ms. Preset Continue: grid
+only at 25 ms, faint blurred handoff at 50 ms, Review settled by 125 ms.
+Preset Edit: the same in reverse, with the $200 ring back by 150 ms.
+Custom Continue: no hard cut, receipt in its slot by about 75 ms, settled
+by 150 ms. A short white gap above the receipt remains around 75 ms while
+the spring finishes. Custom Edit: amount and caption appear together at
+about 100 ms, settled by 150 ms. Tests (26) cover opt-in profiles, bounded
+travel at 120 fps, pose-preserving reversal and switching the variant
+off, and the production build passes. Not checked: OS reduced motion in
+the browser, a physical iPhone, and the DialKit timeline preview for the
+new profiles. The title crossfade still briefly shows both titles,
+blurred, at about 50 ms on the custom path.
+
+#### Revision: remove the jumps — 2026-11-12
+
+**User feedback:** with Family on, things bounced and did "weird stuff".
+**Evidence:** a per-frame trace of the controller at 120 fps showed the
+24 px edge-following rule jumped the editor 24 px down within 25 ms on
+Continue, and then drifted the receipt 24 px between about 150 and 300 ms,
+after the handoff had finished. Edit mirrored this. A caption-reveal gate
+also popped the amount from 0 to 92% opacity in one frame. The preset path
+had no direction reversals.
+**Change:** both bodies on the custom path now stay exactly at their resting
+slots (editor 64 px, receipt 362 px), the reveal gate is removed (the rising
+edge uncovers the amount), and the editor pair scales from 0.98 instead
+of 0.96. Lesson: in a resizing tray, a body that follows the edge for only
+part of the travel reads as a jump plus a late drift; either ride the edge
+or stay fixed.
+**Verification:** the trace shows constant body positions throughout; the
+browser 25 ms steps show no jump or drift in either custom direction. A
+brief white band above the arriving receipt remains around 50–100 ms on
+Continue. Tests (26) pass. Awaiting the user's feel review.
+
+#### Revision: content rides the resizing tray — 2026-11-12
+
+**User feedback:** much better, but on Custom Amount → Review the rows
+appeared at their final position while the tray resized around them; the
+content should move with the tray. The user asked for Choose Amount →
+Custom Amount, Custom Amount → Review and Edit to be reviewed together.
+**Evidence (120 fps trace):** Choose Amount → Custom Amount still used the
+original profile. Both bodies were at about half opacity together at 25–50 ms,
+the grid scaled up to 1.025 as it left, and the amount slid 64 px relative to
+the tray (its compact offset was blended during the transition).
+**Change (Family handoff only):** every body now rides the tray's top
+edge exactly, like the header. The amount line is attached rigidly (always
+64 px above the tray offset). The Family profile now also covers Choose
+Amount ↔ Custom Amount: the grid exits in 90 ms at 0.96, and the keypad
+enters from 0.98 after 40 ms over 180 ms. On Continue the keypad fades
+over 220 ms while it rides down, filling the shrinking tray under the
+arriving receipt. Because the amount shares its slot with the receipt rows
+and the preset grid, its opacity uses only the upper half of the keypad
+weight: it clears by about 25 ms and arrives at about 75 ms, never overlapping.
+Lesson (this study): in a resizing tray, either ride the edge rigidly or
+stay fixed; content that appears in place while the tray resizes reads as
+detached from it.
+**Verification:** the trace shows every body's position equal to the tray
+offset on every frame, with no relative slide. Browser 25 ms steps for
+all three interactions showed no text-on-text, no empty tray, and settling by
+about 150 ms. Tests (26) cover riding, the rigid amount, no amount/receipt
+overlap, and reversal. The title crossfade still shows both titles,
+blurred, for about one frame around 50 ms. Awaiting the user's feel review.
+
+#### Revision: one tray title at a time — 2026-11-12
+
+**User request:** fix the remaining title overlap. **Change (Family handoff
+only):** each tray title's opacity uses the upper half of its title weight,
+so a title is visible only while it holds the larger share. The outgoing
+title clears by about 35 ms and the incoming one starts at about 45 ms, in step
+with the body handoff; the 8 px title shift and the small blur remain.
+**Verification:** a 120 fps trace of all six amount/custom/review directions
+showed zero frames with both titles above 2% opacity. A new test asserts
+this for five directions. Browser 25 ms steps on Custom Amount → Review
+showed one title per frame. Tests (27) and the production build pass.
+Awaiting the user's feel review.
+
+### Equal receipt row spacing — 2026-11-12
+
+**User request (screenshot of Transfer Status):** Amount → Recipient was
+looser than Recipient → Pay with; use the Recipient → Pay with spacing.
+**Cause:** the Amount row had `min-height: 44px` so Edit was 44 px tall; the
+other rows are 32 px. **Change:** all rows are 32 px. Edit is 32 px tall and
+keeps its ≥44 px hit area through its existing `::before`. The summary gains
+6 px top padding so the first row stays where it was. The receipt tray
+(Review, processing, success) is 308 px instead of 314 px, so the gap from
+the last row to the button is unchanged.
+**Verification (browser, 390 px canvas):** row centres 32 px apart on both
+gaps, divider → Amount text 36 px (unchanged), Pay with → button 25 px
+(unchanged), Edit hit area 59 px at the current phone scale. Tests (27)
+pass. Applies with Family handoff on and off.
+
+### Full-flow review fixes (Family handoff) — 2026-11-12
+
+**User request:** review the whole flow, then implement all fixes.
+**Evidence:** a 120 fps trace of 12 transitions, plus browser checks.
+Closing (Transfer Sent, ✕, backdrop) hid the tray and backdrop in one
+frame, and reopening from Recent transfer appeared in one frame.
+Review → Transfer Status showed both titles for 8 frames. The first switch
+and method ↔ amount still overlapped titles. Reduced motion overlapped titles
+for 8–9 frames. The recent-transfer row appeared behind the backdrop at
+Confirm.
+**Changes (all behind the Family switch; Off is unchanged):**
+- Pointer close slides the tray down by its visible height
+  (240 ms, `cubic-bezier(.32,.72,0,1)`) and fades the backdrop (200 ms),
+  then closes. Reopening from Recent transfer reverses it (320 ms tray,
+  240 ms backdrop). Reduced motion uses a 150 ms opacity fade. Escape and
+  Reset stay instant (keyboard/study controls). The tray ignores pointer
+  input while closing; leftover animations are cancelled before paint.
+- One tray title at a time on every step, including Confirm and the
+  approved first switch (its body crossfade is unchanged), and under
+  reduced motion.
+- The recent-transfer row stays hidden while the tray is open and appears
+  as it closes (60 ms delay, 8 px rise, 200/240 ms), with a one-time
+  surface-quiet → canvas highlight over 900 ms. This applies the guide's
+  "connect progress to its outcome".
+**Not changed:** the Torph label fragments mid-morph, and content finishing
+about 100 ms before the tray settles. Both were "watch on a device first"
+with no measured defect.
+**Verification:** the trace shows zero title-overlap frames across all
+12 transitions, with and without reduced motion. Browser 40/100/200 ms
+steps showed the close slide, the backdrop fade, the activity reveal and the
+reopen rise; it ended hidden with no leftover animations or pointer lock.
+No console errors. Tests (27) now cover titles in ten directions. Not
+checked: physical iPhone, failure/pending results.
+
+### Secondary sending and light success, Family-style (Family handoff) — 2026-11-12
+
+**User request:** after Confirm, the button should become the secondary button
+for sending and then succeed the way Family's status pill does (user's
+recording of Warning → Analyzing → Safe), with Family-like spinner, check and
+smoother text swaps. The user chose Family's light success look (light green,
+green label, solid green check) over the solid green success.
+**Reference observations (60 fps frame steps of the recording):** each
+handoff runs about 230–250 ms, evenly paced. Words swap as words: the
+outgoing word fades with a slight blur, the shared word ("Transaction")
+slides to its new place, the new word fades in after it. Surface and text
+colours blend continuously. The old icon shrinks while the new one grows
+into the same slot; the check settles from about 75% to full size.
+**Changes (Family on; Off unchanged):**
+- New token `feedback/success/fill` #E2F3E6 (green label 4.96:1). The
+  design-system Secondary success now uses it with a green label and a solid
+  green check with a white tick.
+- The transfer button blends continuously with the state weights: gradient
+  with white label → secondary fill with blue label (sending) → light green
+  with green label (success).
+- The spinner follows the label colour (20% track, solid arc), grows in from
+  0.6, and shrinks as the check grows into the same slot. The tick still draws on.
+- Torph: 300 ms on `cubic-bezier(.25,1,.5,1)` instead of 160–200 ms expo-out
+  (which put nearly all movement into the first ~40 ms). Exiting words blur
+  to 2 px. The trailing "…" is a separate element that fades with sending,
+  so Torph keeps "Transfer" as a shared word instead of morphing
+  "Sending" letters across it into "Sent" (seen at 40–120 ms before the fix).
+**Verification:** browser 40/80/120/200 ms steps of Confirm → Sending and
+Sending → Transfer Sent showed no letter crossing, a continuous colour handoff,
+and the spinner → check handoff in one slot. Design-system Secondary success
+checked. Tests (27) pass, no console errors. Not checked: physical iPhone,
+reduced motion in the browser (Torph respects it; colours still blend).
+
+### Family handoff becomes the only version — 2026-11-12
+
+**User decision:** the Family handoff version is much better; remove the old
+one, make this the default and drop the switch. The approved first switch
+(options ↔ payment method) and method → amount body motion are unchanged.
+**Removed:** the "Family: On/Off" switch and `?handoff=family`. In the
+controller: the earlier Custom Amount ↔ Review editor swap (its own clock,
+the receipt clearance and keypad nudges, whole-label switching), the earlier
+Choose Amount ↔ Review and ↔ Custom Amount profiles (1.025 scale-up, crisp
+overlap), and the gradient → solid-green status fill. Earlier sections of
+this study that describe those mechanisms are now history, not current
+behaviour.
+**Fixed while consolidating:** an early Confirm during Custom → Review
+squared the receipt's opacity for a frame (an old compensation from the removed swap).
+With reduced motion, the amount line now also never overlaps the receipt
+or preset text. A quick reversal no longer snaps a hidden body's scale
+(about 0.1%).
+**Verification:** a per-frame dump of every painted style across 12
+transitions and reversals matched the Family version exactly in normal
+motion. Under reduced motion, only the amount handoffs differ (the
+intended non-overlap fix). Codex's controller test was rewritten for the
+current behaviour (riding, rigid amount, secondary sending, light success,
+ellipsis, early Confirm, reduced-motion non-overlap). Tests (27) and the
+production build pass. A normal-speed browser run of the full flow (custom
+amount → Review → Sending → Transfer Sent → close) worked with no console
+errors.
+
+### Text swaps without a blank frame — 2026-11-12
+
+**User report:** titles, headings and similar text crossfaded badly. At some
+moments the old text had reached 0 opacity before the new text appeared, so
+the tray title was empty (screenshot). Category rows did not have this
+problem. The user pointed to Family's swaps and the Loyalty text swap as good
+examples.
+
+**Evidence:**
+- **Family** (user's 60 fps screen recording, Wallet Details / Select Icon /
+  Use Emoji trays): "Use Emoji" → "Wallet Details" is an overlapping crossfade
+  in one place over about 5–6 frames (≈90 ms). Both titles are at partial
+  opacity mid-swap, and there is never a frame without a title. Bodies overlap
+  the same way.
+- **Loyalty** (user-approved): complementary opacity (`1 − p` / `p`) from a
+  shared start over 160 ms. Both rows follow one anchor.
+- **China transfer:**
+  - Tray titles used `smooth((w − .5) / .5)`, the "one title at a time"
+    revision earlier the same day. A controller trace showed about 7 frames at
+    120 fps (~58 ms) with combined title opacity under 0.6, on 13 of 14
+    transitions (all except processing → success). The 8 px opposing title
+    slide also made any overlap read as two offset copies.
+  - The Family body handoff (fast exit, 40 ms-delayed entry) dropped the two
+    bodies' combined opacity to 0.09–0.38 on amount ↔ custom ↔ review.
+  - The amount line used the same upper-half rule.
+  - The category rows were already complementary, which is why they looked
+    right.
+
+**Change (lib/transfer-motion.mjs; durations and curves unchanged):**
+- Titles use their weight directly: complementary opacity on one clock, with
+  no opposing slide (`transform: none`). The 2 px blur peak stays as the
+  bridge.
+- In the separate-exit body handoff, the outgoing body may not fall below
+  `1 − incoming`. It still never lingers longer than its own exit, and the
+  approved entry timing is unchanged.
+- The amount line follows the editor body's opacity.
+- Button labels are out of scope; they keep their own animation.
+
+**Lesson (supersedes "one tray title at a time"):** for a swap in one place,
+keep the two opacities summing to 1 and share one clock and one position. Keep
+the overlap short (about 90–100 ms), and do not separate exit and entry in
+time. Exit-before-enter leaves a blank; opposing slides make the overlap
+legible as two copies.
+
+**Verification:**
+- Controller trace across 14 transitions, normal and reduced motion: the
+  minimum combined title opacity is 1.00, with no blank frames. Both titles are
+  above 10% for 10–12 frames at 120 fps (83–100 ms). The minimum combined body
+  opacity is 1.00.
+- Live browser (real taps, 60 Hz sampling), method → amount, amount → custom,
+  custom → review and confirm → status: 0 blank title frames, and 4–6 frames
+  with both titles. Bodies never dipped.
+- Tests updated for the new invariant: 38 pass. The build passes.
+
+**Status:** awaiting the user's feel review.
+
+#### Follow-up from /review-animations — 2026-11-12
+
+**Review finding (verdict Block, small):** after the complementary fix, the
+Family handoff's 40 ms `fadeDelay` no longer separated exit from entry. It held
+the outgoing body at 100% for about 33 ms after the tap, a response delay. The
+body also crossed 50% at 67 ms while the title crossed at 50 ms, because titles
+used the default `easeOutQuad` and bodies used the handoff `easeOut`.
+
+**User decision:** apply both fixes.
+
+**Change:** the Family handoff profiles use `fadeDelay: 0`, and the title clock
+uses `tween.profile.ease`. Durations are unchanged.
+
+**Verification (controller trace, 120 fps):**
+- Amount ↔ custom ↔ review: title and body both cross 50% at 25 ms, and the
+  outgoing body starts changing on the tap. The baseline steps are unchanged
+  (42/42 ms).
+- No blank frames on any of the 14 transitions, with or without reduced
+  motion. The two titles overlap for 6 frames (50 ms) on the handoff steps.
+- Custom → review keeps its approved 220 ms keypad exit, so the combined body
+  opacity there briefly exceeds 1. The invariant is "never below 1".
+- Tests: 38 pass, and the build passes.
+
+Not re-checked on a physical device. Awaiting the user's feel review.
+
+### Full-flow /review-animations fixes — 2026-11-12
+
+**Review (verdict Block):**
+1. Failure, pending and retry used `contentMove` `[.26,.08,.25,1]` over
+   270 ms. The new content was only 12% visible at 33 ms, against 46–73%
+   elsewhere, and finished at 242 ms.
+2. The tray ran on four content clocks: `easeOutQuad` 130 ms, the handoff
+   `easeOut` 150/180 ms, `easeOutExpo` 200 ms and `contentMove` 270 ms.
+3. The footer feather rewrote `mask-image` every frame, causing 16–33
+   repaints on method → amount, amount → custom and the result steps.
+
+**User decision:** apply all three.
+
+**Change:**
+- Every content profile uses `curves.easeOut` `[.23,1,.32,1]`; titles follow
+  `profile.ease`.
+- Approved durations are kept: first switch 130 ms, handoff 150/180 ms,
+  receipt 200 ms. Results and retry now use 180 ms.
+- The feather is a 16 px tray-coloured overlay (`.transfer-feather`) moved
+  with `transform` and faded with `opacity`. Its position and strength are
+  unchanged.
+- The unused `contentMove` token was removed. `MOTION.bodyEase` is gone.
+
+**Verification (controller trace, 120 fps):**
+- New content is 60–79% visible at 33 ms on every step. Results finish at
+  117 ms.
+- Mask string changes: 0 on every transition.
+- No blank title or body frames on 14 transitions, with or without reduced
+  motion. Titles overlap for 5–6 frames.
+- Browser: the overlay sits in the content mask at 626 px with opacity 1 on
+  the options list (as before), the mask is `none`, and there are no console
+  errors.
+- Tests: 38 pass, and the build passes.
+
+**Still to check on a device:** panel blur cost on large layers, content
+finishing before the tray settles, and Torph label fragments.
+
+**Status:** awaiting the user's feel review.
+
+
+### Shared components own their type — 2026-11-13
+
+The Credo type for Keypad, Amount display (and caption) and List row moved
+from `.transfer-phone` rules in transfers.css into the components. The review
+summary now renders the shared **Receipt rows** component, keeping the
+`transfer-review-*` classes and the Edit / total markup the motion controller
+uses. A 282-element computed-style comparison before and after showed no
+difference in this study. Context: [automatic orders](automatic-orders.md).
+
+- **User decision (2026-11-14): tray spacing standard.** The first visible content of a step starts 16 px below the divider (was 20–35 px: rows 24, amount tiles 28, review text 35). `PANEL_TOP` 100 → 96 and `CONTENT_HEADROOM` 88 → 84 (same 12 px headroom); row panels sit 4 px higher for the row's inner padding; the amount panel lost its 8 px top padding; the review summary starts 9 px above the slot so its first label lands on 16 px. View heights shrank by the same amounts (options 370, china 254, amount 346, custom 608, receipt 289, failure/pending 496), so the gap above the button is unchanged (amount 28 px, review 25 px measured). Motion unit (116) and every duration/curve are unchanged. Two tests now derive the custom money offset from `VIEWS.custom.height` instead of assuming 0. Not yet re-checked by eye in motion: amount ↔ review and custom ↔ review handoffs.
+- **Fix (2026-11-14):** the tray title is centred on the X (it sat 1 px high).
+- **Spacing tokens, phase 2 (2026-11-14):** `PANEL_TOP`, `CONTENT_HEADROOM` and the footer reserve come from `content/spacing.mjs`; the title, divider, content slot, row panels, method row, amount line and button use the `--credo-tray-*` / `--credo-list-*` variables. View heights stay numbers (they follow each view's content). Re-measured: identical.
+- **Off-grid values (2026-11-14, user approved):** review Edit↔amount gap 6 → 8 px (`space-2`); currency chip padding 5/8 → 4/8 px. Kept and commented as optical: template copy gap 2 px, Templates heading 1 px.
+- **Approved (2026-11-14; value picked by Claude, kept by the user):** Custom Amount's digits start `tray/emphasis-top` (32 px) below the divider (was 22). `MONEY_LIFT` = 64 − (32 − 16 − 6) = 54 replaces the 64 px lift on Custom Amount pairs; the keypad padding follows (+10) and the custom view is 10 px taller (618), so the gap above the button is unchanged (32 px). Failure/pending keep the line under the method row. Amount ↔ Custom and Custom ↔ Review handoffs not yet watched at full speed.
+- **Fix after animation review (2026-11-14):** the amount line's emphasis shift is no longer a hard-coded 6 px half-leading in two places. JS lifts the line by `MONEY_REST_GAP` (64, named) and sets `--transfer-money-lift` (0 → 1); CSS adds `--transfer-amount-emphasis-shift` = emphasis-top − content-top − (amount leading − amount size) / 2, and the keypad padding is `--transfer-keypad-gap` (100, named) + the same shift. Measured: digits at 32 px with the default amount type and with the line height tuned to 60 px; amount box → keypad 48 px by default. The Custom Amount tray height stays 618 (it does not follow live tuning).
+- **Approved (2026-11-14, after /debug-animation "custom ↔ review feels heavy"; user: "Lighter, keep it"):** diagnosis by frame recording: the fades finish by ~150 ms, but the tray's 329 px move (the longest in the flow) crept its last 10–20 px for ~130 ms on the shared tray spring (ω 32.5), and the first frame could jump ~30% when the tap blocked the page for 20–40 ms (dev build). Change: Custom Amount ↔ Review only uses `EDITOR_OMEGA` = 42. Measured (3 runs each way, from the tap): 90% at 113–125 ms, 97% at 147–159 ms, within 1 px at 208–224 ms (ω 32.5 in theory: 97% ≈ 195 ms, 1 px ≈ 280 ms with the same tap delay). Durations, curves, blur and scale unchanged. Open: start-lurch (tap delay) not yet checked in a production build.
+- **Observation (2026-11-14, production build on port 4174):** each step change blocks the tap for 13–23 ms (dev 9–30 ms); the tray's first movement lands 28–33 ms after the tap and jumps 0–12% (ω 42). Cause, measured: `setMode` → `selectTimeline` destroys and rebuilds the DialKit timeline scrubber on every step (≈4,800 DOM mutations, mostly `.dialkit-slider*`), even while the timeline is hidden, and it runs after the spring's clock has started. This is lab tooling, not product motion, but it is in every tap we judge by feel. Not fixed yet.
+- **Fix (2026-11-14, user approved):** the DialKit timeline scrubber is rebuilt only while it is shown and the tray is at rest (deferred out of the tap; a running tray schedules it from its last frame), never inside a step change. Production build, 4 runs each way: tap handler 13–23 → 3–7.5 ms, DOM changes per tap ~4,800 → ~90; the tray moves on the next frame. With the timeline open, it still shows the right pair after the tray settles, and frame-stepping (`,` / `.`) still previews. Product motion unchanged. User, after trying it: "Feels much lighter now." Lesson: judge feel with lab tooling out of the tap path; a hidden debug panel cost more than the motion did.
+- **User decision → plan 006 (2026-11-16):** "content fades out late and new and old … are overlapping and both seen" on Custom Amount ↔ Review. Measured before: the complementary floor (outgoing ≥ 1 − incoming, the 2026-11-12 rule) kept both bodies above 15% for ~50 ms (peak 0.51 / 0.58), with the amount line over the receipt rows; Continue's exit was 220 ms (longer than the 180 ms entry). Change, this pair only: `coverFloor: false` and `exitMs: 100` both ways; the amount line follows the editor's own exit. Titles, the button morph, the other amount pairs and reduced motion keep the complementary rule. Expected (computed): outgoing below 0.15 by ~33 ms; body sum dips to ~0.75 for ~30 ms while the tray, header, title and button stay fully visible. Verified by the controller test at 120 fps (sum ≥ 0.7; old body < 0.1 from ~42 ms, both directions); live browser recording (real taps, 60 Hz): one frame each way with both bodies above 15% (Continue 0.36 / 0.40 at ~36 ms, then 0.11 / 0.67; Edit 0.21 / 0.54), before 3–4 frames peaking at 0.51 / 0.58; body sum minimum 0.75–0.76; title sum 1.00 on every frame. **User, after trying it: "Much better, keep it" (approved).** Lesson: complementary opacity suits swaps of similar things in one place (titles, rows); for two different layouts in the same space it guarantees a frame of both, so let the old one leave on its own short exit.
+- **Fix (2026-11-16, user request):** the tray X now steps back on every step that has a previous one (china, amount, custom, review) and closes only on the first step (options), as in Automatic orders and the navigation-and-closing pattern; its label reads "Back" or "Close transfer". Escape already did this. The behaviour now lives in the Tray component (`onBack` + `onClose`, logic in `lib/tray-close.mjs`, tested), so a flow cannot wire the X differently. Checked: review → custom → amount → china → options → closed.
+- **User request (2026-11-16):** the screen behind the tray is now the Credo home screen from Figma ("Home", node 63:3281 in the design-system file), rebuilt in code (`components/TransferHome.jsx`, `components/transfer-home.css`) in English by the user's choice. Its assets are in `public/assets/home/`. The Transfer quick action opens the tray (with the drawer open animation on a tap); the other actions are inert demo content. Status bar text and icons are white over the dark top. Removed the old "International Transfers" page header, Templates and the "Recent transfer" row (the latter reopened a finished transfer's status; Reset study still restarts the flow). Measured against Figma: nav y 53, content 127, cards 191, actions 359, sheet 479, offers 681 (the actions row keeps Figma's 96 px though the English labels fit on one line).
+
+## One motion family — 2026-11-17 (plan 011, built, not yet reviewed)
+
+No China value changed. Tray open and close now call the shared `animateTrayPresence`
+(`lib/tray-presence.mjs`), with the same keyframes, durations and curves (checked in the browser:
+open 320 ms drawer, close 240 ms drawer, backdrop 240 / 200 ms easeOut). The outgoing-word blur
+moved from `.transfer-primary` to every Primary button. Under reduced motion the processing spinner
+now turns at half speed instead of stopping. China's tuned handoff pairs are documented as
+exceptions to the new `handoffExit` 100 / `handoffEnter` 170 tokens. The receipt still waits for a
+tap; making it close by itself was left for the user (plan 011 D1).
+

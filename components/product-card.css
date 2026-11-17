@@ -1,0 +1,21 @@
+/* Credo product card (moved from the auto lombard study, 2026-11-17).
+   120 tall: 32px between glyph and name (user, 2026-11-16). Names are white
+   (4.5:1 on every category colour); the detail is white at 75% (user, "Go
+   quieter", 2026-11-17); badges use a dark tint so white text passes. */
+.credo-product-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--credo-space-3); }
+.credo-product-card { display: block; height: 120px; padding: 0; border: 0; background: none; font: inherit; text-align: left; }
+.credo-product-card__visual { position: relative; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: var(--credo-space-4); border-radius: 20px; background: var(--product-color); color: var(--credo-color-text-on-accent); transition: transform var(--credo-duration-press) var(--credo-ease-out-quad); }
+.credo-product-card[data-pointer-pressed] .credo-product-card__visual { transform: scale(.97); }
+.credo-product-card__text { display: flex; flex-direction: column; gap: var(--credo-space-1); min-width: 0; }
+.credo-product-card__text strong { font: var(--credo-type-option); white-space: nowrap; }
+.credo-product-card__text span { overflow: hidden; color: rgb(255 255 255 / .75); font: var(--credo-type-receipt-label); text-overflow: ellipsis; white-space: nowrap; }
+.credo-product-card__badge { position: absolute; top: var(--credo-space-3); right: var(--credo-space-3); display: inline-flex; align-items: center; height: 24px; padding: 0 var(--credo-space-2); border-radius: 999px; background: rgb(0 0 0 / .18); font: var(--credo-type-receipt-label); font-weight: 500; }
+/* A new badge lands where the person is looking (plan 010 G3, user 2026-11-17):
+   it fades in and grows from .9 at its own corner. No card highlight. */
+.credo-product-card__badge { transform-origin: top right; transition: opacity 240ms var(--credo-ease-out), transform 240ms var(--credo-ease-out); }
+@starting-style { .credo-product-card__badge { opacity: 0; transform: scale(.9); } }
+.credo-product-card:focus-visible { outline: 2px solid var(--credo-color-border-focus); outline-offset: 3px; border-radius: 20px; }
+@media (prefers-reduced-motion: reduce) {
+  .credo-product-card__visual { transition: none; transform: none !important; }
+  .credo-product-card__badge { transform: none; transition: opacity var(--credo-duration-reduced) linear; }
+}

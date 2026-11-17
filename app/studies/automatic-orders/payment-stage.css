@@ -1,0 +1,49 @@
+/* Stage, toolbar, status bar and Payment day calendar styles (ap-*), kept from
+   the archived Automatic payments study for Automatic orders. Calendar and
+   slider text use the display, eyebrow and supporting type tokens. */
+.ap-stage { min-height: 100dvh; display: grid; place-items: center; padding: 88px 12px 24px; background: #eef2f3; }
+.ap-tools button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border: 1px solid #d8e4e8; border-radius: 999px; background: #ffffffef; color: #42616d; font-size: 13px; font-weight: 600; text-decoration: none; }
+.ap-tools { position: fixed; top: 24px; right: 24px; display: flex; gap: 8px; z-index: 10; }
+.ap-tools button { gap: 7px; }
+.ap-tools button[aria-pressed="true"] { background: #e2ecef; border-color: #c5d7dd; }
+.ap-tools button:focus-visible { outline: 2px solid #1e6e91; outline-offset: 3px; }
+.ap-holder { width: calc(var(--device-width) * var(--phone-scale)); height: calc(var(--device-height) * var(--phone-scale)); }
+.ap-status-bar { position: absolute; top: 18px; left: 24px; right: 20px; display: flex; justify-content: space-between; align-items: center; height: 22px; }
+.ap-status-bar b { font-family: -apple-system, sans-serif; font-size: 17px; font-weight: 600; }
+.ap-status-bar > div { display: flex; align-items: center; gap: 5px; }
+.ap-calendar { --calendar-width: 152px; --paper-height: 110px; --half-height: 55px; position: relative; width: var(--calendar-width); height: 152px; margin: 0 auto; isolation: isolate; }
+.ap-calendar-stack { position: absolute; inset: 4px 1px -4px; border-radius: 26px; background: #fff; box-shadow: 0 1px 2px #00000008; z-index: -1; }
+.ap-calendar-stack--back { inset: 7px 3px -7px; background: #fafafa; box-shadow: 0 2px 4px #00000006; }
+.ap-calendar-header { position: relative; height: 42px; display: grid; place-items: center; border-radius: 26px 26px 0 0; background: linear-gradient(#fc6859, #f45b50); color: white; font: var(--credo-type-eyebrow); letter-spacing: var(--credo-type-eyebrow-tracking); text-transform: var(--credo-type-eyebrow-case); z-index: 2; }
+.ap-calendar-body { position: relative; height: var(--paper-height); border-radius: 0 0 26px 26px; background: #fff; perspective: 1000px; box-shadow: 0 0 0 1px #00000003, 0 2px 4px #00000006, 0 12px 22px #00000005; }
+.ap-calendar-half { position: absolute; left: 0; width: 100%; height: var(--half-height); overflow: hidden; background: #fff; }
+.ap-calendar-half--top { top: 0; }
+.ap-calendar-half--bottom { top: var(--half-height); border-radius: 0 0 26px 26px; }
+.ap-calendar-copy { display: flex; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; width: var(--calendar-width); height: var(--paper-height); margin: 0; color: #171717; font: var(--credo-type-display); letter-spacing: var(--credo-type-display-tracking); white-space: pre-line; font-variant-numeric: var(--credo-type-display-numbers); }
+.ap-calendar-half--bottom .ap-calendar-copy { top: calc(-1 * var(--half-height)); }
+.ap-calendar-copy[data-last="true"] { color: transparent; font-size: calc(var(--credo-type-display-size) * .325); line-height: 1; letter-spacing: var(--credo-type-display-tracking); background: repeating-linear-gradient(90deg, #e9e9e9 0 3px, transparent 3px 6px) right 18px top 29px / 32px 2px no-repeat, repeating-linear-gradient(90deg, #e9e9e9 0 3px, transparent 3px 6px) left 18px bottom 29px / 32px 2px no-repeat; }
+.ap-calendar-copy[data-last="true"]::before, .ap-calendar-copy[data-last="true"]::after { position: absolute; color: #171717; }
+.ap-calendar-copy[data-last="true"]::before { content: 'Last'; top: 17px; left: 18px; }
+.ap-calendar-copy[data-last="true"]::after { content: 'Day'; right: 18px; bottom: 17px; }
+.ap-calendar-leaf { position: absolute; top: 0; left: 0; width: var(--calendar-width); height: var(--half-height); transform-origin: center bottom; transform-style: preserve-3d; visibility: hidden; pointer-events: none; z-index: 2; }
+.ap-leaf-face { position: absolute; inset: 0; overflow: hidden; background: #fff; backface-visibility: hidden; box-shadow: 0 1px 3px #00000007; }
+.ap-leaf-front { background: linear-gradient(#fff 75%, #fdfdfd); }
+.ap-leaf-back { transform: rotateX(180deg); border-radius: 0 0 26px 26px; }
+.ap-leaf-back .ap-calendar-copy { top: calc(-1 * var(--half-height)); }
+.ap-leaf-shade { position: absolute; inset: 0; background: linear-gradient(transparent, #383030); opacity: 0; pointer-events: none; }
+/* The fold is visible at the paper edges, never drawn through the numeral. */
+.ap-calendar-seam { position: absolute; top: calc(var(--half-height) - .5px); left: 0; right: 0; height: 1px; background: linear-gradient(90deg, #00000006, transparent 28%, transparent 72%, #00000006); pointer-events: none; z-index: 100010; }
+.ap-day-control { margin: 36px var(--credo-space-3) 0; }
+.ap-slider { position: relative; height: 32px; }
+.ap-slider-track { position: absolute; top: calc(50% - 3px); left: 16px; right: 16px; height: 6px; border-radius: 999px; background: #eee; overflow: hidden; pointer-events: none; }
+.ap-slider-track > div { width: 100%; height: 100%; transform-origin: left; transform: scaleX(0); background: #fc6250; }
+.ap-slider input { position: absolute; top: 50%; display: block; appearance: none; width: 100%; height: max(44px, var(--control-hit)); transform: translateY(-50%); padding: 0; margin: 0; border: 0; border-radius: 12px; background: transparent; cursor: ew-resize; touch-action: pan-y; }
+.ap-slider input::-webkit-slider-runnable-track { height: 6px; background: transparent; }
+.ap-slider input::-webkit-slider-thumb { appearance: none; width: 32px; height: 32px; margin-top: -13px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px #0000000a, 0 3px 10px #0000000d; }
+.ap-slider input::-moz-range-track { height: 6px; background: transparent; }
+.ap-slider input::-moz-range-thumb { width: 32px; height: 32px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px #0000000a, 0 3px 10px #0000000d; }
+.ap-slider-labels { display: flex; justify-content: space-between; margin: var(--credo-space-2) var(--credo-space-4) 0; color: var(--credo-color-text-secondary); font: var(--credo-type-receipt-label); }
+.ap-demo-note { position: fixed; bottom: 24px; left: 24px; color: #7a8b92; font-size: 11px; pointer-events: none; }
+.ap-slider input:focus-visible { outline: 2px solid #ee6256; outline-offset: 4px; }
+@media (max-width: 699px) { .ap-stage { padding-top: 152px; } .ap-tools { left: 12px; right: 12px; top: 72px; justify-content: center; gap: 6px; } .ap-tools button { padding: 0 10px; font-size: 12px; } .ap-demo-note { position: absolute; top: 126px; bottom: auto; left: 18px; } }
+

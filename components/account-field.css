@@ -1,0 +1,9 @@
+/* Credo account field (from the "From · My card" reference). */
+.credo-account-field { display: flex; align-items: center; gap: var(--credo-space-3, 12px); width: 100%; min-height: 80px; margin: 0; padding: var(--credo-space-4, 16px); border: 0; border-radius: 16px; background: var(--credo-color-accent-subtle); color: var(--credo-color-text-strong); font-family: inherit; text-align: left; transition: transform var(--credo-duration-press, 150ms) var(--credo-ease-out-quad, ease-out); }
+.credo-account-field:is([data-pointer-pressed], [data-pressed]) { transform: scale(.97); }  /* family press (plan 011 W10); data-pressed is the design-system preview */
+@media (prefers-reduced-motion: reduce) { .credo-account-field { transition: none; transform: none !important; } }
+.credo-account-field__text { display: flex; flex: 1; flex-direction: column; gap: var(--credo-space-1, 4px); min-width: 0; }
+.credo-account-field__text small { color: var(--credo-color-text-secondary); font: var(--credo-type-supporting, 400 13px/16px var(--credo-typeface, sans-serif)); }
+.credo-account-field__text span { overflow: hidden; font: 500 17px/22px var(--credo-typeface, sans-serif); text-overflow: ellipsis; white-space: nowrap; }
+.credo-account-field__amount { flex: none; font: 600 17px/22px var(--credo-typeface, sans-serif); font-variant-numeric: tabular-nums; }
+.credo-account-field__chevrons { flex: none; color: var(--credo-color-accent-text); }

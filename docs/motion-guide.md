@@ -39,7 +39,11 @@ An interaction should read as one understandable change. Establish a new
 surface before revealing detail when that helps explain an unfamiliar space.
 Do not apply that sequence mechanically to every interaction: an in-place
 content swap can need simultaneous movement and overlapping fades. The loyalty
-study demonstrates why a gap between outgoing and incoming content can fail.
+study demonstrates why a gap between outgoing and incoming content can fail. The China transfer
+confirmed it on 2026-11-12. For text that swaps in one place (titles,
+headings), the user rejected a gap, and Family's own swaps overlap briefly. Keep
+the two opacities complementary on one clock, in one position, for about
+90–100 ms.
 
 ### Keep gestures connected to input
 
@@ -96,13 +100,35 @@ defaults.
   review; a card surface expands while its illustration and action persist.
 
 - [China transfer: one continuous tray](motion-studies/transfers.md) —
-  approved initial switch; amount presets/custom entry, review, simulated
-  processing and result extend the same motion family. Extension awaiting review.
+  approved initial switch. The user chose the Family-drawer handoffs
+  (content rides the resizing tray, one title at a time, animated close,
+  secondary sending → light success button) as the only version on
+  2026-11-12; the earlier variant and its switch were removed. A separate
+  Review layer was tried and rejected: it broke the single resizing tray.
 
-- [Automatic payments: payment day](motion-studies/automatic-payments.md) —
+- [Automatic payments: payment day](motion-studies/automatic-payments.md) — **archived 2026-11-13** (removed from the lab; Automatic orders covers the flow and reuses its payment-day calendar; files in `archive/automatic-payments/`). Originally:
   a spring-resized tray and a reversible monthly calendar. The initial multi-page
   flip was rejected after rapid-drag failures; its single-fold replacement is
   awaiting user feel review. See the study for the half-page consistency checks.
+
+- [Automatic orders: one resizing tray](motion-studies/automatic-orders.md) —
+  experiment awaiting user review (2026-11-13). The Family-style rebuild of the
+  ავტომატური დავალებები flow, in English, with one decision per step. The
+  user moved it from tray → full screen back to a single tray once the steps
+  were simplified.
+
+- [Auto lombard: entry tray into a full-screen flow](motion-studies/auto-lombard.md) —
+  static screens (plan 007, step 1) awaiting user review (2026-11-16). The car-pawn
+  loan path rebuilt in the design system, keeping the user's video and VIN guides.
+
+- [One motion family (plan 011)](../plans/011-one-motion-family.md) — China transfer, Automatic orders and
+  Auto lombard audited together on 2026-11-17 and brought onto one spec (§4 of the plan). Built the same
+  day while the user was away; **not yet reviewed**. Every new rule is Proposed in the Motion handoffs pattern.
+
+- [Family and Aave bottom trays for Credo](family-aave-bottom-trays.md) —
+  design reference and three full automatic-payment setup experiments at
+  `/prototypes/automatic-payments` (archived 2026-11-13 to `archive/automatic-payments/prototypes/`). The experiments reuse the payment-day
+  controller and are awaiting user review.
 
 ## How this guide grows
 
@@ -137,3 +163,57 @@ the frame was toggled twice. At390×844 the transfer frame and all three toolbar
 buttons fit without horizontal overflow. Normal viewport restored afterward.
 All11 tests and the production build pass. Browser console showed no warnings
 or errors. Device-frame screenshots are saved under `/tmp/credo-*-phone-frame.png`.
+
+## Motion tokens — 2026-11-12
+
+The user asked to name the motion values the China transfer and Automatic
+payments flows share. They now live in `content/motion.mjs`: six curves
+(easeOut, easeOutExpo, easeOutQuad, drawer, textSwap, contentMove; contentMove was
+removed on 2026-11-12 after the full-flow review moved every content curve to easeOut), the tray
+spring (ω 32.5, critically damped) and nine durations (press, digitMorph,
+textSwap, trayOpen, trayClose, backdropIn, backdropOut, reduced, spinner).
+JavaScript imports them; CSS reads `--credo-ease-*` and `--credo-duration-*`,
+set once on `<html>` from the same module. The design system's Motion page plots
+each curve and plays it at the duration it is used with.
+
+**Status:** a refactor, not a new tuning decision. No value changed. Computed CSS
+transitions on the transfer screen matched a before-snapshot exactly. The tray
+close still runs 240 ms on the drawer curve, with the backdrop at 200 ms on
+easeOut. `tests/motion-tokens.test.mjs` pins every value, so changing one is a
+visible, deliberate edit; all 30 tests and the production build pass.
+
+**Scope and limits:** the tokens are the tuned values these two flows share, not
+defaults every new screen must use. Pick a token because it fits the new
+interaction's purpose and distance; keep timings that belong to one interaction
+(handoff delays, the payment-day release spring, the activity reveal) with that
+interaction. Loyalty and My Space still use their own constants and were not
+migrated.
+
+## Tray flow family — 2026-11-17
+
+The user asked to audit China transfer, Automatic orders and Auto lombard and make them one
+animation family, then to build the whole plan without waiting for approvals (they were away).
+Plan 011 holds the audit, the family spec (§4) and the build log.
+
+**What changed (built, not yet reviewed):** keyboard actions are instant in the two TrayFlow flows,
+as in China; titles no longer scale; the shared footer button now has China's sending → success
+(spinner grows, tick draws, words blur) and China's arrival (4 px, .98, 150 ms); tray presence is
+one helper (`lib/tray-presence.mjs`) used by all three flows, and its reduced-motion fade is on
+`ease` everywhere; the handoff default became two tokens (`handoffExit` 100, `handoffEnter` 170);
+Automatic orders lands its new order after the tray has closed; spinners slow to half speed under
+reduced motion instead of freezing; the segmented control keeps its colour fade under reduced
+motion; the account field presses at .97 like everything else.
+
+**Choices made on the plan's recommendation, not by the user:** D1 (one self-closing ending for
+Automatic orders and lombard; China's tap-to-close receipt kept), D2 (China's button arrival), D3
+(handoff tokens). All are Proposed until the user looks.
+
+**Observed, not decided:** keyboard focus was dropping to `<body>` after a step change (Escape
+then stopped working) and the opener was not refocused after a close because the screen behind was
+still inert. Both are fixed (`useKeepFocus`, refocus after the re-render).
+
+**Unresolved:** feel. Nothing here was recorded side by side or tried on an iPhone yet.
+
+**Two engines remain by design.** China keeps its own controller; TrayFlow is the engine for new
+flows. The family is the shared spec, tokens and components, not one code path.
+

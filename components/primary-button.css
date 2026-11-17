@@ -1,0 +1,99 @@
+.credo-primary-button {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 32px;
+  appearance: none;
+  background: transparent;
+  color: var(--credo-color-text-on-accent);
+  font: var(--credo-type-action);
+  letter-spacing: var(--credo-type-action-tracking);
+  text-transform: var(--credo-type-action-case);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.credo-primary-button__visual, .credo-primary-button__surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.credo-primary-button__surface {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--credo-space-2, 8px);
+  padding-inline: var(--credo-space-4, 16px);
+  overflow: hidden;
+  background: var(--credo-color-button-primary-bg);
+  transition: transform var(--credo-duration-press) var(--credo-ease-out-quad);
+}
+
+.credo-primary-button[data-success="true"] .credo-primary-button__surface {
+  background: var(--credo-color-success-solid);
+}
+
+.credo-primary-button:disabled { cursor: default; }
+.credo-primary-button:disabled:not([data-busy="true"]) .credo-primary-button__surface {
+  opacity: var(--credo-action-primary-disabled-opacity);
+}
+
+.credo-primary-button:enabled:is([data-pointer-pressed], :active:not([data-managed-press])) .credo-primary-button__surface {
+  transform: scale(.97);
+}
+
+.credo-primary-button:enabled:is(:focus-visible, [data-preview-focus]) {
+  outline: 2px solid var(--credo-color-border-focus);
+  outline-offset: 3px;
+}
+
+.credo-primary-spinner, .credo-primary-check { flex: 0 0 20px; width: 20px; height: 20px; }
+.credo-primary-spinner { stroke: currentColor; stroke-width: 2; animation: credo-primary-spin var(--credo-duration-spinner) linear infinite; }
+.credo-primary-spinner circle { opacity: .2; }
+.credo-primary-check path { stroke: var(--credo-color-success-solid); }
+@keyframes credo-primary-spin { to { transform: rotate(360deg); } }
+/* Outgoing Torph words soften as they fade, like Family's text swaps (China,
+   moved here for every flow's button; plan 011 W1). */
+.credo-primary-button [torph-item] { transition: filter 160ms var(--credo-ease-out); }
+.credo-primary-button [torph-exiting] { filter: blur(2px); }
+
+/* Secondary variant: same geometry, states and motion; secondary colours.
+   Success uses the light green surface with a green label and check. */
+.credo-primary-button[data-variant="secondary"] { color: var(--credo-color-accent-text); }
+.credo-primary-button[data-variant="secondary"] .credo-primary-button__surface {
+  background: var(--credo-color-accent-subtle);
+}
+.credo-primary-button[data-variant="secondary"][data-success="true"] { color: var(--credo-color-success-solid); }
+.credo-primary-button[data-variant="secondary"][data-success="true"] .credo-primary-button__surface {
+  background: var(--credo-color-success-subtle);
+}
+/* Solid green circle with a white tick on the light success surface. */
+.credo-primary-button[data-variant="secondary"] .credo-primary-check path { stroke: var(--credo-color-text-on-accent); }
+
+/* Blend: a flow changes variant (primary → secondary while busy) and success
+   in place, and the fill crossfades. Each fill is its own full-size layer and
+   the outgoing one fades to 0, so at rest nothing shows through the rounded
+   edge (one opaque overlay on the gradient left a thin gradient outline). */
+.credo-primary-button[data-blend] { transition: color 200ms var(--credo-ease-out); }
+.credo-primary-button[data-blend] .credo-primary-button__surface { background: none; isolation: isolate; }
+.credo-primary-button[data-blend] .credo-primary-button__surface::before,
+.credo-primary-button[data-blend] .credo-primary-button__surface::after { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; transition: opacity 200ms var(--credo-ease-out), background-color 240ms var(--credo-ease-out); }
+.credo-primary-button[data-blend] .credo-primary-button__surface::before { background: var(--credo-color-button-primary-bg); }
+.credo-primary-button[data-blend] .credo-primary-button__surface::after { background-color: var(--credo-color-accent-subtle); opacity: 0; }
+.credo-primary-button[data-blend][data-variant="secondary"] .credo-primary-button__surface::before { opacity: 0; }
+.credo-primary-button[data-blend][data-variant="secondary"] .credo-primary-button__surface::after { opacity: 1; }
+.credo-primary-button[data-blend][data-success="true"] .credo-primary-button__surface::after { background-color: var(--credo-color-success-solid); opacity: 1; }
+.credo-primary-button[data-blend][data-success="true"] .credo-primary-button__surface::before { opacity: 0; }
+.credo-primary-button[data-blend][data-variant="secondary"][data-success="true"] .credo-primary-button__surface::after { background-color: var(--credo-color-success-subtle); }
+
+@media (prefers-reduced-motion: reduce) {
+  .credo-primary-button__surface { transition: none; transform: none !important; }
+  .credo-primary-button[data-blend], .credo-primary-button[data-blend] .credo-primary-button__surface::before,
+  .credo-primary-button[data-blend] .credo-primary-button__surface::after { transition-property: opacity, background-color, color; }
+  /* A spinner is state: it slows to half speed instead of freezing (plan 011 W8). */
+  .credo-primary-spinner { animation-duration: calc(var(--credo-duration-spinner) * 2); }
+  .credo-primary-button [torph-exiting] { filter: none; }
+}

@@ -1,0 +1,26 @@
+/* Ramps (plan 009): one row of 11 steps per hue. */
+.color-ramp { margin: 0 0 24px; }
+.color-ramp h3, .color-roles h3 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 10px; font-size: 15px; text-transform: capitalize; }
+.color-ramp h3 small { color: var(--credo-color-text-secondary); font-size: 12px; font-weight: 500; text-transform: none; }
+.color-ramp__steps { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; margin: 0; padding: 0; list-style: none; }
+.color-ramp__steps li { display: flex; flex-direction: column; justify-content: space-between; min-height: 64px; padding: 8px; border-radius: 10px; background: var(--swatch); }
+.color-ramp__steps strong { font-size: 13px; line-height: 16px; }
+.color-ramp__steps code { overflow: hidden; font-size: 12px; line-height: 16px; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 900px) { .color-ramp__steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Roles: one row each — swatch, name, step, use. */
+.color-roles + .color-roles { margin-top: 24px; }
+.color-roles h3 { text-transform: none; }
+.color-roles ul { margin: 0; padding: 0; list-style: none; border-radius: 14px; background: var(--credo-color-bg-page); }
+.color-roles li { display: grid; grid-template-columns: 28px minmax(0, 180px) minmax(0, 100px) minmax(0, 1fr); align-items: center; gap: 12px; padding: 10px 14px; font-size: 13px; line-height: 18px; }
+.color-roles li + li { border-top: 1px solid var(--credo-color-border-subtle); }
+.color-roles__swatch { width: 28px; height: 28px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08); background: linear-gradient(var(--swatch), var(--swatch)), repeating-conic-gradient(#e4e8ea 0% 25%, #fff 0% 50%) 0 0 / 8px 8px; }
+.color-roles strong { font-weight: 600; overflow-wrap: anywhere; }
+.color-roles code, .color-roles small { color: var(--credo-color-text-secondary); font-size: 13px; }
+@media (max-width: 640px) {
+  .color-roles li { grid-template-columns: 28px minmax(0, 1fr) auto; row-gap: 2px; }
+  .color-roles small { grid-column: 2 / -1; }
+}
+
+/* Category: the Product Card component, wider grid on this page. */
+.color-categories { grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); }

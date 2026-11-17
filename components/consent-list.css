@@ -1,0 +1,8 @@
+/* Credo consent list. Rules moved unchanged from Automatic orders (.ao-check). */
+.credo-consents { display: grid; }
+.credo-consent { position: relative; display: grid; grid-template-columns: 26px 1fr; align-items: start; gap: var(--credo-space-3); padding: var(--credo-space-3) 0; font: var(--credo-type-option); line-height: var(--credo-type-supporting-leading); cursor: pointer; }
+.credo-consent input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+/* Optical: −3px centres the checkbox on the label's first line. */
+.credo-consent .credo-select { margin-top: -3px; }
+.credo-consent > span:last-child { text-wrap: pretty; }
+.credo-consent input:focus-visible + .credo-select { outline: 2px solid var(--credo-color-border-focus); outline-offset: 2px; }

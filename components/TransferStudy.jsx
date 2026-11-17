@@ -1,56 +1,56 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FormatOn, ThousandStyle, formatValueForDisplay } from 'numora';
 import { TextMorph } from 'torph';
-import TransferAmountInput from './TransferAmountInput';
+import AmountDisplay from './AmountDisplay';
+import Keypad from './Keypad';
+import usePointerPress from './usePointerPress';
+import Tray from './Tray';
+import CredoIcon from './Icon';
+import ListRow from './ListRow';
+import ReceiptRows from './ReceiptRows';
+import TransferTypographyPanel from './TransferTypographyPanel';
+import TransferHome from './TransferHome';
 import IPhoneFrame, { PhoneFrameToggle } from './IPhoneFrame';
-import { CURRENCY, CURRENCY_SYMBOL, MAX_AMOUNT, RECIPIENT_NAME, PRESETS, VIEWS, VIEW_KEYS, METHODS, backTarget, amountToMinor, editAmount, formatAmount, simulateTransfer } from '../lib/transfer-flow.mjs';
+import PrimaryButton, { PrimaryButtonCheck, PrimaryButtonSpinner } from './PrimaryButton';
+import { ACTION_COPY, STATUS_ACTION_COPY, CURRENCY, CURRENCY_SYMBOL, MAX_AMOUNT, RECIPIENT_NAME, PRESETS, VIEWS, VIEW_KEYS, METHODS, backTarget, amountToMinor, editAmount, formatAmount, simulateTransfer } from '../lib/transfer-flow.mjs';
 import { createTransferMotion } from '../lib/transfer-motion.mjs';
+import { animateTrayPresence } from '../lib/tray-presence.mjs';
+import { cubicBezier, durations } from '../content/motion.mjs';
+import { credoTypographyStyle } from '../content/typography';
+import { credoColorStyle } from '../content/colors';
 
 const asset = (name, format = 'svg') => `/assets/transfers/${name}.${format}`;
 const amountFormat = { formatOn: FormatOn.Change, thousandSeparator: ',', decimalSeparator: '.', thousandStyle: ThousandStyle.Thousand };
 
+// Transfer icons: Credo icon names and size tiers. The China pagoda and
+// status bar glyphs have no library equivalent and stay as files.
+const ICON = {
+  add: ['add', 'content'], back: ['back', 'nav'], close: ['close', 'small'],
+  chevron: ['chevron-right', 'trailing'], delete: ['chevron-right', 'nav'], zap: ['lightning', 'badge'],
+  account: ['bank', 'leading'], card: ['card', 'leading'], international: ['globe', 'leading']
+};
+
 function Icon({ name }) {
+  if (ICON[name]) {
+    const [credoName, size] = ICON[name];
+    return <CredoIcon name={credoName} size={size} className={`transfer-icon transfer-icon--${name}`} />;
+  }
+  // The pagoda is single-colour artwork: drawn as a mask so it takes the
+  // row's brand icon colour.
+  if (MASKED.has(name)) return <span className={`transfer-icon transfer-icon--mask transfer-icon--${name}`} style={{ '--transfer-icon-src': `url(${asset(name)})` }} aria-hidden="true" />;
   return <img src={asset(name)} alt="" draggable="false" />;
 }
+const MASKED = new Set(['china']);
 
-function Templates() {
-  return <section className="transfer-templates" aria-label="Transfer templates">
-    <h2>Templates</h2>
-    <div className="transfer-favourites">
-      <div className="transfer-favourite">
-        <div className="transfer-add"><Icon name="add" /></div>
-        <span>Add<br />template</span>
-      </div>
-      {[
-        ['david', 'David Sarajishvili', null, null],
-        ['home', 'Home', '#2, Vaja Psh..', 'homeBadge'],
-        ['dad', 'Dad', '595 14 21 42', 'dadBadge'],
-        ['anastasia', 'Anastasia', null, null]
-      ].map(([image, name, description, badge]) => <div className="transfer-favourite" key={image}>
-        <div className="transfer-avatar">
-          <img className={`transfer-portrait transfer-portrait--${image}`} src={asset(image, 'png')} alt="" />
-          {badge && <img className="transfer-template-badge" src={asset(badge, 'png')} alt="" />}
-        </div>
-        <div className="transfer-template-copy"><span title={name}>{name}</span>{description && <small>{description}</small>}</div>
-      </div>)}
-    </div>
-  </section>;
-}
 
+// A transfer option: Credo's list row with the transfer icon set.
 function TransferRow({ icon, children, tone, fast, onClick, payment }) {
-  const contents = <>
-    <span className={`transfer-row-icon${tone ? ` transfer-row-icon--${tone}` : ''}`}>
-      {payment ? <img src={asset(icon, 'png')} alt="" width="40" height="40" /> : <Icon name={icon} />}
-    </span>
-    <span className="transfer-row-label">{children}</span>
-    {fast && <span className="transfer-fast"><span>Fast</span><Icon name="zap" /></span>}
-    <span className="transfer-chevron"><Icon name="chevron" /></span>
-  </>;
-  return onClick
-    ? <button className="transfer-row transfer-row--interactive" type="button" onClick={onClick}><span className="transfer-row-visual">{contents}</span></button>
-    : <div className="transfer-row"><span className="transfer-row-visual">{contents}</span></div>;
+  return <ListRow tone={tone} onClick={onClick}
+    leading={payment ? <img src={asset(icon, 'png')} alt="" width="40" height="40" /> : <Icon name={icon} />}
+    badge={fast && <span className="transfer-fast"><span>Fast</span><Icon name="zap" /></span>}
+    trailing={<Icon name="chevron" />}>{children}</ListRow>;
 }
 
 
@@ -71,15 +71,15 @@ function StatusIcon({ kind }) {
 }
 
 const STATUS_COPY = {
-  processing: ['Sending your transfer', 'Your transfer details are being confirmed.'],
-  success: ['Transfer successful', 'Your transfer has been completed.'],
-  failure: ['Transfer wasn’t completed', 'Review your details and try again.'],
-  pending: ['Waiting for confirmation', 'You can close this window and check back.']
+  processing: ['Sending Your Transfer', 'Your transfer details are being confirmed.'],
+  success: ['Transfer Successful', 'Your transfer has been completed.'],
+  failure: ['Transfer Wasn’t Completed', 'Review your details and try again.'],
+  pending: ['Waiting for Confirmation', 'You can close this window and check back.']
 };
-const ACTION_COPY = { continue: 'Continue', confirm: 'Confirm transfer', sending: 'Processing…', done: 'Done', retry: 'Review transfer', check: 'Check status' };
 
 export default function TransferStudy() {
   const [framed, setFramed] = useState(true);
+  const [typographyOpen, setTypographyOpen] = useState(false);
   const [screen, setScreen] = useState('options');
   const [method, setMethod] = useState('alipay');
   const [preset, setPreset] = useState(null);
@@ -87,9 +87,10 @@ export default function TransferStudy() {
   const [amountMotion, setAmountMotion] = useState(false);
   const [source, setSource] = useState('amount');
   const [reviewOrigin, setReviewOrigin] = useState('amount');
-  const [demoOutcome, setDemoOutcome] = useState('success');
   const [record, setRecord] = useState(null);
-  const holderRef = useRef(null), sheetRef = useRef(null), resetRef = useRef(null);
+  const [closing, setClosing] = useState(false);
+  const backdropRef = useRef(null), trayAnimationsRef = useRef([]), pendingOpenRef = useRef(false);
+  const holderRef = useRef(null), phoneRef = useRef(null), sheetRef = useRef(null), resetRef = useRef(null);
   const stageRef = useRef(null), timelineButtonRef = useRef(null), controllerRef = useRef(null);
   const requestRef = useRef(null), mountedRef = useRef(false), draftRef = useRef(null);
   const isOpen = screen !== 'closed';
@@ -97,17 +98,22 @@ export default function TransferStudy() {
   const statusView = ['processing', 'success', 'failure', 'pending'].includes(screen);
   const displayedMinor = statusView && record ? record.amountMinor : amountMinor;
   const displayedMethod = METHODS[statusView && record ? record.method : method];
-  const amountText = screen === 'custom' ? formatValueForDisplay(custom, 2, amountFormat).formatted : formatAmount(displayedMinor);
-  draftRef.current = { method, preset, custom, source, reviewOrigin, amountMinor, demoOutcome, record };
+  const amountText = formatAmount(displayedMinor);
+  const editorText = screen === 'custom' || (screen === 'review' && source === 'custom')
+    ? formatValueForDisplay(custom, 2, amountFormat).formatted : amountText;
+  draftRef.current = { method, preset, custom, source, reviewOrigin, amountMinor, record };
 
   useEffect(() => {
     mountedRef.current = true;
-    controllerRef.current = createTransferMotion({ amountFade: holderRef.current.querySelector('.transfer-amount-fade'), sheet: sheetRef.current, holder: holderRef.current, stage: stageRef.current, timelineButton: timelineButtonRef.current, onView: setScreen,
-      createStatusMorph: (element, text, disabled = false, duration = 200) => {
+    controllerRef.current = createTransferMotion({ sheet: sheetRef.current, holder: holderRef.current, stage: stageRef.current, timelineButton: timelineButtonRef.current, onView: setScreen,
+      createStatusMorph: (element, text, disabled = false) => {
         element.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
         element.textContent = text;
         element.style.width = ''; element.style.height = '';
-        const morph = new TextMorph({ element, duration, ease: 'cubic-bezier(0.19,1,0.22,1)', respectReducedMotion: true, disabled });
+        // An evenly paced ~300ms swap (Family's text swaps run about 230–250ms
+        // without a front-loaded jump); expo-out at 160–200ms put nearly all
+        // of the movement into the first 40ms.
+        const morph = new TextMorph({ element, duration: durations.textSwap, ease: cubicBezier('textSwap'), respectReducedMotion: true, disabled });
         morph.update(text); return morph;
       } });
     return () => {
@@ -123,32 +129,58 @@ export default function TransferStudy() {
   }, [screen, amountMinor]);
 
   useEffect(() => {
+    if (controllerRef.current?.isPreviewing()) return;
     if (isOpen) sheetRef.current?.focus({ preventScroll: true });
     else resetRef.current?.focus({ preventScroll: true });
   }, [screen, isOpen]);
 
-  const clearPressed = () => sheetRef.current?.querySelectorAll('[data-pointer-pressed]').forEach(node => node.removeAttribute('data-pointer-pressed'));
-  useEffect(() => {
-    const release = () => sheetRef.current?.querySelectorAll('[data-pointer-pressed]').forEach(node => node.removeAttribute('data-pointer-pressed'));
-    window.addEventListener('pointerup', release);
-    window.addEventListener('pointercancel', release);
-    window.addEventListener('blur', release);
-    return () => { window.removeEventListener('pointerup', release); window.removeEventListener('pointercancel', release); window.removeEventListener('blur', release); release(); };
-  }, []);
-  function pressControl(event) {
-    const button = event.target.closest('button');
-    if (event.isPrimary && event.button === 0 && button && !button.disabled) button.setAttribute('data-pointer-pressed', '');
-  }
-  function leaveControl(event) {
-    const button = event.target.closest('button');
-    if (button && !button.contains(event.relatedTarget)) button.removeAttribute('data-pointer-pressed');
-  }
+  // Press feedback: the shared hook (same behaviour as before, now also used
+  // by Automatic orders).
+  const { clear: clearPressed, pressProps: { onPointerDownCapture: pressControl, onPointerOutCapture: leaveControl } } = usePointerPress(sheetRef);
 
   const go = (next, instant = false) => {
     setAmountMotion(false);
     controllerRef.current?.setMode(next, instant);
   };
   const instantInput = event => event.detail === 0;
+
+  // A pointer close slides the tray down on the same steep sheet curve and
+  // fades the backdrop; reopening reverses it. Keyboard and the study's
+  // Reset stay instant.
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function cancelTrayAnimations() {
+    trayAnimationsRef.current.forEach(animation => animation.cancel());
+    trayAnimationsRef.current = [];
+    if (sheetRef.current) sheetRef.current.style.pointerEvents = '';
+  }
+  function closeTray(event) {
+    const sheet = sheetRef.current, backdrop = backdropRef.current;
+    const animate = event && !instantInput(event) && sheet && backdrop && !controllerRef.current?.isPreviewing();
+    if (!animate) { cancelTrayAnimations(); setClosing(false); go('closed', true); return; }
+    if (closing) return;
+    const reduce = reducedMotion();
+    const height = VIEWS[controllerRef.current?.mode()]?.height ?? 0;
+    cancelTrayAnimations();
+    sheet.style.pointerEvents = 'none';
+    setClosing(true);
+    // Shared with every tray flow (lib/tray-presence.mjs, plan 011 W6); values unchanged.
+    const [tray, dim] = animateTrayPresence({ tray: sheet, backdrop, height, opening: false, reduce });
+    trayAnimationsRef.current = [tray, dim];
+    tray.finished.then(() => { if (mountedRef.current) { setClosing(false); go('closed', true); } }).catch(() => {});
+  }
+  function openTray(next, event) {
+    pendingOpenRef.current = Boolean(event && !instantInput(event));
+    go(next, true);
+  }
+  useLayoutEffect(() => {
+    // Runs before paint, so a closed tray never flashes back before hiding.
+    if (!isOpen) { cancelTrayAnimations(); return; }
+    if (!pendingOpenRef.current) return;
+    pendingOpenRef.current = false;
+    const sheet = sheetRef.current, backdrop = backdropRef.current, reduce = reducedMotion();
+    const height = VIEWS[screen]?.height ?? 0;
+    trayAnimationsRef.current = animateTrayPresence({ tray: sheet, backdrop, height, opening: true, reduce });
+  }, [isOpen]);
 
   function chooseMethod(next, event) {
     if (!controllerRef.current?.canActivate()) return;
@@ -199,7 +231,7 @@ export default function TransferStudy() {
     setRecord(processing); draftRef.current = { ...draftRef.current, record: processing };
     go('processing', instant);
     try {
-      const result = await simulateTransfer({ ...snapshot, outcome: draft.demoOutcome, signal: request.signal });
+      const result = await simulateTransfer({ ...snapshot, signal: request.signal });
       if (!mountedRef.current || requestRef.current !== request) return;
       requestRef.current = null; setRecord(result);
       draftRef.current = { ...draftRef.current, record: result };
@@ -223,7 +255,7 @@ export default function TransferStudy() {
       draftRef.current = { ...draftRef.current, reviewOrigin: current };
       go('review', instant);
     } else if (current === 'review') submit(instant);
-    else if (current === 'success') go('closed', true);
+    else if (current === 'success') closeTray(event);
     else if (current === 'failure') go('review', instant);
     else if (current === 'pending') submit(instant, true);
   }
@@ -245,7 +277,7 @@ export default function TransferStudy() {
       if (key !== null) { event.preventDefault(); enterDigit(key, false); return; }
       if (event.key === 'Enter' && event.target.tagName !== 'BUTTON') { event.preventDefault(); primary({ detail: 0 }); return; }
     }
-    if (event.key === 'Tab') {
+    if (event.key === 'Tab' && !typographyOpen) {
       const controls = [...sheetRef.current.querySelectorAll('button, input')].filter(node => !node.disabled && node.tabIndex >= 0 && !node.closest('[inert]') && getComputedStyle(node).visibility !== 'hidden');
       const first = controls[0], last = controls.at(-1);
       if (event.shiftKey && (document.activeElement === first || document.activeElement === sheetRef.current)) { event.preventDefault(); last?.focus(); }
@@ -266,31 +298,62 @@ export default function TransferStudy() {
     <main className="transfer-stage" aria-label="Transfer flow prototype" ref={stageRef}>
       <div className="transfer-holder" ref={holderRef} data-framed={framed} style={{ '--device-width': `${framed ? 414 : 390}px`, '--device-height': `${framed ? 876 : 852}px` }}>
         <IPhoneFrame enabled={framed}>
-        <div className="transfer-phone">
+        <div className="transfer-phone" style={{ ...credoTypographyStyle, ...credoColorStyle }} ref={phoneRef}>
           <div className="transfer-background" inert={isOpen}>
-            <header className="transfer-page-header"><span className="transfer-page-back" aria-hidden="true"><Icon name="back" /></span><h1>International transfers</h1><span className="transfer-header-spacer" /></header>
-            <Templates />
-            {record && <section className="transfer-activity" aria-label="Latest demo transfer"><h2>Recent transfer</h2><button type="button" onClick={() => go(record.status, true)}><img src={asset(METHODS[record.method].asset, 'png')} alt="" width="40" height="40" /><span><strong>{METHODS[record.method].label}</strong><small>{({ processing: 'Processing', success: 'Completed', failure: 'Unsuccessful', pending: 'Pending' })[record.status]}</small></span><b>{CURRENCY_SYMBOL}{formatAmount(record.amountMinor)}</b><Icon name="chevron" /></button></section>}
-            <div className="transfer-status" aria-hidden="true"><span>9:41</span><span className="transfer-cellular"><Icon name="cellular" /></span><span className="transfer-wifi"><Icon name="wifi" /></span><span className="transfer-battery"><Icon name="battery" /></span></div>
+            <TransferHome onTransfer={event => openTray('options', event)} />
+            <div className="transfer-status transfer-status--on-dark" aria-hidden="true"><span>9:41</span><span className="transfer-cellular"><Icon name="cellular" /></span><span className="transfer-wifi"><Icon name="wifi" /></span><span className="transfer-battery"><Icon name="battery" /></span></div>
           </div>
           <div className="transfer-home-indicator" aria-hidden="true" />
-          <div className="transfer-backdrop" hidden={!isOpen} onClick={() => go('closed', true)} aria-hidden="true" />
-          <section className="transfer-sheet" hidden={!isOpen} data-view={screen} role="dialog" aria-modal="true" aria-labelledby={`transfer-title-${screen}`} ref={sheetRef} tabIndex={-1} onKeyDown={onSheetKeyDown} onPointerDownCapture={pressControl} onPointerOutCapture={leaveControl} onClickCapture={clearPressed} onKeyDownCapture={clearPressed}>
-            <header className="transfer-sheet-header">
-              <h2 className="transfer-sheet-titles">{VIEW_KEYS.map(key => <span key={key} id={`transfer-title-${key}`} data-title={key} aria-hidden={screen !== key}>{VIEWS[key].title}</span>)}</h2>
-              <button className="transfer-close" type="button" aria-label="Close transfer" onClick={() => go('closed', true)}><Icon name="close" /></button>
-            </header>
-            <div className="transfer-divider" aria-hidden="true"><Icon name="divider" /></div>
-            <div className="transfer-content-mask">
+          <div className="transfer-backdrop" ref={backdropRef} hidden={!isOpen} onClick={event => closeTray(event)} aria-hidden="true" />
+          <Tray ref={sheetRef} className="transfer-sheet" hidden={!isOpen} data-view={screen} role="dialog" aria-modal={!typographyOpen} aria-labelledby={`transfer-title-${screen}`} tabIndex={-1} onKeyDown={onSheetKeyDown} onPointerDownCapture={pressControl} onPointerOutCapture={leaveControl} onClickCapture={clearPressed} onKeyDownCapture={clearPressed}
+            headerClassName="transfer-sheet-header" titleClassName="transfer-sheet-titles"
+            title={VIEW_KEYS.map(key => <span key={key} id={`transfer-title-${key}`} data-title={key} aria-hidden={screen !== key}>{VIEWS[key].title}</span>)}
+            onClose={event => closeTray(event)} closeLabel="Close transfer" closeIcon={<Icon name="close" />}
+            onBack={VIEWS[screen]?.back ? event => back(instantInput(event)) : undefined}
+            dividerClassName="transfer-divider" bodyClassName="transfer-content-mask"
+            footer={<>
+            <div className="transfer-sheet-footer">
+              <PrimaryButton
+                className="transfer-primary"
+                visualClassName="transfer-primary-visual"
+                surfaceClassName="transfer-primary-press"
+                data-managed-press
+                aria-hidden={!dataReady?.action}
+                tabIndex={dataReady?.action ? 0 : -1}
+                aria-label={screen === 'success' ? `${STATUS_ACTION_COPY.success}. Close` : screen === 'processing' ? STATUS_ACTION_COPY.processing.replace('…', '') : ACTION_COPY[dataReady?.action] ?? ACTION_COPY.continue}
+                busy={screen === 'processing'}
+                disabled={!dataReady?.action || (['amount', 'custom'].includes(screen) && amountMinor <= 0)}
+                onClick={primary}
+              >
+                <span className="transfer-status-slot" aria-hidden="true">
+                  <span className="transfer-status-capsule">
+                    <span className="transfer-capsule-icon">
+                      <PrimaryButtonSpinner className="transfer-spinner transfer-capsule-spinner" />
+                      <PrimaryButtonCheck className="transfer-capsule-check" pathClassName="transfer-success-path" />
+                    </span>
+                    <span className="transfer-status-label"><span className="transfer-status-text">{STATUS_ACTION_COPY.processing}</span><span className="transfer-status-ellipsis" aria-hidden="true">…</span></span>
+                  </span>
+                </span>
+                <span className="transfer-entry-label" aria-hidden="true"><span className="transfer-entry-text">{ACTION_COPY.continue}</span></span>
+                <span className="transfer-step-labels" aria-hidden="true">
+                  <span data-action-label="continue">{ACTION_COPY.continue}</span>
+                  <span data-action-label="confirm">{ACTION_COPY.confirm}</span>
+                </span>
+                {Object.entries(ACTION_COPY).filter(([key]) => key !== 'continue' && key !== 'confirm').map(([key, label]) => <span key={key} data-action-label={key} aria-hidden="true">{label}</span>)}
+              </PrimaryButton>
+              <div className="transfer-home-indicator" aria-hidden="true" />
+            </div>
+            <div className="transfer-announcement" role="status" aria-live="polite" aria-atomic="true">{statusView ? `${STATUS_COPY[screen][0]}. ${METHODS[record?.method ?? method].label}, ${CURRENCY} ${formatAmount(displayedMinor)}.` : ''}</div>
+            </>}>
               <div className="transfer-method-context" aria-hidden={!dataReady?.context}><img src={asset(displayedMethod.asset, 'png')} alt="" width="40" height="40" /><span><strong>{displayedMethod.label}</strong><small>Transfer to China</small></span><span className="transfer-currency">{CURRENCY}</span></div>
               <div className="transfer-money" aria-hidden={!dataReady?.money} inert={!dataReady?.money}>
-                <div className="transfer-money-value" style={{ fontSize: amountText.length > 8 ? '34px' : undefined }}><span className="transfer-money-number"><span>{CURRENCY_SYMBOL}</span><TransferAmountInput value={amountText} label={screen === 'custom' ? `Custom amount in ${CURRENCY}` : `Transfer amount in ${CURRENCY}`} active={screen === 'custom'} animate={screen === 'custom' && amountMotion} /></span></div>
-                <span className="transfer-money-caption">{screen === 'custom' || (screen === 'review' && source === 'custom') ? `Max amount: ${MAX_AMOUNT.toLocaleString('en-US').replaceAll(',', ' ')}` : 'Amount to transfer'}</span>
+                <AmountDisplay value={editorText} currency={CURRENCY_SYMBOL} label={screen === 'custom' ? `Custom amount in ${CURRENCY}` : `Transfer amount in ${CURRENCY}`} active={screen === 'custom'} animate={screen === 'custom' && amountMotion}
+                  caption={screen === 'custom' || (screen === 'review' && source === 'custom') ? `Max amount: ${MAX_AMOUNT.toLocaleString('en-US').replaceAll(',', ' ')}` : 'Amount to transfer'} />
               </div>
               <TransferPanel view="options" screen={screen} className="transfer-rows transfer-rows--options">
                 <TransferRow icon="account" tone="purple">Account Number</TransferRow>
                 <TransferRow icon="card" tone="blue">Card Number</TransferRow>
-                <TransferRow icon="international" tone="mint">International transfer</TransferRow>
+                <TransferRow icon="international" tone="mint">International Transfer</TransferRow>
                 <TransferRow icon="china" tone="gold" fast onClick={event => go('china', instantInput(event))}>Transfer to China</TransferRow>
               </TransferPanel>
               <TransferPanel view="china" screen={screen} className="transfer-rows transfer-rows--china">
@@ -298,26 +361,28 @@ export default function TransferStudy() {
                 <TransferRow icon="wechat" payment onClick={event => chooseMethod('wechat', event)}>WechatPay</TransferRow>
               </TransferPanel>
               <TransferPanel view="amount" screen={screen} className="transfer-amount-panel">
-                <p className="transfer-amount-intro">How much would you like to transfer?</p>
                 <div className="transfer-presets" aria-label="Transfer amounts">{PRESETS.map(value => <button type="button" key={value} aria-label={`${CURRENCY_SYMBOL}${value}`} aria-pressed={preset === value} onClick={event => choosePreset(value, event)}><span className="transfer-tile-visual"><span>{CURRENCY_SYMBOL}</span><span>{value}</span></span></button>)}<button type="button" className="transfer-custom-option" onClick={openCustom}><span className="transfer-tile-visual">Custom</span></button></div>
               </TransferPanel>
               <TransferPanel view="custom" screen={screen} className="transfer-custom-panel">
-                <div className="transfer-keypad" aria-label="Amount keypad">{['1','2','3','4','5','6','7','8','9','.','0','backspace'].map(key => <button key={key} type="button" aria-label={key === 'backspace' ? 'Delete digit' : key === '.' ? 'Decimal point' : key} onClick={event => enterDigit(key, !instantInput(event))}><span className="transfer-key-visual">{key === 'backspace' ? <span className="transfer-delete-chevron"><Icon name="chevron" /></span> : key}</span></button>)}</div>
+                <Keypad onKey={(key, event) => enterDigit(key, !instantInput(event))} deleteIcon={<Icon name="delete" />} />
               </TransferPanel>
               <TransferPanel view="review" screen={screen} activeViews={['review', 'processing', 'success']} className="transfer-review-panel">
-                <div className="transfer-review-heading"><h3 aria-hidden={screen !== 'review'}>Transfer details</h3><button className="transfer-edit-amount" type="button" tabIndex={screen === 'review' ? 0 : -1} disabled={screen !== 'review'} aria-hidden={screen !== 'review'} aria-label="Edit amount" onClick={event => back(instantInput(event))}>Edit</button></div>
-                <dl className="transfer-review-summary"><div><dt>Amount</dt><dd className="transfer-review-total" data-amount={`${CURRENCY_SYMBOL}${formatAmount(displayedMinor)}`}>{CURRENCY_SYMBOL}{amountText}</dd></div><div><dt>Recipient</dt><dd>{RECIPIENT_NAME}</dd></div><div><dt>Pay with</dt><dd><img src={asset(displayedMethod.asset, 'png')} alt="" width="24" height="24" /><span>{displayedMethod.label}</span></dd></div></dl>
+                <ReceiptRows className="transfer-review-summary" rows={[
+                  { label: 'Amount', className: 'transfer-review-amount', value: <>
+                    <button className="transfer-edit-amount" type="button" tabIndex={screen === 'review' ? 0 : -1} disabled={screen !== 'review'} aria-hidden={screen !== 'review'} aria-label="Edit amount" onClick={event => back(instantInput(event))}><span className="credo-inline-action">Edit</span></button>
+                    <strong className="transfer-review-total" data-amount={`${CURRENCY_SYMBOL}${formatAmount(displayedMinor)}`}>{CURRENCY_SYMBOL}{amountText}</strong>
+                  </> },
+                  { label: 'Recipient', className: 'transfer-review-recipient', value: RECIPIENT_NAME },
+                  { label: 'Pay with', className: 'transfer-review-method', value: displayedMethod.label }
+                ]} />
               </TransferPanel>
               {Object.entries(STATUS_COPY).map(([key, [title, description]]) => <TransferPanel view={key} screen={screen} className="transfer-result-panel" key={key}>{!['processing', 'success'].includes(key) && <><StatusIcon kind={key} /><h3>{title}</h3><p>{description}</p></>}</TransferPanel>)}
-            </div>
-            <div className="transfer-sheet-footer"><button className="transfer-primary" type="button" aria-hidden={!dataReady?.action} tabIndex={dataReady?.action ? 0 : -1} aria-label={screen === 'success' ? 'Transfer sent. Close' : screen === 'processing' ? 'Sending transfer' : ACTION_COPY[dataReady?.action] ?? 'Continue'} disabled={!dataReady?.action || screen === 'processing' || (['amount', 'custom'].includes(screen) && amountMinor <= 0)} onClick={primary}><span className="transfer-primary-visual" aria-hidden="true"><span className="transfer-primary-press"><span className="transfer-status-slot" aria-hidden="true"><span className="transfer-status-capsule"><span className="transfer-capsule-icon"><svg className="transfer-spinner transfer-capsule-spinner" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" /><path d="M12 3a9 9 0 0 1 9 9" /></svg><svg className="transfer-capsule-check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none" /><path className="transfer-success-path" pathLength="100" d="m7.5 12 3 3 6-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></span><span className="transfer-status-text">Sending transfer…</span></span></span><span className="transfer-entry-label"><span className="transfer-entry-text">Continue</span></span>{Object.entries(ACTION_COPY).map(([key, label]) => <span key={key} data-action-label={key} aria-hidden="true">{label}</span>)}</span></span></button><div className="transfer-home-indicator" aria-hidden="true" /></div>
-            <div className="transfer-announcement" role="status" aria-live="polite" aria-atomic="true">{statusView ? `${STATUS_COPY[screen][0]}. ${METHODS[record?.method ?? method].label}, ${CURRENCY} ${formatAmount(displayedMinor)}.` : ''}</div>
-          </section>
-          <div className="transfer-amount-fade" aria-hidden="true"><span className="transfer-fade-value"><span className="transfer-fade-currency" /><span className="transfer-fade-number" /></span></div>
+            <div className="transfer-feather" aria-hidden="true" />
+          </Tray>
         </div>
         </IPhoneFrame>
       </div>
     </main>
-    <div className="transfer-demo-controls"><span>Prototype · sample {CURRENCY} amounts</span><label>Demo result<select aria-label="Demo transfer result" value={demoOutcome} onChange={event => setDemoOutcome(event.target.value)}><option value="success">Success</option><option value="pending">Pending</option><option value="failure">Unsuccessful</option></select></label></div>
+    <TransferTypographyPanel onOpenChange={setTypographyOpen} phoneRef={phoneRef} controllerRef={controllerRef} />
   </>;
 }

@@ -8,8 +8,6 @@
     button { font: inherit; cursor: pointer; }
     .tab-button:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
     .stage { display: grid; min-height: 100dvh; place-items: center; padding: 88px 12px 12px; }
-    .study-back { position: fixed; z-index: 10; top: 24px; left: 24px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: #42616d; background: rgba(255,255,255,.86); border: 1px solid #d8e4e8; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 600; }
-    .study-back:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
     .study-timeline-toggle { position: fixed; z-index: 10; top: 24px; right: 24px; min-height: 44px; padding: 0 16px; color: #42616d; background: rgba(255,255,255,.86); border: 1px solid #d8e4e8; border-radius: 999px; font-size: 13px; font-weight: 600; }
     .study-timeline-toggle:focus-visible { outline: 3px solid #3a9ec9; outline-offset: 3px; }
     .phone-holder { --phone-scale: var(--screen-scale); width: calc(var(--device-width) * var(--screen-scale)); height: calc(var(--device-height) * var(--screen-scale)); margin: 0 auto; }

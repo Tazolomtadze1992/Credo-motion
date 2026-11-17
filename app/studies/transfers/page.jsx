@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import TransferStudy from '../../../components/TransferStudy';
 import './transfers.css';
 
@@ -8,5 +7,5 @@ export const metadata = {
 };
 
 export default function TransfersPage() {
-  return <><Link className="transfer-back" href="/">← All studies</Link><TransferStudy /></>;
+  return <TransferStudy />;
 }

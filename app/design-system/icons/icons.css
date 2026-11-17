@@ -1,0 +1,14 @@
+.icon-group { margin-bottom: 40px; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.icon-grid li { display: grid; justify-items: center; gap: 4px; padding: 20px 8px 14px; border-radius: 16px; background: var(--credo-color-bg-surface); text-align: center; }
+.icon-grid__glyph { display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 6px; color: var(--credo-color-text-strong); }
+.icon-grid__name { font: var(--credo-type-supporting); letter-spacing: var(--credo-type-supporting-tracking); color: var(--credo-color-text-primary); font-weight: 600; }
+.icon-grid__source { font-size: 12px; line-height: 16px; color: var(--credo-color-text-secondary); }
+.icon-note { color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); }
+.credo-type-page code { font-size: .92em; }
+.icon-sizes { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.icon-sizes li { display: grid; grid-template-columns: 120px 90px 1fr; align-items: center; gap: 4px 16px; padding: 16px 20px; border-radius: 16px; background: var(--credo-color-bg-surface); }
+.icon-sizes__samples { display: flex; align-items: center; gap: 12px; color: var(--credo-color-text-strong); }
+.icon-sizes li > span:not(.icon-sizes__samples) { color: var(--credo-color-text-secondary); font: var(--credo-type-supporting); }
+.icon-sizes small { grid-column: 2 / -1; color: var(--credo-color-text-secondary); font-size: 12px; }
+@media (max-width: 560px) { .icon-sizes li { grid-template-columns: 1fr; } .icon-sizes small { grid-column: auto; } }

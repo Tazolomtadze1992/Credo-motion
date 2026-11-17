@@ -1,0 +1,7 @@
+/* Credo Receipt rows. Rules moved from the China transfer review; type follows
+   the receipt-label and receipt-value roles (same 14 px; the value is one weight
+   heavier and darker, so the information reads first) when the tokens are set. */
+.credo-receipt { margin: 0; }
+.credo-receipt__row { display: flex; align-items: center; justify-content: space-between; gap: var(--credo-space-4, 16px); min-height: 32px; }
+.credo-receipt dt { color: var(--credo-color-text-secondary); font-size: var(--credo-type-receipt-label-size, 14px); font-weight: var(--credo-type-receipt-label-weight, 400); line-height: var(--credo-type-receipt-label-leading, 14px); letter-spacing: var(--credo-type-receipt-label-tracking, normal); text-transform: var(--credo-type-receipt-label-case, none); }
+.credo-receipt dd { display: flex; align-items: center; justify-content: flex-end; gap: var(--credo-space-2, 8px); min-width: 0; margin: 0; color: var(--credo-color-text-primary); text-align: right; overflow-wrap: anywhere; font-size: var(--credo-type-receipt-value-size, 14px); font-weight: var(--credo-type-receipt-value-weight, 450); line-height: var(--credo-type-receipt-value-leading, 14px); letter-spacing: var(--credo-type-receipt-value-tracking, normal); text-transform: var(--credo-type-receipt-value-case, none); }
